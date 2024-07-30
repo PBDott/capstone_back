@@ -15,6 +15,7 @@ import {
 import { ClubService } from './club.service';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
+import { DeleteClubDto } from './dto/delete-club.dto';
 
 @Controller('club')
 export class ClubController {
@@ -59,13 +60,30 @@ export class ClubController {
       throw new BadRequestException(`Invalid club ID: ${clubId}`);
     }
     try {
-      const club = this.clubService.updateClub(clubId, updateClubDto);
+      const club = await this.clubService.updateClub(clubId, updateClubDto);
       if (!club) {
         throw new NotFoundException(`Club with ID ${clubId} not found`);
       }
       return club;
     } catch (error) {
-      throw new InternalServerErrorException('Failed to update club');
+      throw new InternalServerErrorException('Faild to update club');
+    }
+  }
+
+  @Post('delete')
+  async deleteClub(@Body() deleteClubDto: DeleteClubDto) {
+    const clubId = deleteClubDto.id;
+    if (isNaN(clubId)) {
+      throw new BadRequestException(`Invalid club ID: ${clubId}`);
+    }
+    try {
+      const club = await this.clubService.deleteClub(clubId);
+      if (!club) {
+        throw new NotFoundException(`Club with ID ${clubId} not found`);
+      }
+      return club;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to delete club');
     }
   }
 }

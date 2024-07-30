@@ -38,4 +38,10 @@ export class ClubRepository {
       data: updateClubDto,
     });
   }
+
+  async deleteClub(id: number): Promise<Club> {
+    return this.prisma.club.delete({
+      where: { id },
+    });
+  }
 }

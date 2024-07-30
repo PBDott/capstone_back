@@ -13,24 +13,24 @@ export class UpdateClubDto extends PartialType(CreateClubDto) {
   @IsInt()
   id: number;
 
-  @IsOptional()
   @IsString()
-  name?: string;
+  @IsNotEmpty()
+  name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  school: string;
+
+  @IsString()
+  @IsNotEmpty()
+  location: string;
 
   @IsOptional()
   @IsString()
-  school?: string;
-
-  @IsOptional()
-  @IsString()
-  location?: string;
-
-  @IsOptional()
-  @IsString()
-  description?: string;
+  description: string;
 
   @IsOptional()
   @IsArray()
   @IsNotEmpty()
-  adminList?: number[];
+  adminList: number[];
 }

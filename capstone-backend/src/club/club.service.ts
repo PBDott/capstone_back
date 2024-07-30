@@ -8,6 +8,7 @@ import { UpdateClubDto } from './dto/update-club.dto';
 import { Club } from '@prisma/client';
 import { ClubRepository } from './repositores/club.repository';
 import { NotFoundError } from 'rxjs';
+import { DeleteClubDto } from './dto/delete-club.dto';
 
 @Injectable()
 export class ClubService {
@@ -22,18 +23,14 @@ export class ClubService {
   }
 
   async getClubById(id: number): Promise<Club> {
-    const club = await this.clubRepository.getClubById(id);
-    if (!club) {
-      throw new NotFoundException(`Club with ID ${id} not found`);
-    }
-    return club;
+    return this.clubRepository.getClubById(id);
   }
 
   async updateClub(id: number, updateClubDto: UpdateClubDto): Promise<Club> {
-    const club = await this.clubRepository.getClubById(id);
-    if (!club) {
-      throw new NotFoundException(`Club with ID ${id} not found`);
-    }
     return this.clubRepository.updateClub(id, updateClubDto);
+  }
+
+  async deleteClub(id: number): Promise<Club> {
+    return this.clubRepository.deleteClub(id);
   }
 }
