@@ -6,9 +6,10 @@ import { UserModule } from './user/user.module';
 import { KakaoModule } from './kakao/kakao.module';
 import { PrismaModule } from './prisma.module';
 import { ClubModule } from './club/club.module';
+import { MemberModule } from './member/member.module';
 
 @Module({
-  imports: [AuthModule, UserModule, KakaoModule, PrismaModule, ClubModule],
+  imports: [AuthModule, UserModule, KakaoModule, PrismaModule, ClubModule, MemberModule],
   controllers: [AppController],
   providers: [AppService],
 })

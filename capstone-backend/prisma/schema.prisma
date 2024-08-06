@@ -13,64 +13,74 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Permission {
+  USER
+  ADMIN
+}
+
 model User {
-  id          Int          @id @default(autoincrement())
-  name        String
-  email       String       @unique
-  phone       String       @unique
-  school      String
-  major       String
-  image       Json?
-  studentId   Int          @map("student_id")
-  memberships Membership[]
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  phone     String     @unique
+  school    String
+  major     String
+  image     Json?
+  studentId Int        @map("student_id")
+  role      Permission @default(ADMIN)
 }
 
 model Member {
-  id          Int          @id @default(autoincrement())
-  name        String
-  email       String?
-  phone       String?
-  school      String
-  major       String
-  image       Json?
-  studentsId  Int          @map("student_id")
-  memberships Membership[]
+  memberId   Int        @id @default(autoincrement()) @map("member_id")
+  name       String
+  email      String
+  phone      String
+  school     String
+  major      String
+  image      Json?
+  studentsId Int        @map("student_id")
+  role       Permission @default(USER)
 }
 
 model Club {
-  id          Int          @id @default(autoincrement())
+  clubId      Int     @id @default(autoincrement()) @map("club_id")
   name        String
   school      String
   location    String
   description String?
-  adminList   Json         @map("admin_list")
-  memberships Membership[]
+  adminList   Json    @map("admin_list")
 }
 
-model Membership {
-  id       Int     @id @default(autoincrement())
-  userId   Int
-  memberId Int?
-  clubId   Int
-  role     String // Optional: For example, "admin", "member", etc.
-  user     User    @relation(fields: [userId], references: [id])
-  member   Member? @relation(fields: [memberId], references: [id])
-  club     Club    @relation(fields: [clubId], references: [id])
-
-  @@unique([userId, memberId, clubId]) // Ensures each user can only belong to a club once
+model Calendar {
+  calendarId  Int      @id @default(autoincrement()) @map("calendar_id")
+  date        DateTime
+  title       String
+  description String?
+  clubId      Int
 }
 
-// model Calendar {
-//   id Int @id @default(autoincrement())
-//   date DateTime
-//   title String
-//   description String?
-//   clubId Int
-//   club Club @relation(fields: [clubId], references: [id])
-// }
+model Application {
+  applicationId Int    @id @default(autoincrement()) @map("application_id")
+  title         String
+  questionList  Json   @map("question_list")
+  link          String
+  from          String
+  to            String
+  interviewFrom String @map("interview_from")
+  interviewTo   String @map("interview_to")
+}
 
-// image Json?
-// user User @relation(fields: [userId], references: [id])
-// userId Int
-// member Member @relation(fields: [memberId], references: [id])
-// memberId Int
+model Answer {
+  answerId      Int    @id @default(autoincrement()) @map("answer_id")
+  answerList    Json   @map("answer_list")
+  interviewDate String @map("interview_date")
+}
+
+model Receipt {
+  receiptId    Int     @id @default(autoincrement()) @map("receipt_id")
+  type         String
+  history      String
+  description  String?
+  receipteDate String  @map("recepit_date")
+  amount       String
+}
