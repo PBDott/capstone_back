@@ -1,49 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Header, Res, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { KakaoService } from 'src/kakao/kakao.service';
 import { UserService } from 'src/user/user.service';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService, 
-    private readonly kakaoService: KakaoService,
+    private readonly authService: AuthService,
     private readonly userService: UserService
   ) {}
 
-  @Post('kakao/callback')
-  async kakaoCallback(@Body('code') code: string) {
-    try {
-      const accessToken = await this.kakaoService.getKakaoAccessToken(code);
-      const kakaoUserInfo = await this.kakaoService.getKakaoUserInfo(accessToken);
-      const { kakao_account: { email, profile: { nickname }, phone_number } } = kakaoUserInfo;
-      let user = await this.userService.getByEmail(email);
-
-      if(!user) {
-        const createUserDto: CreateUserDto = {
-          name: nickname,
-          email,
-          phone: phone_number || '',
-          school: '',
-          major: '',
-          studentId: 0
-        };
-
-        user = await this.userService.createUser(createUserDto);
-      }
-
-      const token = await this.authService.generateToken(user.id);
-
-      return {
-        mag: "카카오 사용자 정보를 가져왔습니다.",
-        user: user,
-        token: token
-      };
-
-    } catch(error) {
-      console.error('Kakao callback error:', error.message);
-    }
+  @Get('kakaoLogin')
+  @Header('Content-Type', 'text/html')
+  async kakaoRedirect(@Res() res: Response): Promise<void> {
+    const KAKAO_API_KEY = process.env.KAKAO_API_KEY;
+    const KAKAO_REDIRECT_URI = process.env.KAKAO_REDIRECT_URI;
+    const url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}`;
+    res.redirect(url);
   }
 
+  @Get('kakao')
+  async getKakaoInfo(@Query('code') code: string) {
+    const KAKAO_API_KEY = process.env.KAKAO_API_KEY;
+    const KAKAO_REDIRECT_URI = process.env.KAKAO_REDIRECT_URI;
+    const respose = await this.authService.kakaoLogin(KAKAO_API_KEY, KAKAO_REDIRECT_URI, code);
+    return respose;
+  }
 }

@@ -1,4 +1,4 @@
 export class CreateMemberDto {
 
-    @   i
+
 }
