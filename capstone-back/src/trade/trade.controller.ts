@@ -1,34 +1,53 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { TradeService } from './trade.service';
 import { CreateTradeDto } from './dto/create-trade.dto';
 import { UpdateTradeDto } from './dto/update-trade.dto';
+import { DeleteTradeDto } from './dto/delete-trade';
 
 @Controller('trade')
 export class TradeController {
   constructor(private readonly tradeService: TradeService) {}
 
   @Post()
-  create(@Body() createTradeDto: CreateTradeDto) {
-    return this.tradeService.create(createTradeDto);
+  async createTrade(@Body() createTradeDto: CreateTradeDto) {
+    return this.tradeService.createTrade(createTradeDto);
   }
 
   @Get()
-  findAll() {
-    return this.tradeService.findAll();
+  async getAll() {
+    try {
+      return this.tradeService.getAll();
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to get all trade');
+    }
+  }
+  
+  @Post('update')
+  async updateTrade(@Body() updateTradeDto: UpdateTradeDto) {
+    const tradeId = updateTradeDto.tradeId;
+    try {
+      const trade = await this.tradeService.updateTrade(tradeId, updateTradeDto);
+      if (!trade) {
+        throw new NotFoundException(`Trade with ID ${tradeId} not found `);
+      }
+      return trade;
+    } catch (error) {
+      throw new InternalServerErrorException('Faild to update trade');
+    }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tradeService.findOne(+id);
-  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTradeDto: UpdateTradeDto) {
-    return this.tradeService.update(+id, updateTradeDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tradeService.remove(+id);
+  @Post('delete')
+  async deleteTrade(@Body() deleteTradeDto: DeleteTradeDto) {
+    const tradeId = deleteTradeDto.tradeId;
+    try {
+      const trade = await this.tradeService.deleteTrade(tradeId);
+      if (!trade) {
+        throw new NotFoundException(`Trade with ID ${tradeId} not found `);
+      }
+      return trade;
+    } catch (error) {
+      throw new InternalServerErrorException('Faild to delete trade');
+    }
   }
 }

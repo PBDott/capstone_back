@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTradeDto } from './dto/create-trade.dto';
 import { UpdateTradeDto } from './dto/update-trade.dto';
+import { TradeRepository } from './repositores/trade.repository';
+import { Trade } from '@prisma/client';
 
 @Injectable()
 export class TradeService {
-  create(createTradeDto: CreateTradeDto) {
-    return 'This action adds a new trade';
+  constructor(private readonly tradeRepository: TradeRepository) {}
+
+  async createTrade(createTradeDto: CreateTradeDto): Promise<Trade> {
+    return this.tradeRepository.createTrade(createTradeDto);
   }
 
-  findAll() {
-    return `This action returns all trade`;
+  async getAll(): Promise<Trade[]> {
+    return this.tradeRepository.getAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} trade`;
+  async updateTrade(tradeId: number, updateTradeDto: UpdateTradeDto): Promise<Trade> {
+    return this.tradeRepository.updateTrade(tradeId, updateTradeDto);
   }
 
-  update(id: number, updateTradeDto: UpdateTradeDto) {
-    return `This action updates a #${id} trade`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} trade`;
+  async deleteTrade(tradeId: number): Promise<Trade> {
+    return this.tradeRepository.deleteTrade(tradeId);
   }
 }

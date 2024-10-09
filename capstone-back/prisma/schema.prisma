@@ -24,7 +24,7 @@ model User {
 }
 
 model Trade {
-  TradeId Int @id @default(autoincrement()) @map("trade_id")
+  tradeId Int @id @default(autoincrement()) @map("trade_id")
   title String
   author String
   publication String
