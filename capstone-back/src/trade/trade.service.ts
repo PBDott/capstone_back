@@ -24,3 +24,4 @@ export class TradeService {
     return this.tradeRepository.deleteTrade(tradeId);
   }
 }
+

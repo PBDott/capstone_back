@@ -14,20 +14,21 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
+  userId    Int    @id @default(autoincrement()) @map("user_id")
+  nickName  String @map("nick_name")
   name      String
-  email     String     @unique
-  phone     String     @unique
+  email     String @unique
+  phone     String @unique
   school    String
   major     String
-  studentId Int        @map("student_id")
+  studentId Int    @map("student_id")
 }
 
 model Trade {
-  tradeId Int @id @default(autoincrement()) @map("trade_id")
-  title String
-  author String
+  tradeId     Int    @id @default(autoincrement()) @map("trade_id")
+  title       String
+  author      String
   publication String
-  seller String
-  price Int
+  seller      String
+  price       Int
 }

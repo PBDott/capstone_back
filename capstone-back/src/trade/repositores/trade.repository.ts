@@ -36,4 +36,5 @@ export class TradeRepository {
             where: { tradeId }
         });
     }
+
 }
