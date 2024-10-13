@@ -6,22 +6,13 @@ import { RegisterUserDto } from './dto/register-user.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // @Post('login')
-  // async login(
-  //   @Body() data : CreateAuthDto,
-  //   @Res({ passthrough: true }) res,
-  // ): Promise<TokenResponse> {
-  //   return this.authService.login(data, res);
-  // }
   @Get()
   async health(){
     return 'health'
   }
 
   @Post('register')
-  async register(
-    @Body() registerData : RegisterUserDto,
-  ) {
-    return this.authService.registerUser(registerData)
+  async register(@Body() registerData : RegisterUserDto) {
+    return this.authService.registerUser(registerData);
   }
 }
