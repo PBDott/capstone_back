@@ -10,10 +10,6 @@ export class CreateTradeDto {
     @IsNotEmpty()
     author: string;
 
-    @IsString()
-    @IsNotEmpty()
-    publication: string;
-
     @IsInt()
     @IsNotEmpty()
     price: number;

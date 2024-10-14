@@ -15,10 +15,6 @@ export class UpdateTradeDto extends PartialType(CreateTradeDto) {
     @IsNotEmpty()
     author: string;
 
-    @IsString()
-    @IsNotEmpty()
-    publication: string;
-
     @IsInt()
     @IsNotEmpty()
     price: number;

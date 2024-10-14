@@ -3,6 +3,7 @@ import { PrismaService } from "src/prisma.service";
 import { CreateTradeDto } from "../dto/create-trade.dto";
 import { Trade } from "@prisma/client";
 import { UpdateTradeDto } from "../dto/update-trade.dto";
+import { BuyTradeDto } from "../dto/buy-trade";
 
 @Injectable()
 export class TradeRepository {
@@ -13,7 +14,6 @@ export class TradeRepository {
             data: {
                 title: tradeData.title,
                 author: tradeData.author,
-                publication: tradeData.publication,
                 price: tradeData.price,
                 seller: {
                     connect: { userId: tradeData.sellerId}
@@ -36,6 +36,18 @@ export class TradeRepository {
     async deleteTrade(tradeId: number): Promise<Trade> {
         return this.prisma.trade.delete({
             where: { tradeId }
+        });
+    }
+
+    async buyTrade(tradeId: number, buyTradeDto: BuyTradeDto) {
+        return this.prisma.trade.update({
+            where: { tradeId },
+            data: {
+                buyer: {
+                    connect: { userId: buyTradeDto.buyerId }
+                },
+                sold: buyTradeDto.sold
+            }
         });
     }
 

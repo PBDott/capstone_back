@@ -3,6 +3,7 @@ import { TradeService } from './trade.service';
 import { CreateTradeDto } from './dto/create-trade.dto';
 import { UpdateTradeDto } from './dto/update-trade.dto';
 import { DeleteTradeDto } from './dto/delete-trade';
+import { BuyTradeDto } from './dto/buy-trade';
 
 @Controller('trade')
 export class TradeController {
@@ -50,8 +51,19 @@ export class TradeController {
     }
   }
 
-  /*
+  
   @Post('buyTrade')
-  async buyTrade(@Body() )
-  */
+  async buyTrade(@Body() buyTradeDto: BuyTradeDto) {
+    const tradeId = buyTradeDto.tradeId;
+    try {
+      const trade = await this.tradeService.buyTrade(tradeId, buyTradeDto);
+      if (!trade) {
+        throw new NotFoundException(`Trade with ID ${tradeId} not found `);
+      }
+      return trade;
+    } catch (error) {
+      throw new InternalServerErrorException('Faild to buy trade');
+    }
+  }
+  
 }
