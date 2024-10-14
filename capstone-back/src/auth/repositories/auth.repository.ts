@@ -8,6 +8,7 @@ export class AuthRepository {
     async registerUser(registerUserData: RegisterUserDto) {
         return this.prisma.user.create({
             data: {
+                kakaoId: registerUserData.kakaoId,
                 nickName: registerUserData.nickName,
                 name: registerUserData.name,
                 email: registerUserData.email,

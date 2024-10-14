@@ -14,21 +14,28 @@ datasource db {
 }
 
 model User {
-  userId    Int    @id @default(autoincrement()) @map("user_id")
-  nickName  String @map("nick_name")
+  userId    Int     @id @default(autoincrement()) @map("user_id")
+  kakaoId   String  @unique @map("kakao_id") 
+  nickName  String  @map("nick_name")
   name      String
-  email     String @unique
-  phone     String @unique
+  email     String  @unique
+  phone     String  @unique
   school    String
   major     String
-  studentId Int    @map("student_id")
+  studentId Int     @map("student_id")
+  trades    Trade[] @relation("UserTrades")
+  purchases Trade[] @relation("UserPurchases")
 }
 
 model Trade {
-  tradeId     Int    @id @default(autoincrement()) @map("trade_id")
+  tradeId     Int     @id @default(autoincrement()) @map("trade_id")
   title       String
   author      String
   publication String
-  seller      String
   price       Int
+  sold        Boolean @default(false)
+  seller      User    @relation("UserTrades", fields: [sellerId], references: [userId])
+  sellerId    Int     @map("seller_id")
+  buyer       User?   @relation("UserPurchases", fields: [buyerId], references: [userId])
+  buyerId     Int?     @map("buyer_id")
 }

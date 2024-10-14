@@ -13,12 +13,12 @@ export class CreateTradeDto {
     @IsString()
     @IsNotEmpty()
     publication: string;
-    
-    @IsString()
-    @IsNotEmpty()
-    seller: string;
 
     @IsInt()
     @IsNotEmpty()
     price: number;
+
+    @IsInt()
+    @IsNotEmpty()
+    sellerId: number;
 }

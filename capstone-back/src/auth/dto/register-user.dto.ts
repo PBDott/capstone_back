@@ -3,6 +3,10 @@ import { IsInt, IsNotEmpty, IsString } from "class-validator";
 export class RegisterUserDto {
     @IsNotEmpty()
     @IsString()
+    kakaoId: string;
+
+    @IsNotEmpty()
+    @IsString()
     nickName: string;
 
     @IsNotEmpty()

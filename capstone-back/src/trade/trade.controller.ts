@@ -36,7 +36,6 @@ export class TradeController {
     }
   }
 
-
   @Post('delete')
   async deleteTrade(@Body() deleteTradeDto: DeleteTradeDto) {
     const tradeId = deleteTradeDto.tradeId;
@@ -50,4 +49,9 @@ export class TradeController {
       throw new InternalServerErrorException('Faild to delete trade');
     }
   }
+
+  /*
+  @Post('buyTrade')
+  async buyTrade(@Body() )
+  */
 }

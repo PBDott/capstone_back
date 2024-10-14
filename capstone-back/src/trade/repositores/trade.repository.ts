@@ -14,8 +14,10 @@ export class TradeRepository {
                 title: tradeData.title,
                 author: tradeData.author,
                 publication: tradeData.publication,
-                seller: tradeData.seller,
                 price: tradeData.price,
+                seller: {
+                    connect: { userId: tradeData.sellerId}
+                }
             },
         });
     }

@@ -6,7 +6,7 @@ export class UpdateTradeDto extends PartialType(CreateTradeDto) {
     @IsInt()
     @IsNotEmpty()
     tradeId: number;
-    
+
     @IsString()
     @IsNotEmpty()
     title: string;
@@ -18,10 +18,6 @@ export class UpdateTradeDto extends PartialType(CreateTradeDto) {
     @IsString()
     @IsNotEmpty()
     publication: string;
-    
-    @IsString()
-    @IsNotEmpty()
-    seller: string;
 
     @IsInt()
     @IsNotEmpty()
