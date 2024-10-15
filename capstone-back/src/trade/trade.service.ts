@@ -7,7 +7,7 @@ import { BuyTradeDto } from './dto/buy-trade';
 
 @Injectable()
 export class TradeService {
-  constructor(private readonly tradeRepository: TradeRepository) {}
+  constructor(private readonly tradeRepository: TradeRepository) { }
 
   async createTrade(createTradeDto: CreateTradeDto): Promise<Trade> {
     return this.tradeRepository.createTrade(createTradeDto);
@@ -24,8 +24,12 @@ export class TradeService {
   async deleteTrade(tradeId: number): Promise<Trade> {
     return this.tradeRepository.deleteTrade(tradeId);
   }
-  
+
   async buyTrade(tradeId: number, buyTradeDto: BuyTradeDto): Promise<Trade> {
     return this.tradeRepository.buyTrade(tradeId, buyTradeDto);
+  }
+
+  async getTradeById(tradeId: number): Promise<Trade> {
+    return this.tradeRepository.getTradeById(tradeId);
   }
 }

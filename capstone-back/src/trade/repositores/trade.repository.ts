@@ -7,7 +7,7 @@ import { BuyTradeDto } from "../dto/buy-trade";
 
 @Injectable()
 export class TradeRepository {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) { }
 
     async createTrade(tradeData: CreateTradeDto): Promise<Trade> {
         return this.prisma.trade.create({
@@ -16,7 +16,7 @@ export class TradeRepository {
                 author: tradeData.author,
                 price: tradeData.price,
                 seller: {
-                    connect: { userId: tradeData.sellerId}
+                    connect: { userId: tradeData.sellerId }
                 }
             },
         });
@@ -48,6 +48,21 @@ export class TradeRepository {
                 },
                 sold: buyTradeDto.sold
             }
+        });
+    }
+
+    async getTradeById(tradeId: number): Promise<Trade> {
+        await this.prisma.trade.update({
+            where: { tradeId },
+            data: {
+                views: {
+                    increment: 1
+                }
+            }
+        });
+
+        return this.prisma.trade.findUnique({
+            where: { tradeId }
         });
     }
 

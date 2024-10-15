@@ -7,7 +7,7 @@ import { BuyTradeDto } from './dto/buy-trade';
 
 @Controller('trade')
 export class TradeController {
-  constructor(private readonly tradeService: TradeService) {}
+  constructor(private readonly tradeService: TradeService) { }
 
   @Post()
   async createTrade(@Body() createTradeDto: CreateTradeDto) {
@@ -22,7 +22,7 @@ export class TradeController {
       throw new InternalServerErrorException('Failed to get all trade');
     }
   }
-  
+
   @Post('update')
   async updateTrade(@Body() updateTradeDto: UpdateTradeDto) {
     const tradeId = updateTradeDto.tradeId;
@@ -51,7 +51,7 @@ export class TradeController {
     }
   }
 
-  
+
   @Post('buyTrade')
   async buyTrade(@Body() buyTradeDto: BuyTradeDto) {
     const tradeId = buyTradeDto.tradeId;
@@ -65,5 +65,17 @@ export class TradeController {
       throw new InternalServerErrorException('Faild to buy trade');
     }
   }
-  
+
+  @Get(":tradeId")
+  async getTradeById(@Param('tradeId') tradeId: number) {
+    try {
+      const trade = await this.tradeService.getTradeById(tradeId);
+      if (!trade) {
+        throw new NotFoundException(`Trade with Id ${tradeId} not found`);
+      }
+      return trade;
+    } catch (error) {
+      throw new InternalServerErrorException('Faild to get views');
+    }
+  }
 }
