@@ -33,7 +33,7 @@ export class TradeController {
       }
       return trade;
     } catch (error) {
-      throw new InternalServerErrorException('Faild to update trade');
+      throw new InternalServerErrorException('Failed to update trade');
     }
   }
 
@@ -47,7 +47,7 @@ export class TradeController {
       }
       return trade;
     } catch (error) {
-      throw new InternalServerErrorException('Faild to delete trade');
+      throw new InternalServerErrorException('Failed to delete trade');
     }
   }
 
@@ -62,7 +62,7 @@ export class TradeController {
       }
       return trade;
     } catch (error) {
-      throw new InternalServerErrorException('Faild to buy trade');
+      throw new InternalServerErrorException('Failed to buy trade');
     }
   }
 
@@ -75,7 +75,7 @@ export class TradeController {
       }
       return trade;
     } catch (error) {
-      throw new InternalServerErrorException('Faild to get views');
+      throw new InternalServerErrorException('Failed to get views');
     }
   }
 }
