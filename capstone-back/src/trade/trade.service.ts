@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTradeDto } from './dto/create-trade.dto';
 import { UpdateTradeDto } from './dto/update-trade.dto';
-import { TradeRepository } from './repositores/trade.repository';
+import { TradeRepository } from './repositories/trade.repository';
 import { Trade } from '@prisma/client';
 import { BuyTradeDto } from './dto/buy-trade';
 

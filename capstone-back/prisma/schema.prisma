@@ -22,6 +22,7 @@ model User {
   phone     String  @unique
   school    String
   major     String
+  admin     Boolean @default(false)
   studentId Int     @map("student_id")
   trades    Trade[] @relation("UserTrades")
   purchases Trade[] @relation("UserPurchases")
@@ -40,4 +41,11 @@ model Trade {
   createAt DateTime @default(now()) @map("create_at")
   updateAt DateTime @updatedAt
   views    Int      @default(0)
+}
+
+model Club {
+  clubId Int @id @default(autoincrement()) @map("club_id")
+  name String
+  location String
+  description String
 }

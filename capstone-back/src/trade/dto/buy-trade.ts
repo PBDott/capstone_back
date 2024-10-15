@@ -8,8 +8,4 @@ export class BuyTradeDto {
     @IsInt()
     @IsNotEmpty()
     buyerId: number;
-
-    @IsBoolean()
-    sold: boolean;
-
 }

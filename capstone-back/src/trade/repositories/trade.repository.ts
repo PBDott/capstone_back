@@ -46,7 +46,7 @@ export class TradeRepository {
                 buyer: {
                     connect: { userId: buyTradeDto.buyerId }
                 },
-                sold: buyTradeDto.sold
+                sold: true
             }
         });
     }
