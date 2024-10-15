@@ -36,7 +36,6 @@ export class ClubController {
     }
   }
 
-  // 클럽 수정
   @Post('update')
   async updateClub(@Body() updateClubDto: UpdateClubDto,): Promise<Club> {
     const clubId = updateClubDto.clubId;
@@ -52,7 +51,6 @@ export class ClubController {
 
   }
 
-  // 클럽 삭제
   @Post('delete')
   async deleteClub(@Body() deleteClubDto: DeleteClubDto) {
     const clubId = deleteClubDto.clubId;
@@ -66,5 +64,6 @@ export class ClubController {
       throw new InternalServerErrorException('Failed to delete club');
     }
   }
+
 
 }

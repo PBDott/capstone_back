@@ -24,7 +24,6 @@ model User {
   major     String
   admin     Boolean @default(false)
   studentId Int     @map("student_id")
-  
   trades    Trade[] @relation("UserTrades")
   purchases Trade[] @relation("UserPurchases")
 }
