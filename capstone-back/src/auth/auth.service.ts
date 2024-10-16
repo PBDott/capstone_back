@@ -21,6 +21,7 @@ export class AuthService {
   async getUserByKakaoId(kakaoId: string) {
     return this.authRepository.findUserByKakaoId(kakaoId);
   }
+  
   async generateJwtToken(kakaoId: string): Promise<string> {
     const payload = { kakaoId };
     return this.jwtService.sign(payload);
