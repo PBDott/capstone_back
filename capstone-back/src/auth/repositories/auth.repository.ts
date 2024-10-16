@@ -1,32 +1,32 @@
-import { PrismaService } from "src/prisma.service";
-import { RegisterUserDto } from "../dto/register-user.dto";
-import { Injectable } from "@nestjs/common";
+import { PrismaService } from 'src/prisma.service';
+import { RegisterUserDto } from '../dto/register-user.dto';
+import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AuthRepository {
-    constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
-    async registerUser(registerUserData: RegisterUserDto) {
-        return this.prisma.user.create({
-            data: {
-                kakaoId: registerUserData.kakaoId,
-                nickName: registerUserData.nickName,
-                name: registerUserData.name,
-                email: registerUserData.email,
-                phone: registerUserData.phone,
-                school: registerUserData.school,
-                major: registerUserData.major,
-                studentId: registerUserData.studentId
-            },
-        })
+  async registerUser(registerUserData: RegisterUserDto) {
+    try {
+      const existingUser = await this.prisma.user.findUnique({
+        where: { kakaoId: registerUserData.kakaoId },
+      });
+  
+      if (existingUser) {
+        throw new Error('user exist'); 
+      }
+  
+      return await this.prisma.user.create({
+        data: { ...registerUserData },
+      });
+    } catch (error) {
+      console.error('db err', error);
+      throw error; 
     }
-
-    async checkUserExistsByKakaoId(kakaoId: string): Promise<boolean> {
-        const user = await this.prisma.user.findFirst({
-            where: { kakaoId },
-        });
-        return user !== null;
-    }
-    async findUserByKakaoId(kakaoId: string) {
-        return this.prisma.user.findFirst({ where: { kakaoId },});
-    }
+  }
+  
+  async findUserByKakaoId(kakaoId: string) {
+    return await this.prisma.user.findFirst({
+      where: { kakaoId: kakaoId },
+    });
+  }
 }
