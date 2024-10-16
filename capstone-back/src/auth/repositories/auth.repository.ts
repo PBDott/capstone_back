@@ -24,7 +24,6 @@ export class AuthRepository {
         const user = await this.prisma.user.findFirst({
             where: { kakaoId },
         });
-
         return user !== null;
     }
     async findUserByKakaoId(kakaoId: string) {

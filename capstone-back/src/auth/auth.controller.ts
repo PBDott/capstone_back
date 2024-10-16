@@ -10,7 +10,7 @@ export class AuthController {
   async kakaoLogin(@Body() data, @Res() res) {
     // data.kakaoId
     // 우리 데이터베이스에 유저  테이블에 data.kakaoId를 갖고 있는 유저가 있는지 확인
-    const userExist = this.authService.checkUserExist(data.kakaoId)
+    const userExist =  await this.authService.checkUserExist(data.kakaoId);
     //userExist:boolean 유저 존재하면 true 담김
 
     // 만약 없으면 새로운 유저이므로 회원가입 시킴
@@ -22,9 +22,10 @@ export class AuthController {
         message: '로그인 성공',
         token,
         user,
+
       });
     } else {
-      const newUser = await this.authService.registerUser(data.userData);
+      const newUser = await this.authService.registerUser(data);
       const token = await this.authService.generateJwtToken(newUser.kakaoId);
 
       return res.json({
@@ -32,8 +33,9 @@ export class AuthController {
         token,
         user: newUser,
       });
+
     }
   }
 
-  
+
 }

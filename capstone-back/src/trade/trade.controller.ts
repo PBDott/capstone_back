@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException, ParseIntPipe } from '@nestjs/common';
 import { TradeService } from './trade.service';
 import { CreateTradeDto } from './dto/create-trade.dto';
 import { UpdateTradeDto } from './dto/update-trade.dto';
@@ -67,7 +67,7 @@ export class TradeController {
   }
 
   @Get(":tradeId")
-  async getTradeById(@Param('tradeId') tradeId: number) {
+  async getTradeById(@Param('tradeId', ParseIntPipe) tradeId: number) {
     try {
       const trade = await this.tradeService.getTradeById(tradeId);
       if (!trade) {
@@ -75,6 +75,7 @@ export class TradeController {
       }
       return trade;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException('Failed to get views');
     }
   }
