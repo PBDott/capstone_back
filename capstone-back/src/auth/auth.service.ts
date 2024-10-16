@@ -22,4 +22,7 @@ export class AuthService {
     const payload = { kakaoId };
     return this.jwtService.sign(payload);
   }
+  //add jwt secret config in dotenv
+  //add validateToken api
+  //add JwtAuthGuards to controller if needed
 }
