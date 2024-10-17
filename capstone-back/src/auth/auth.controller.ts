@@ -11,7 +11,7 @@ export class AuthController {
   @Post('kakao-login')
   async kakaoLogin(@Body() body: KakaoLoginDto, @Res() res: Response) {
     const { kakaoId, email } = body;
-    let user = await this.authService.getUserByKakaoIdAndEmail(kakaoId, email);
+    const user = await this.authService.getUserByKakaoIdAndEmail(kakaoId, email);
 
     if (user) {
       const token = await this.authService.generateJwtToken(user.kakaoId);
