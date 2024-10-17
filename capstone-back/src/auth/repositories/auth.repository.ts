@@ -29,4 +29,10 @@ export class AuthRepository {
       where: { kakaoId: kakaoId },
     });
   }
+
+  async findUserByKakaoIdAndEmail(kakaoId: string, email: string) {
+    return await this.prisma.user.findFirst({
+      where: { kakaoId: kakaoId, email: email },
+    });
+  }
 }

@@ -18,6 +18,10 @@ export class AuthService {
     return this.authRepository.findUserByKakaoId(kakaoId);
   }
 
+  async getUserByKakaoIdAndEmail(kakaoId: string, email: string) {
+    return this.authRepository.findUserByKakaoIdAndEmail(kakaoId, email);
+  }
+
   async generateJwtToken(kakaoId: string): Promise<string> {
     const payload = { kakaoId };
     return this.jwtService.sign(payload);

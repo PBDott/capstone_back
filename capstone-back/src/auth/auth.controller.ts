@@ -2,16 +2,16 @@ import { Controller, Post, Body, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { KakaoLoginDto } from './dto/kakao-login.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('kakao-login')
-  async kakaoLogin(@Body() body: { kakaoId: string }, @Res() res: Response) {
-    //카카오 식별번호만으로 로그인이 가능하면 보안문제 없나 생각해보기?
-    const { kakaoId } = body;
-    let user = await this.authService.getUserByKakaoId(kakaoId);
+  async kakaoLogin(@Body() body: KakaoLoginDto, @Res() res: Response) {
+    const { kakaoId, email } = body;
+    let user = await this.authService.getUserByKakaoIdAndEmail(kakaoId, email);
 
     if (user) {
       const token = await this.authService.generateJwtToken(user.kakaoId);
