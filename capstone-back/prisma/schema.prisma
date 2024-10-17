@@ -13,6 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Roles {
+  ADMIN
+  USER
+}
+
 model User {
   userId    Int     @id @default(autoincrement()) @map("user_id")
   kakaoId   String  @unique @map("kakao_id")
@@ -22,7 +27,7 @@ model User {
   phone     String  @unique
   school    String
   major     String
-  admin     Boolean @default(false)
+  role      Roles   @default(USER)
   studentId Int     @map("student_id")
   trades    Trade[] @relation("UserTrades")
   purchases Trade[] @relation("UserPurchases")
@@ -44,8 +49,8 @@ model Trade {
 }
 
 model Club {
-  clubId Int @id @default(autoincrement()) @map("club_id")
-  name String
-  location String
+  clubId      Int    @id @default(autoincrement()) @map("club_id")
+  name        String
+  location    String
   description String
 }
