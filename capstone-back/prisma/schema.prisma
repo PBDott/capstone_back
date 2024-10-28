@@ -18,6 +18,12 @@ enum Roles {
   USER
 }
 
+enum ClubStatus {
+  PENDING
+  REJECTED
+  ACCEPTED
+}
+
 model User {
   userId    Int     @id @default(autoincrement()) @map("user_id")
   kakaoId   String  @unique @map("kakao_id")
@@ -53,4 +59,5 @@ model Club {
   name        String
   location    String
   description String
+  status      ClubStatus @default(PENDING)
 }
