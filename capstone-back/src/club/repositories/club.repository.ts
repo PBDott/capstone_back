@@ -43,7 +43,7 @@ export class ClubRepository {
         });
     }
 
-    async deleteClub(clubId: number): Promise<Club> {
+    async deleteClub(clubId: number): Promise<Club | null> {
 
         const club = await this.getClubById(clubId);
         if (!club) {
