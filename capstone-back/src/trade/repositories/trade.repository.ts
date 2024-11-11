@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 import { CreateTradeDto } from "../dto/create-trade.dto";
-import { Trade } from "@prisma/client";
+import { Trade, TradeLike } from "@prisma/client";
 import { UpdateTradeDto } from "../dto/update-trade.dto";
 import { BuyTradeDto } from "../dto/buy-trade";
 import { CreateTradeCommentDto } from "../dto/create-trade-comment.dto";
+import { LikeTradeDto } from "../dto/like-trade.dto";
 
 @Injectable()
 export class TradeRepository {
@@ -88,6 +89,49 @@ export class TradeRepository {
                 user: true
             }
         });
+    }
+
+    async addLike(likeTradeDto: LikeTradeDto): Promise<TradeLike> {
+        const tradeLike = await this.prisma.tradeLike.create({
+            data: {
+                userId: likeTradeDto.userId,
+                tradeId: likeTradeDto.tradeId
+            }
+        });
+
+        await this.prisma.trade.update({
+            where: { tradeId: likeTradeDto.tradeId },
+            data: { likeCount: { increment: 1 } }
+        });
+
+        return tradeLike;
+    }
+
+    async removeLike(likeTradeDto: LikeTradeDto): Promise<TradeLike> {
+        const tradeLike = await this.prisma.tradeLike.delete({
+            where: {
+                userId_tradeId: {
+                    userId: likeTradeDto.userId,
+                    tradeId: likeTradeDto.tradeId
+                }
+            }
+        });
+
+        await this.prisma.trade.update({
+            where: { tradeId: likeTradeDto.tradeId },
+            data: { likeCount: { decrement: 1 } }
+        });
+
+        return tradeLike;
+    }
+
+    async getLikeCount(tradeId: number): Promise<number> {
+        const trade = await this.prisma.trade.findUnique({
+            where: { tradeId },
+            select: { likeCount: true }
+        });
+
+        return trade.likeCount;
     }
 
 }
