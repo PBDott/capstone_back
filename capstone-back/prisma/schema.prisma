@@ -33,6 +33,7 @@ model User {
   purchases Trade[]        @relation("UserPurchases")
   comments  TradeComment[] @relation("UserComments")
   likes     TradeLike[]    @relation("UserLikes")
+  board     Board[]        @relation("UserBoards")
 }
 
 model Trade {
@@ -83,4 +84,14 @@ model TradeLike {
   createdAt DateTime @default(now())
 
   @@unique([userId, tradeId])
+}
+
+model Board {
+  boardId  Int      @id @default(autoincrement()) @map("board_id")
+  title    String
+  content  String
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  author   User     @relation("UserBoards", fields: [authorId], references: [userId])
+  authorId Int      @map("author_id")
 }
