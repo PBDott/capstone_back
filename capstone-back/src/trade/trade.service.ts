@@ -4,6 +4,7 @@ import { UpdateTradeDto } from './dto/update-trade.dto';
 import { TradeRepository } from './repositories/trade.repository';
 import { Trade } from '@prisma/client';
 import { BuyTradeDto } from './dto/buy-trade';
+import { CreateTradeCommentDto } from './dto/create-trade-comment.dto';
 
 @Injectable()
 export class TradeService {
@@ -31,5 +32,13 @@ export class TradeService {
 
   async getTradeById(tradeId: number): Promise<Trade> {
     return this.tradeRepository.getTradeById(tradeId);
+  }
+
+  async addComment(tradeId: number, createTradeCommentDto: CreateTradeCommentDto) {
+    return this.tradeRepository.addComment(tradeId, createTradeCommentDto);
+  }
+
+  async getComments(tradeId: number) {
+    return this.tradeRepository.getComments(tradeId);
   }
 }

@@ -4,6 +4,7 @@ import { CreateTradeDto } from './dto/create-trade.dto';
 import { UpdateTradeDto } from './dto/update-trade.dto';
 import { DeleteTradeDto } from './dto/delete-trade';
 import { BuyTradeDto } from './dto/buy-trade';
+import { CreateTradeCommentDto } from './dto/create-trade-comment.dto';
 
 @Controller('trade')
 export class TradeController {
@@ -11,13 +12,13 @@ export class TradeController {
 
   @Post()
   async createTrade(@Body() createTradeDto: CreateTradeDto) {
-    return this.tradeService.createTrade(createTradeDto);
+    return await this.tradeService.createTrade(createTradeDto);
   }
 
   @Get()
   async getAll() {
     try {
-      return this.tradeService.getAll();
+      return await this.tradeService.getAll();
     } catch (error) {
       throw new InternalServerErrorException('Failed to get all trade');
     }
@@ -77,6 +78,24 @@ export class TradeController {
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException('Failed to get views');
+    }
+  }
+
+  @Post(':tradeId/comment')
+  async addComment(@Param('tradeId', ParseIntPipe) tradeId: number, @Body() createTradeCommentDto: CreateTradeCommentDto) {
+    try {
+      return await this.tradeService.addComment(tradeId, createTradeCommentDto);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to add comment');
+    }
+  }
+
+  @Get(':tradeId/comment')
+  async getComments(@Param('tradeId', ParseIntPipe) tradeId: number) {
+    try {
+      return await this.tradeService.getComments(tradeId);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to get comments');
     }
   }
 }

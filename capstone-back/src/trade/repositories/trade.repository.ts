@@ -4,6 +4,7 @@ import { CreateTradeDto } from "../dto/create-trade.dto";
 import { Trade } from "@prisma/client";
 import { UpdateTradeDto } from "../dto/update-trade.dto";
 import { BuyTradeDto } from "../dto/buy-trade";
+import { CreateTradeCommentDto } from "../dto/create-trade-comment.dto";
 
 @Injectable()
 export class TradeRepository {
@@ -63,6 +64,29 @@ export class TradeRepository {
 
         return this.prisma.trade.findUnique({
             where: { tradeId }
+        });
+    }
+
+    async addComment(tradeId: number, createTradeCommentDto: CreateTradeCommentDto) {
+        return await this.prisma.tradeComment.create({
+            data: {
+                content: createTradeCommentDto.content,
+                userId: createTradeCommentDto.userId,
+                tradeId,
+                parentCommentId: createTradeCommentDto.parentCommentId || null
+            }
+        });
+    }
+    
+    async getComments(tradeId: number) {
+        return await this.prisma.tradeComment.findMany({
+            where: { tradeId, parentCommentId: null },
+            include: {
+                replies: {
+                    include: { user: true }
+                },
+                user: true
+            }
         });
     }
 
