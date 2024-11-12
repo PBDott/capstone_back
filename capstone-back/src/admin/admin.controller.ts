@@ -6,6 +6,9 @@ import { Club, User } from '@prisma/client';
 import { AdminService } from './admin.service';
 import { ChangeAdminDto } from './dto/admin-role.dto';
 import { UpdateClubStatusDto } from './dto/update-club-status.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { DeleteUserDto } from './dto/delete-user.dto';
 
 @Controller('admin')
 export class AdminController {
@@ -85,4 +88,42 @@ export class AdminController {
     }
   }
 
+  @Post("createUser")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return await this.adminService.createUser(createUserDto);
+  }
+
+  @Post("updateUser")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async updateUser(@Body() updateUserDato: UpdateUserDto): Promise<User> {
+    const userId = updateUserDato.userId;
+    try {
+      const user = await this.adminService.updateUser(userId, updateUserDato);
+      if(!user) {
+        throw new NotFoundException(`User with ID ${userId} not found`);
+      }
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to update user');
+    }
+  }
+
+  @Post("deleteUser")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async deleteUser(@Body() deleteUserDto: DeleteUserDto): Promise<User> {
+    const userId = deleteUserDto.userId;
+    try {
+      const user = await this.adminService.deleteUser(userId);
+      if(!user) {
+        throw new NotFoundException(`User with ID ${userId} not found`);
+      }
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to delete user');
+    }
+  }
 }

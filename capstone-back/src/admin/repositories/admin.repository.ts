@@ -2,6 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 import { Club, User } from "@prisma/client";
 import { UpdateClubStatusDto } from "../dto/update-club-status.dto";
+import { CreateUserDto } from "../dto/create-user.dto";
+import { UpdateUserDto } from "../dto/update-user.dto";
 
 @Injectable()
 export class AdminRepository {
@@ -31,5 +33,24 @@ export class AdminRepository {
 
     async getAllUsers(): Promise<User[]> {
         return this.prisma.user.findMany();
+    }
+
+    async createUser(createUserDto: CreateUserDto): Promise<User> {
+        return this.prisma.user.create({
+            data: { ...createUserDto }
+        });
+    }
+    
+    async updateUser(userId: number, updateUserDto: UpdateUserDto): Promise<User> {
+        return this.prisma.user.update({
+            where: { userId },
+            data: updateUserDto
+        });
+    }
+
+    async deleteUser(userId: number): Promise<User> {
+        return this.prisma.user.delete({
+            where: { userId }
+        });
     }
 }
