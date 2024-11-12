@@ -82,12 +82,7 @@ export class TradeRepository {
     async getComments(tradeId: number) {
         return await this.prisma.tradeComment.findMany({
             where: { tradeId, parentCommentId: null },
-            include: {
-                replies: {
-                    include: { user: true }
-                },
-                user: true
-            }
+            include: { replies: true }
         });
     }
 

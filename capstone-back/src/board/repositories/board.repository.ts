@@ -62,7 +62,7 @@ export class BoardRepository {
     async getComments(boardId: number): Promise<BoardComment[]> {
         return this.prisma.boardComment.findMany({
             where: { boardId, parentCommentId: null },
-            include: { replies: true, user: true }
+            include: { replies: true }
         });
     }
 
