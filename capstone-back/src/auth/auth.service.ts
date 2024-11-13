@@ -22,11 +22,8 @@ export class AuthService {
     return this.authRepository.findUserByKakaoIdAndEmail(kakaoId, email);
   }
 
-  async generateJwtToken(kakaoId: string): Promise<string> {
-    const payload = { kakaoId };
+  async generateJwtToken(kakaoId: string, role: string): Promise<string> {
+    const payload = { kakaoId, role };
     return this.jwtService.sign(payload);
   }
-  //add jwt secret config in dotenv
-  //add validateToken api
-  //add JwtAuthGuards to controller if needed
 }

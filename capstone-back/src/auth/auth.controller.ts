@@ -14,7 +14,7 @@ export class AuthController {
     const user = await this.authService.getUserByKakaoIdAndEmail(kakaoId, email);
 
     if (user) {
-      const token = await this.authService.generateJwtToken(user.kakaoId);
+      const token = await this.authService.generateJwtToken(user.kakaoId, user.role);
 
       res.json({
         message: '로그인 성공',
@@ -37,7 +37,7 @@ export class AuthController {
   ) {
     try {
       const newUser = await this.authService.registerUser(registerUserData);
-      const token = await this.authService.generateJwtToken(newUser.kakaoId);
+      const token = await this.authService.generateJwtToken(newUser.kakaoId, newUser.role);
 
       res.status(201).json({
         message: '회원가입 및 로그인 성공',

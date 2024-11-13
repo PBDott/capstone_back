@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException, ParseIntPipe, BadRequestException } from '@nestjs/common';
 import { TradeService } from './trade.service';
 import { CreateTradeDto } from './dto/create-trade.dto';
 import { UpdateTradeDto } from './dto/update-trade.dto';
 import { DeleteTradeDto } from './dto/delete-trade';
 import { BuyTradeDto } from './dto/buy-trade';
+import { CreateTradeCommentDto } from './dto/create-trade-comment.dto';
+import { LikeTradeDto } from './dto/like-trade.dto';
 
 @Controller('trade')
 export class TradeController {
@@ -11,13 +13,13 @@ export class TradeController {
 
   @Post()
   async createTrade(@Body() createTradeDto: CreateTradeDto) {
-    return this.tradeService.createTrade(createTradeDto);
+    return await this.tradeService.createTrade(createTradeDto);
   }
 
   @Get()
   async getAll() {
     try {
-      return this.tradeService.getAll();
+      return await this.tradeService.getAll();
     } catch (error) {
       throw new InternalServerErrorException('Failed to get all trade');
     }
@@ -51,7 +53,6 @@ export class TradeController {
     }
   }
 
-
   @Post('buyTrade')
   async buyTrade(@Body() buyTradeDto: BuyTradeDto) {
     const tradeId = buyTradeDto.tradeId;
@@ -79,4 +80,59 @@ export class TradeController {
       throw new InternalServerErrorException('Failed to get views');
     }
   }
+
+  @Post(':tradeId/comment')
+  async addComment(@Param('tradeId', ParseIntPipe) tradeId: number, @Body() createTradeCommentDto: CreateTradeCommentDto) {
+    try {
+      return await this.tradeService.addComment(tradeId, createTradeCommentDto);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to add comment');
+    }
+  }
+
+  @Get(':tradeId/comment')
+  async getComments(@Param('tradeId', ParseIntPipe) tradeId: number) {
+    try {
+      return await this.tradeService.getComments(tradeId);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to get comments');
+    }
+  }
+
+  @Post(':tradeId/like')
+  async likeTrade(@Param('tradeId', ParseIntPipe) tradeId: number, @Body() likeTradeDto: LikeTradeDto) {
+    if (tradeId !== likeTradeDto.tradeId) {
+      throw new BadRequestException('Path tradeId and body tradeId mush match');
+    }
+
+    try {
+      return await this.tradeService.addLike(likeTradeDto);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to like Trade')
+    }
+  }
+
+  @Post(':tradeId/unlike')
+  async removeLike(@Param('tradeId', ParseIntPipe) tradeId: number, @Body() likeTradeDto: LikeTradeDto) {
+    if (tradeId !== likeTradeDto.tradeId) {
+      throw new BadRequestException('Path tradeId and body tradeId must match');
+    }
+    try {
+      return await this.tradeService.removeLike(likeTradeDto);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to unlike trade');
+    }
+  }
+
+  @Get(':tradeId/like-count')
+  async getLikeCount(@Param('tradeId', ParseIntPipe) tradeId: number): Promise<{ likeCount: number }> {
+    try {
+      const likeCount = await this.tradeService.getLikeCount(tradeId);
+      return { likeCount };
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to get like-count');
+    }
+  }
+
+
 }

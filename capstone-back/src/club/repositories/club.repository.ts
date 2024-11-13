@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateClubDto } from '../dto/create-club.dto';
 import { UpdateClubDto } from '../dto/update-club.dto';
@@ -19,23 +19,37 @@ export class ClubRepository {
     }
 
     async getAllClub(): Promise<Club[]> {
-        return this.prisma.club.findMany();
-    }
-
-    async getClubById(clubId: number): Promise<Club | null> {
-        return this.prisma.club.findUnique({
-            where: { clubId },
+        return this.prisma.club.findMany({
+            where: { status: 'ACCEPTED' }
         });
     }
 
-    async updateClub(clubId: number, data: UpdateClubDto): Promise<Club> {
+    async getClubById(clubId: number): Promise<Club | null> {
+        return this.prisma.club.findFirst({
+            where: { clubId, status: 'ACCEPTED' },
+        });
+    }
+
+    async updateClub(clubId: number, data: UpdateClubDto): Promise<Club | null> {
+        
+        const club = await this.getClubById(clubId);
+        if(!club) {
+            throw new NotFoundException(`Club with ID ${clubId} is not accepted or does not exist.`);
+        }
+        
         return this.prisma.club.update({
             where: { clubId },
             data,
         });
     }
 
-    async deleteClub(clubId: number): Promise<Club> {
+    async deleteClub(clubId: number): Promise<Club | null> {
+
+        const club = await this.getClubById(clubId);
+        if (!club) {
+            throw new NotFoundException(`Club with ID ${clubId} is not accepted or does not exist.`);
+        }
+
         return this.prisma.club.delete({
             where: { clubId },
         });

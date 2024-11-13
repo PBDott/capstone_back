@@ -1,7 +1,7 @@
-import { IsInt, IsNotEmpty } from "class-validator";
+import { IsInt, IsNotEmpty} from 'class-validator';
 
 export class DeleteBoardDto {
-    @IsInt()
-    @IsNotEmpty()
-    boardId: number;
+  @IsInt()
+  @IsNotEmpty()
+  boardId: number;
 }
