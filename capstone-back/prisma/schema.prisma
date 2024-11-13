@@ -26,6 +26,10 @@ model User {
   studentId Int     @map("student_id")
   trades    Trade[] @relation("UserTrades")
   purchases Trade[] @relation("UserPurchases")
+
+  Message Message[]
+
+  Room Room[] @relation("UserRooms")
 }
 
 model Trade {
@@ -48,4 +52,31 @@ model Club {
   name String
   location String
   description String
+}
+
+model Board {
+  boardId Int @id @default(autoincrement()) @map("board_id")
+  title String
+  description String
+  comment String
+  views Int   @default(0)
+}
+
+model Room {
+  roomId      Int       @id @default(autoincrement()) @map("room_id")
+  name        String
+  description String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  messages    Message[]
+  users       User[]    @relation("UserRooms")
+}
+
+model Message {
+  messageId   Int       @id @default(autoincrement()) @map("message_id")
+  content     String
+  timestamp   DateTime  @default(now()) @map("timestamp")
+  roomId      Int
+  senderId    Int
+  room        Room      @relation(fields: [roomId], references: [roomId])
+  sender      User      @relation(fields: [senderId], references: [userId])
 }
