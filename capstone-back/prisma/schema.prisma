@@ -10,6 +10,7 @@ datasource db {
 enum Roles {
   ADMIN
   USER
+  CLUBADMIN
 }
 
 enum ClubStatus {
@@ -64,6 +65,7 @@ model Club {
   location    String
   description String
   status      ClubStatus @default(PENDING)
+  imageUrl    String
 }
 
 model TradeComment {

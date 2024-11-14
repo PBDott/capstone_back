@@ -14,4 +14,7 @@ export class CreateClubDto {
     @IsNotEmpty()
     description: string;
 
+    @IsString()
+    @IsNotEmpty()
+    imageUrl?: string;
 }

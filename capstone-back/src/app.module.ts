@@ -6,11 +6,18 @@ import { AuthModule } from './auth/auth.module';
 import { ClubModule } from './club/club.module';
 import { AdminModule } from './admin/admin.module';
 import { BoardModule } from './board/board.module';
-import { ChatModule } from './chat/chat.module';
+import { ClubAdminModule } from './club-admin/club-admin.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 
 @Module({
-  imports: [TradeModule, AuthModule, ClubModule, AdminModule, BoardModule, ChatModule],
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
+    TradeModule, AuthModule, ClubModule, AdminModule, BoardModule, ClubAdminModule],
   controllers: [AppController],
   providers: [AppService],
 })
