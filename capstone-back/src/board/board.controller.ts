@@ -10,7 +10,6 @@ import { LikeBoardDto } from "./dto/like-board.dto";
 @Controller('board')
 export class BoardController {
     constructor(private readonly boardService: BoardService) {}
-
     @Post()
     async createBoard(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
       return await this.boardService.createBoard(createBoardDto);

@@ -9,7 +9,6 @@ import { LikeBoardDto } from "./dto/like-board.dto";
 @Injectable()
 export class BoardService {
     constructor(private readonly boardRepository: BoardRepository) {}
-
     async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
       return this.boardRepository.createBoard(createBoardDto);
     }

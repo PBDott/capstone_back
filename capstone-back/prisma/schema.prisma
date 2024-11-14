@@ -37,6 +37,8 @@ model User {
   board        Board[]        @relation("UserBoards")
   boardComments BoardComment[]  @relation("UserBoardComments")
   boardLikes    BoardLike[]     @relation("UserBoardLikes")
+  Message Message[]
+  Room Room[] @relation("UserRooms")
 }
 
 model Trade {
@@ -126,4 +128,22 @@ model BoardLike {
   createdAt    DateTime @default(now())
 
   @@unique([userId, boardId])
+}
+model Room {
+  roomId      Int       @id @default(autoincrement()) @map("room_id")
+  name        String
+  description String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  messages    Message[]
+  users       User[]    @relation("UserRooms")
+}
+
+model Message {
+  messageId   Int       @id @default(autoincrement()) @map("message_id")
+  content     String
+  timestamp   DateTime  @default(now()) @map("timestamp")
+  roomId      Int
+  senderId    Int
+  room        Room      @relation(fields: [roomId], references: [roomId])
+  sender      User      @relation(fields: [senderId], references: [userId])
 }
