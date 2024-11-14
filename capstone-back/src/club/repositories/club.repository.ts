@@ -14,6 +14,7 @@ export class ClubRepository {
                 name: data.name,
                 location: data.location,
                 description: data.description,
+                imageUrl: data.imageUrl
             },
         });
     }

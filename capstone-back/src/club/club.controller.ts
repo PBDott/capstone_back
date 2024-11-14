@@ -1,17 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { ClubService } from './club.service';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 import { Club } from '@prisma/client';
 import { DeleteClubDto } from './dto/delete-club.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+
 
 @Controller('club')
 export class ClubController {
   constructor(private readonly clubService: ClubService) { }
 
   @Post()
-  async createClub(@Body() createClubDto: CreateClubDto): Promise<Club> {
-    return this.clubService.createClub(createClubDto);
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads', // 파일을 저장할 경로
+        filename: (req, file, cb) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(null, `${uniqueSuffix}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+  async createClub(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createClubDto: CreateClubDto,
+  ) {
+    try {
+      const imageUrl = file ? `/uploads/${file.filename}` : null;
+      const clubData = { ...createClubDto, imageUrl };
+      return await this.clubService.createClub(clubData);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to create club with image');
+    }
   }
 
   @Get()
