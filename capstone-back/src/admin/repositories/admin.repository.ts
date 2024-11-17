@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
-import { Club, User } from "@prisma/client";
+import { Club, ClubStatus, Roles, User } from "@prisma/client";
 import { UpdateClubStatusDto } from "../dto/update-club-status.dto";
 import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
@@ -25,10 +25,23 @@ export class AdminRepository {
     }
 
     async updateClubStatus(updateClubStatusDto: UpdateClubStatusDto): Promise<Club> {
-        return this.prisma.club.update({
-            where: { clubId: updateClubStatusDto.clubId },
-            data: { status: updateClubStatusDto.status }
+        const { clubId, status } = updateClubStatusDto;
+
+        const club = await this.prisma.club.update({
+            where: { clubId },
+            data: { status }
         });
+
+        if(status === ClubStatus.ACCEPTED) {
+            const adminList: number[] = Array.isArray(club.adminList) ? club.adminList as number[] : [];
+            await this.prisma.user.updateMany({
+                where: { userId: { in: adminList } },
+                data: { role: Roles.CLUBADMIN }
+            });
+        }
+        
+        return club;
+
     }
 
     async getAllUsers(): Promise<User[]> {

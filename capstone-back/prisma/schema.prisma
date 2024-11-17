@@ -20,25 +20,25 @@ enum ClubStatus {
 }
 
 model User {
-  userId       Int            @id @default(autoincrement()) @map("user_id")
-  kakaoId      String         @unique @map("kakao_id")
-  nickName     String         @map("nick_name")
-  name         String
-  email        String         @unique
-  phone        String         @unique
-  school       String
-  major        String
-  role         Roles          @default(USER)
-  studentId    Int            @map("student_id")
-  trades       Trade[]        @relation("UserTrades")
-  purchases    Trade[]        @relation("UserPurchases")
-  comments     TradeComment[] @relation("UserComments")
-  likes        TradeLike[]    @relation("UserLikes")
-  board        Board[]        @relation("UserBoards")
-  boardComments BoardComment[]  @relation("UserBoardComments")
-  boardLikes    BoardLike[]     @relation("UserBoardLikes")
-  Message Message[]
-  Room Room[] @relation("UserRooms")
+  userId        Int            @id @default(autoincrement()) @map("user_id")
+  kakaoId       String         @unique @map("kakao_id")
+  nickName      String         @map("nick_name")
+  name          String
+  email         String         @unique
+  phone         String         @unique
+  school        String
+  major         String
+  role          Roles          @default(USER)
+  studentId     Int            @map("student_id")
+  trades        Trade[]        @relation("UserTrades")
+  purchases     Trade[]        @relation("UserPurchases")
+  comments      TradeComment[] @relation("UserComments")
+  likes         TradeLike[]    @relation("UserLikes")
+  board         Board[]        @relation("UserBoards")
+  boardComments BoardComment[] @relation("UserBoardComments")
+  boardLikes    BoardLike[]    @relation("UserBoardLikes")
+  Message       Message[]
+  Room          Room[]         @relation("UserRooms")
 }
 
 model Trade {
@@ -65,7 +65,8 @@ model Club {
   location    String
   description String
   status      ClubStatus @default(PENDING)
-  imageUrl    String
+  imageUrl    String     @map("image_url")
+  adminList   Json       @default("[]") @map("admin_list")
 }
 
 model TradeComment {
@@ -93,17 +94,17 @@ model TradeLike {
 }
 
 model Board {
-  boardId   Int             @id @default(autoincrement()) @map("board_id")
+  boardId   Int            @id @default(autoincrement()) @map("board_id")
   title     String
   content   String
-  createAt  DateTime        @default(now())
-  updateAt  DateTime        @updatedAt
-  author    User            @relation("UserBoards", fields: [authorId], references: [userId])
-  authorId  Int             @map("author_id")
-  views     Int             @default(0) 
-  comments  BoardComment[]  @relation("BoardComments")
-  likes     BoardLike[]     @relation("BoardLikes")
-  likeCount Int             @default(0) 
+  createAt  DateTime       @default(now())
+  updateAt  DateTime       @updatedAt
+  author    User           @relation("UserBoards", fields: [authorId], references: [userId])
+  authorId  Int            @map("author_id")
+  views     Int            @default(0)
+  comments  BoardComment[] @relation("BoardComments")
+  likes     BoardLike[]    @relation("BoardLikes")
+  likeCount Int            @default(0)
 }
 
 model BoardComment {
@@ -120,15 +121,16 @@ model BoardComment {
 }
 
 model BoardLike {
-  likeId       Int      @id @default(autoincrement()) @map("like_id")
-  board        Board    @relation("BoardLikes", fields: [boardId], references: [boardId])
-  boardId      Int      @map("board_id")
-  user         User     @relation("UserBoardLikes", fields: [userId], references: [userId])
-  userId       Int      @map("user_id")
-  createdAt    DateTime @default(now())
+  likeId    Int      @id @default(autoincrement()) @map("like_id")
+  board     Board    @relation("BoardLikes", fields: [boardId], references: [boardId])
+  boardId   Int      @map("board_id")
+  user      User     @relation("UserBoardLikes", fields: [userId], references: [userId])
+  userId    Int      @map("user_id")
+  createdAt DateTime @default(now())
 
   @@unique([userId, boardId])
 }
+
 model Room {
   roomId      Int       @id @default(autoincrement()) @map("room_id")
   name        String
@@ -139,11 +141,11 @@ model Room {
 }
 
 model Message {
-  messageId   Int       @id @default(autoincrement()) @map("message_id")
-  content     String
-  timestamp   DateTime  @default(now()) @map("timestamp")
-  roomId      Int
-  senderId    Int
-  room        Room      @relation(fields: [roomId], references: [roomId])
-  sender      User      @relation(fields: [senderId], references: [userId])
+  messageId Int      @id @default(autoincrement()) @map("message_id")
+  content   String
+  timestamp DateTime @default(now()) @map("timestamp")
+  roomId    Int
+  senderId  Int
+  room      Room     @relation(fields: [roomId], references: [roomId])
+  sender    User     @relation(fields: [senderId], references: [userId])
 }

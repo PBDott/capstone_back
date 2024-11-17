@@ -6,6 +6,6 @@ import { UpdateClubAdminDto } from './dto/update-club-admin.dto';
 @Controller('club-admin')
 export class ClubAdminController {
   constructor(private readonly clubAdminService: ClubAdminService) {}
-
+    
 
 }

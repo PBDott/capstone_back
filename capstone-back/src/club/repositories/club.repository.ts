@@ -8,13 +8,14 @@ import { Club } from '@prisma/client';
 export class ClubRepository {
     constructor(private readonly prisma: PrismaService) {}
 
-    async createClub(data: CreateClubDto): Promise<Club> {
+    async createClub(data: CreateClubDto, userId:number): Promise<Club> {
         return this.prisma.club.create({
             data: {
                 name: data.name,
                 location: data.location,
                 description: data.description,
-                imageUrl: data.imageUrl
+                imageUrl: data.imageUrl,
+                adminList: [userId]   
             },
         });
     }

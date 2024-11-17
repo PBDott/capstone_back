@@ -22,8 +22,8 @@ export class AuthService {
     return this.authRepository.findUserByKakaoIdAndEmail(kakaoId, email);
   }
 
-  async generateJwtToken(kakaoId: string, role: string): Promise<string> {
-    const payload = { kakaoId, role };
+  async generateJwtToken(userId: number, kakaoId: string, role: string): Promise<string> {
+    const payload = { userId, kakaoId, role };
     return this.jwtService.sign(payload);
   }
 }

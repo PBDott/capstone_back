@@ -5,6 +5,10 @@ export class UpdateClubStatusDto {
     @IsInt()
     @IsNotEmpty()
     clubId: number;
+    
+    @IsInt()
+    @IsNotEmpty()
+    userId: number;
 
     @IsEnum(ClubStatus)
     @IsNotEmpty()

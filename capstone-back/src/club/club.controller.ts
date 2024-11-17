@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException, UseInterceptors, UploadedFile, Req, UseGuards } from '@nestjs/common';
 import { ClubService } from './club.service';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
@@ -7,12 +7,14 @@ import { DeleteClubDto } from './dto/delete-club.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 
 @Controller('club')
 export class ClubController {
   constructor(private readonly clubService: ClubService) { }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(
     FileInterceptor('image', {
@@ -28,13 +30,21 @@ export class ClubController {
   async createClub(
     @UploadedFile() file: Express.Multer.File,
     @Body() createClubDto: CreateClubDto,
+    @Req() req,
   ) {
     try {
       const imageUrl = file ? `/uploads/${file.filename}` : null;
-      const clubData = { ...createClubDto, imageUrl };
-      return await this.clubService.createClub(clubData);
+      const userId = req.user.userId;
+
+      if (!userId) {
+        throw new InternalServerErrorException('User ID is missing from the request.');
+      }
+
+      const clubData = { ...createClubDto, imageUrl};
+      return await this.clubService.createClub(clubData, userId);
     } catch (error) {
-      throw new InternalServerErrorException('Failed to create club with image');
+      console.error('Error in createClub:', error); 
+      throw new InternalServerErrorException('Failed to create club');
     }
   }
 

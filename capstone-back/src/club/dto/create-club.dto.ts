@@ -16,5 +16,5 @@ export class CreateClubDto {
 
     @IsString()
     @IsNotEmpty()
-    imageUrl?: string;
+    imageUrl: string;
 }

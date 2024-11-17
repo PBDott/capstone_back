@@ -8,8 +8,8 @@ import { Club } from '@prisma/client';
 export class ClubService {
   constructor(private readonly clubRepository: ClubRepository) { }
   
-  async createClub(createClubDto: CreateClubDto): Promise<Club> {
-    return this.clubRepository.createClub(createClubDto);
+  async createClub(createClubDto: CreateClubDto, userId: number): Promise<Club> {
+    return this.clubRepository.createClub(createClubDto, userId);
   }
 
   async getAllClub(): Promise<Club[]> {
