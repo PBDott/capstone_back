@@ -1,6 +1,6 @@
 import { Body, Controller, Get, InternalServerErrorException, NotFoundException, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { RolesGuard } from '../auth/roles.guard';
-import { Roles } from 'src/auth/roles.decorator';
+import { AdminRoles } from 'src/auth/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Club, User } from '@prisma/client';
 import { AdminService } from './admin.service';
@@ -16,19 +16,12 @@ export class AdminController {
 
   @Get('test')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @AdminRoles('ADMIN')
   getAdminDashboard(@Req() req, @Res() res) {
     res.json({
         message: '관리자 접근 제어 테스트',
         userData: req.user 
     })
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('test2')
-  getProtected(@Req() req) {
-    console.log(req.user);
-    return req.user; 
   }
 
   @Post("changeAdmin") // 일단 테스트 하기 편하게 role 안씀 ㅇㅅㅇ
@@ -48,7 +41,7 @@ export class AdminController {
   
   @Post("getPendingClubs")
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @AdminRoles('ADMIN')
   async getPendingClubs(): Promise<Club[]> {
     try {
       const clubs = await this.adminService.getPendingClubs();
@@ -63,7 +56,7 @@ export class AdminController {
 
   @Post("updateClubStatus")
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @AdminRoles('ADMIN')
   async updateClubStatus(@Body() updateClubStatusDto: UpdateClubStatusDto): Promise<Club> {
     try {
       const club = await this.adminService.updateClubStatus(updateClubStatusDto);
@@ -79,7 +72,7 @@ export class AdminController {
 
   @Post("getAllUsers")
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @AdminRoles('ADMIN')
   async getAllUsers(): Promise<User[]> {
     try {
       return await this.adminService.getAllUsers();
@@ -90,14 +83,14 @@ export class AdminController {
 
   @Post("createUser")
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @AdminRoles('ADMIN')
   async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
     return await this.adminService.createUser(createUserDto);
   }
 
   @Post("updateUser")
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @AdminRoles('ADMIN')
   async updateUser(@Body() updateUserDato: UpdateUserDto): Promise<User> {
     const userId = updateUserDato.userId;
     try {
@@ -113,7 +106,7 @@ export class AdminController {
 
   @Post("deleteUser")
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @AdminRoles('ADMIN')
   async deleteUser(@Body() deleteUserDto: DeleteUserDto): Promise<User> {
     const userId = deleteUserDto.userId;
     try {
