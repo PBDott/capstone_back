@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res, Req, Query, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res, Req, Query, NotFoundException, InternalServerErrorException, ParseIntPipe } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { ClubRoles } from '../clubRoles.decorator';
@@ -9,7 +9,7 @@ import { DeleteApplicationDto } from './dto/delete-application.dto';
 import { Application } from '@prisma/client';
 
 
-@Controller('club-admin')
+@Controller('club-admin/application')
 export class ApplicationController {
     constructor(private readonly applicationService: ApplicationService) { }
 
@@ -23,7 +23,7 @@ export class ApplicationController {
     @Get('')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ClubRoles('CLUBADMIN')
-    async getApplicationByClubId(@Query('clubId') clubId: number): Promise<Application[]> {
+    async getApplicationByClubId(@Query('clubId', ParseIntPipe) clubId: number): Promise<Application[]> {
         try {
             const application = await this.applicationService.getApplicationByClubId(clubId);
             if (!application) {
@@ -38,7 +38,7 @@ export class ApplicationController {
     @Get(':applicationId')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ClubRoles('CLUBADMIN')
-    async getApplicationById(@Body('applicationId') applicationId: number): Promise<Application> {
+    async getApplicationById(@Param('applicationId', ParseIntPipe) applicationId: number): Promise<Application> {
         try {
             const application = await this.applicationService.getApplicationById(applicationId);
             if (!application) {
@@ -84,6 +84,4 @@ export class ApplicationController {
             throw new InternalServerErrorException('Failed to delete application');
         }
     }
-
-
 }
