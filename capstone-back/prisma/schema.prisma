@@ -57,6 +57,8 @@ model Trade {
   comments  TradeComment[] @relation("TradeComments")
   likes     TradeLike[]    @relation("TradeLikes")
   likeCount Int            @default(0) @map("like_count")
+  room      Room?          @relation("TradeRoom", fields: [roomId], references: [roomId])
+  roomId    Int?           @map("room_id") @unique
 }
 
 model Club {
@@ -138,6 +140,7 @@ model Room {
   createdAt   DateTime  @default(now()) @map("created_at")
   messages    Message[]
   users       User[]    @relation("UserRooms")
+  trade       Trade?    @relation("TradeRoom")
 }
 
 model Message {
