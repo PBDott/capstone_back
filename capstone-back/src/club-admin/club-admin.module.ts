@@ -3,10 +3,10 @@ import { ClubAdminService } from './club-admin.service';
 import { ClubAdminController } from './club-admin.controller';
 import { ClubAdminRepository } from './repositories/club-admin.repository';
 import { PrismaModule } from 'src/prisma.module';
-import { AuthModule } from 'src/auth/auth.module';
+import { ApplicationModule } from './application/application.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule],
+  imports: [PrismaModule, ApplicationModule],
   controllers: [ClubAdminController],
   providers: [ClubAdminService, ClubAdminRepository],
 })

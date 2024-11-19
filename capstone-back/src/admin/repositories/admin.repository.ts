@@ -33,7 +33,7 @@ export class AdminRepository {
         });
 
         if(status === ClubStatus.ACCEPTED) {
-            const adminList: number[] = Array.isArray(club.adminList) ? club.adminList as number[] : [];
+            const adminList: number[] = club.adminList as number[];
             await this.prisma.user.updateMany({
                 where: { userId: { in: adminList } },
                 data: { role: Roles.CLUBADMIN }
@@ -41,7 +41,6 @@ export class AdminRepository {
         }
         
         return club;
-
     }
 
     async getAllUsers(): Promise<User[]> {
