@@ -16,6 +16,7 @@ export class BoardRepository {
             title: data.title,
             content: data.content,
             authorId: data.authorId,
+            authorNickname: data.nickName
           },
         });
     }
