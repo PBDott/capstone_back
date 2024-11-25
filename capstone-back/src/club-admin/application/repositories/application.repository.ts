@@ -9,6 +9,7 @@ export class ApplicationRepository {
     constructor(private readonly prisma: PrismaService) {}
 
     async creasteApplication(data: CreasteApplicationDto): Promise<Application> {
+
         return this.prisma.application.create({
             data,
         });
@@ -27,9 +28,10 @@ export class ApplicationRepository {
     }
 
     async updateApplication(applicationId: number, data: UpdateApplicationDto): Promise<Application> {
+        const { applicationId: _, ...updateData } = data;
         return this.prisma.application.update({
             where: { applicationId },
-            data: data
+            data: updateData
         });
     }
 

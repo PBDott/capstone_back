@@ -7,7 +7,7 @@ export class CreasteApplicationDto {
 
     @IsString()
     @IsNotEmpty()
-    question: string;
+    questions: string[];
 
     @IsDateString()
     @IsNotEmpty()

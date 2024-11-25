@@ -166,7 +166,7 @@ model Application {
   interviewFrom DateTime      @map("interview_from")
   interviewTo   DateTime      @map("interview_to")
   title         String
-  question      String
+  questions     Json          @default("[]")
   club          Club          @relation(fields: [clubId], references: [clubId])
   clubId        Int           @map("club_id")
   createdAt     DateTime      @default(now()) @map("created_at")
@@ -180,7 +180,7 @@ model AppResponse {
   applicationId Int               @map("application_id")
   user          User              @relation(fields: [userId], references: [userId])
   userId        Int               @map("user_id")
-  answers       Json
+  answers       Json              @default("[]")
   createdAt     DateTime          @default(now()) @map("created_at")
   status        ApplicationStatus @default(PENDING)
 }

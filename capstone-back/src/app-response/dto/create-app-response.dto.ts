@@ -1,4 +1,5 @@
-import { IsInt, IsObject, IsNotEmpty } from 'class-validator';
+import { ApplicationStatus } from '@prisma/client';
+import { IsInt, IsObject, IsNotEmpty, IsEnum } from 'class-validator';
 
 export class CreateAppResponseDto {
   @IsInt()
@@ -11,5 +12,5 @@ export class CreateAppResponseDto {
 
   @IsObject()
   @IsNotEmpty()
-  answers: Record<string, string>; 
+  answers: string[]; 
 }

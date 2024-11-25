@@ -58,12 +58,13 @@ export class ApplicationController {
     async updateApplication(@Body() updateDto: UpdateApplicationDto): Promise<Application> {
         const applicationId = updateDto.applicationId;
         try {
-            const application = await this.applicationService.getApplicationById(applicationId);
+            const application = await this.applicationService.updateApplication(applicationId, updateDto);
             if (!application) {
                 throw new NotFoundException(`Application with ID ${applicationId} not found`);
             }
             return application;
         } catch (error) {
+            console.error(error);
             throw new InternalServerErrorException('Failed to update application');
         }
     }

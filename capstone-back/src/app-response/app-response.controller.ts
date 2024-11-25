@@ -11,6 +11,7 @@ export class AppResponseController {
       try {
         return await this.applicationResponseService.createResponse(createDto);
       } catch (error) {
+        console.log(error)
         throw new InternalServerErrorException('Failed to create application response');
       }
     }
