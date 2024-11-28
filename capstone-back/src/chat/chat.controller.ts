@@ -1,33 +1,30 @@
-import { Controller, Post, Body, Param, Get } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get, Req, UseGuards, BadRequestException, Query } from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { CreateMessageDto } from './dto/create-message.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Request } from 'src/common/user.interface';
+import { CreateChatDto } from './dto/create-chat.dto';
 
-@Controller('chat')
+@Controller(':type/:id/room/chat')
 export class ChatController {
-  constructor(private readonly chatService: ChatService) {}
+  constructor(private readonly chatService: ChatService,
 
-  @Post('room')
-  createRoom(@Body('name') name: string) {
-    return this.chatService.createRoom(name);
-  }
-
-  @Post('room/:roomId/join')
-  joinRoom(@Param('roomId') roomId: string, @Body('userId') userId: string) {
-    return this.chatService.joinRoom(roomId, userId);
-  }
-
-  @Post('room/:roomId/leave')
-  leaveRoom(@Param('roomId') roomId: string, @Body('userId') userId: string) {
-    return this.chatService.leaveRoom(roomId, userId);
-  }
-
-  @Post('message')
-  sendMessage(@Body() createMessageDto: CreateMessageDto) {
-    return this.chatService.sendMessage(createMessageDto);
-  }
-
-  @Get('room/:roomId/messages')
-  getMessages(@Param('roomId') roomId: string) {
-    return this.chatService.getMessagesByRoom(roomId);
+  ) { }
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  async createChat(
+    @Body() createChatDto: CreateChatDto,
+    @Req() req: Request,
+  ) {
+    const { message } = createChatDto;
+    const { userId, nickName } = req.payload;
+    const { type, id } = req.params;
+    console.log(createChatDto);
+    if (type !== 'club' && type !== 'trade') {
+      throw new BadRequestException();
+    }
+    const roomId = `${type}:${id}`;
+    await this.chatService.createChat({ message, roomId, userId });
+    this.chatService.triggerBroadcast({ message, userId, nickName, roomId });
+    return message;
   }
 }
