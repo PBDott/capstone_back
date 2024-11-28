@@ -74,6 +74,7 @@ model Club {
   status       ClubStatus    @default(PENDING)
   imageUrl     String        @map("image_url")
   adminList    Json          @default("[]") @map("admin_list")
+  userList     Json          @default("[]") @map("user_list")
   applications Application[]
 }
 

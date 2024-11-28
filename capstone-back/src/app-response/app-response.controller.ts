@@ -20,7 +20,7 @@ export class AppResponseController {
     async getResponsesByApplicationId(@Query('applicationId', ParseIntPipe) applicationId: number) {
       try {
         const responses = await this.applicationResponseService.getResponsesByApplicationId(applicationId);
-        if (!responses || responses.length === 0) {
+        if (!responses) {
           throw new NotFoundException(`No responses found for application ID ${applicationId}`);
         }
         return responses;
@@ -33,7 +33,7 @@ export class AppResponseController {
     async getResponsesByUserId(@Query('userId', ParseIntPipe) userId: number) {
       try {
         const responses = await this.applicationResponseService.getResponsesByUserId(userId);
-        if (!responses || responses.length === 0) {
+        if (!responses) {
           throw new NotFoundException(`No responses found for user ID ${userId}`);
         }
         return responses;
