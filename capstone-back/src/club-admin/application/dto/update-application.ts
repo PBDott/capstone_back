@@ -11,7 +11,7 @@ export class UpdateApplicationDto {
 
     @IsString()
     @IsNotEmpty()
-    question: string;
+    questions: string[];
 
     @IsDateString()
     @IsNotEmpty()

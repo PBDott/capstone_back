@@ -8,26 +8,27 @@ import { CreateBoardCommentDto } from "../dto/create-board-comment.dto";
 
 @Injectable()
 export class BoardRepository {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) { }
 
     async createBoard(data: CreateBoardDto): Promise<Board> {
         return this.prisma.board.create({
-          data: {
-            title: data.title,
-            content: data.content,
-            authorId: data.authorId,
-          },
+            data: {
+                title: data.title,
+                content: data.content,
+                authorId: data.authorId,
+                authorNickname: data.nickName
+            },
         });
     }
 
     async getAllBoards(): Promise<Board[]> {
         return this.prisma.board.findMany();
-      }
-    
-      async getBoardById(boardId: number): Promise<Board> {
+    }
+
+    async getBoardById(boardId: number): Promise<Board> {
         await this.prisma.board.update({
-          where: { boardId },
-          data: { views: { increment: 1 }}
+            where: { boardId },
+            data: { views: { increment: 1 } }
         });
 
         return this.prisma.board.findUnique({
@@ -37,14 +38,14 @@ export class BoardRepository {
 
     async updateBoard(boardId: number, data: UpdateBoardDto): Promise<Board> {
         return this.prisma.board.update({
-          where: { boardId },
-          data,
+            where: { boardId },
+            data,
         });
-      }
-    
+    }
+
     async deleteBoard(boardId: number): Promise<Board> {
         return this.prisma.board.delete({
-          where: { boardId },
+            where: { boardId },
         });
     }
 

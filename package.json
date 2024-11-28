@@ -7,9 +7,5 @@
     "@nestjs/websockets": "^10.4.7",
     "dotenv": "^16.4.5",
     "socket.io": "^4.8.1"
-  },
-    "scripts": {
-      "test": "jest",
-      "test:watch": "jest --watch"
-    }
+  }
 }

@@ -19,6 +19,12 @@ enum ClubStatus {
   ACCEPTED
 }
 
+enum ApplicationStatus {
+  PENDING
+  REJECTED
+  ACCEPTED
+}
+
 model User {
   userId        Int            @id @default(autoincrement()) @map("user_id")
   kakaoId       String         @unique @map("kakao_id")
@@ -39,6 +45,7 @@ model User {
   boardLikes    BoardLike[]    @relation("UserBoardLikes")
   Message       Message[]
   Room          Room[]         @relation("UserRooms")
+  response      AppResponse[]
 }
 
 model Trade {
@@ -62,14 +69,16 @@ model Trade {
 }
 
 model Club {
-  clubId      Int        @id @default(autoincrement()) @map("club_id")
-  name        String
-  location    String
-  description String
-  status      ClubStatus @default(PENDING)
-  imageUrl    String     @map("image_url")
-  adminList   Json       @default("[]") @map("admin_list")
+  clubId       Int           @id @default(autoincrement()) @map("club_id")
+  name         String
+  location     String
+  description  String
+  status       ClubStatus    @default(PENDING)
+  imageUrl     String        @map("image_url")
+  adminList    Json          @default("[]") @map("admin_list")
+  userList     Json          @default("[]") @map("user_list")
   applications Application[]
+  receipt Receipt []
 }
 
 model TradeComment {
@@ -104,6 +113,7 @@ model Board {
   updateAt  DateTime       @updatedAt
   author    User           @relation("UserBoards", fields: [authorId], references: [userId])
   authorId  Int            @map("author_id")
+  authorNickname  String   @map("author_nickname")
   views     Int            @default(0)
   comments  BoardComment[] @relation("BoardComments")
   likes     BoardLike[]    @relation("BoardLikes")
@@ -155,15 +165,38 @@ model Message {
 }
 
 model Application {
-  applicationId Int @id @default(autoincrement()) @map("application_id")
-  from DateTime 
-  to DateTime
-  interviewFrom DateTime @map("interview_from")
-  interviewTo DateTime @map("interview_to")
+  applicationId Int           @id @default(autoincrement()) @map("application_id")
+  from          DateTime
+  to            DateTime
+  interviewFrom DateTime      @map("interview_from")
+  interviewTo   DateTime      @map("interview_to")
+  title         String
+  questions     Json          @default("[]")
+  club          Club          @relation(fields: [clubId], references: [clubId])
+  clubId        Int           @map("club_id")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt
+  response      AppResponse[]
+}
+
+model AppResponse {
+  responseId    Int               @id @default(autoincrement()) @map("response_id")
+  application   Application       @relation(fields: [applicationId], references: [applicationId])
+  applicationId Int               @map("application_id")
+  user          User              @relation(fields: [userId], references: [userId])
+  userId        Int               @map("user_id")
+  answers       Json              @default("[]")
+  createdAt     DateTime          @default(now()) @map("created_at")
+  status        ApplicationStatus @default(PENDING)
+}
+
+model Receipt {
+  receiptId  Int @id @default(autoincrement()) @map("receipt_id")
+  type String 
   title String
-  question String
+  description String
+  receiptDate DateTime @map("receipt_date")
+  amount Int
   club Club @relation(fields: [clubId], references: [clubId])
   clubId Int @map("club_id")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt
 }

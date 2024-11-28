@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException, ParseIntPipe, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException, ParseIntPipe, BadRequestException, Req, UseGuards } from '@nestjs/common';
 import { TradeService } from './trade.service';
 import { CreateTradeDto } from './dto/create-trade.dto';
 import { UpdateTradeDto } from './dto/update-trade.dto';
@@ -6,14 +6,24 @@ import { DeleteTradeDto } from './dto/delete-trade';
 import { BuyTradeDto } from './dto/buy-trade';
 import { CreateTradeCommentDto } from './dto/create-trade-comment.dto';
 import { LikeTradeDto } from './dto/like-trade.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('trade')
 export class TradeController {
   constructor(private readonly tradeService: TradeService) { }
 
   @Post()
-  async createTrade(@Body() createTradeDto: CreateTradeDto) {
-    return await this.tradeService.createTrade(createTradeDto);
+  @UseGuards(JwtAuthGuard)
+  async createTrade(@Body() createTradeDto: CreateTradeDto, @Req() req) {
+    try {
+      const sellerId = req.user.userId; 
+      const nickName = req.user.nickName; 
+      const tradeData = { ...createTradeDto, sellerId, nickName };
+
+      return await this.tradeService.createTrade(tradeData);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to create trade');
+    }
   }
 
   @Get()

@@ -11,4 +11,8 @@ export class CreateBoardDto {
 
   @IsNotEmpty()
   authorId: number;
+
+  @IsString()
+  @IsNotEmpty()
+  nickName: string; 
 }

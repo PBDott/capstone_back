@@ -15,7 +15,7 @@ export class TradeRepository {
         return this.prisma.trade.create({
             data: {
                 title: tradeData.title,
-                author: tradeData.author,
+                author: tradeData.nickName,
                 price: tradeData.price,
                 seller: {
                     connect: { userId: tradeData.sellerId }

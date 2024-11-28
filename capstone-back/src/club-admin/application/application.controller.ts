@@ -7,6 +7,9 @@ import { CreasteApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application';
 import { DeleteApplicationDto } from './dto/delete-application.dto';
 import { Application } from '@prisma/client';
+import { UpdateAppResponseStatusDto } from './dto/update-appresponse-status.dto';
+import { getAppResponseByApplicationDto } from './dto/get-appreponse.dto';
+import { query } from 'express';
 
 
 @Controller('club-admin/application')
@@ -35,6 +38,21 @@ export class ApplicationController {
         }
     }
 
+    @Get('byApplication')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @ClubRoles('CLUBADMIN')
+    async getAppResponseByApplicationId(@Query('applicationId', ParseIntPipe) applicationId: number) {
+        try {
+            const response = await this.applicationService.getAppResponseByApplicationId(applicationId);
+            if (!response) {
+                throw new NotFoundException(`No responses found for application ID ${applicationId}`);
+            }
+            return response;
+        } catch (error) {
+            throw new InternalServerErrorException('Failed to getAppResponse by ApplicationId');
+        }
+    }
+
     @Get(':applicationId')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ClubRoles('CLUBADMIN')
@@ -58,17 +76,17 @@ export class ApplicationController {
     async updateApplication(@Body() updateDto: UpdateApplicationDto): Promise<Application> {
         const applicationId = updateDto.applicationId;
         try {
-            const application = await this.applicationService.getApplicationById(applicationId);
+            const application = await this.applicationService.updateApplication(applicationId, updateDto);
             if (!application) {
                 throw new NotFoundException(`Application with ID ${applicationId} not found`);
             }
             return application;
         } catch (error) {
+            console.error(error);
             throw new InternalServerErrorException('Failed to update application');
         }
     }
 
-    // 신청서 폼 삭제
     @Post('delete')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ClubRoles('CLUBADMIN')
@@ -82,6 +100,24 @@ export class ApplicationController {
             return await this.applicationService.deleteApplication(applicationId);
         } catch (error) {
             throw new InternalServerErrorException('Failed to delete application');
+        }
+    }
+
+    @Post('updateStatus')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @ClubRoles('CLUBADMIN')
+    async updateAppResponseStatus(@Body() updateStatusDto: UpdateAppResponseStatusDto) {
+        const { applicationId, userId, status } = updateStatusDto;
+        try {
+            const updatedResponse = await this.applicationService.updateAppResponseStatus(applicationId, userId, status);
+
+            if (!updatedResponse) {
+                throw new NotFoundException(`Response not found for application ID ${applicationId} and user ID ${userId}`);
+            }
+            return updatedResponse;
+        } catch (error) {
+            console.log(error)
+            throw new InternalServerErrorException('Failed to update Appresponse status');
         }
     }
 }
