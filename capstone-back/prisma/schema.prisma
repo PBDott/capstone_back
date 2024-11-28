@@ -76,6 +76,7 @@ model Club {
   adminList    Json          @default("[]") @map("admin_list")
   userList     Json          @default("[]") @map("user_list")
   applications Application[]
+  receipt Receipt []
 }
 
 model TradeComment {
@@ -186,3 +187,13 @@ model AppResponse {
   status        ApplicationStatus @default(PENDING)
 }
 
+model Receipt {
+  receiptId  Int @id @default(autoincrement()) @map("receipt_id")
+  type String 
+  title String
+  description String
+  receiptDate DateTime @map("receipt_date")
+  amount Int
+  club Club @relation(fields: [clubId], references: [clubId])
+  clubId Int @map("club_id")
+}

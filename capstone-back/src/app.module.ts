@@ -11,6 +11,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'path';
 import { AppResponseModule } from './app-response/app-response.module';
 import { UserModule } from './club-admin/user/user.module';
+import { ReceiptModule } from './club-admin/receipt/receipt.module';
 
 
 @Module({
@@ -19,7 +20,7 @@ import { UserModule } from './club-admin/user/user.module';
       rootPath: path.join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
-    TradeModule, AuthModule, ClubModule, AdminModule, BoardModule, ClubAdminModule, AppResponseModule, UserModule],
+    TradeModule, AuthModule, ClubModule, AdminModule, BoardModule, ClubAdminModule, AppResponseModule, UserModule, ReceiptModule],
   controllers: [AppController],
   providers: [AppService],
 })
