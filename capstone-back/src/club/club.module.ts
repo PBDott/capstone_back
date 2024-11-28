@@ -8,5 +8,6 @@ import { PrismaModule } from 'src/prisma.module';
   imports: [PrismaModule],
   controllers: [ClubController],
   providers: [ClubService, ClubRepository],
+  exports: [ClubService],
 })
 export class ClubModule {}
