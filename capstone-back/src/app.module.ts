@@ -12,7 +12,8 @@ import * as path from 'path';
 import { AppResponseModule } from './app-response/app-response.module';
 import { UserModule } from './club-admin/user/user.module';
 import { ReceiptModule } from './club-admin/receipt/receipt.module';
-
+import { RoomModule } from './room/room.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -20,8 +21,19 @@ import { ReceiptModule } from './club-admin/receipt/receipt.module';
       rootPath: path.join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
-    TradeModule, AuthModule, ClubModule, AdminModule, BoardModule, ClubAdminModule, AppResponseModule, UserModule, ReceiptModule],
+    TradeModule,
+    AuthModule,
+    ClubModule,
+    AdminModule,
+    BoardModule,
+    ClubAdminModule,
+    AppResponseModule,
+    UserModule,
+    ReceiptModule,
+    RoomModule,
+    ChatModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
