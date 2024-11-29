@@ -1,6 +1,7 @@
 {
   "devDependencies": {
-    "prisma": "^5.20.0"
+    "prisma": "^5.20.0",
+    "prisma-markdown": "^1.0.9"
   },
   "dependencies": {
     "@nestjs/platform-socket.io": "^10.4.7",

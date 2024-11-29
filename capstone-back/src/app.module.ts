@@ -14,6 +14,7 @@ import { UserModule } from './club-admin/user/user.module';
 import { ReceiptModule } from './club-admin/receipt/receipt.module';
 import { RoomModule } from './room/room.module';
 import { ChatModule } from './chat/chat.module';
+import { CalendarModule } from './club-admin/calendar/calendar.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ChatModule } from './chat/chat.module';
     ReceiptModule,
     RoomModule,
     ChatModule,
+    CalendarModule
   ],
   controllers: [AppController],
   providers: [AppService],

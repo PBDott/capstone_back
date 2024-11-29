@@ -1,15 +1,20 @@
-import { Body, Controller, Get, InternalServerErrorException, NotFoundException, ParseIntPipe, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, InternalServerErrorException, NotFoundException, ParseIntPipe, Post, Query, Req, UseGuards } from "@nestjs/common";
 import { CreateAppResponseDto } from "./dto/create-app-response.dto";
 import { AppResponseService } from "./app-response.service";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
 @Controller('app-response')
 export class AppResponseController {
     constructor(private readonly applicationResponseService: AppResponseService) {}
 
     @Post('')
-    async createResponse(@Body() createDto: CreateAppResponseDto) {
+    @UseGuards(JwtAuthGuard)
+    async createResponse(@Body() createDto: CreateAppResponseDto, @Req() req) {
       try {
-        return await this.applicationResponseService.createResponse(createDto);
+        const userId = req.user.userId;
+
+        const appData = {...createDto, userId};
+        return await this.applicationResponseService.createResponse(appData);
       } catch (error) {
         console.log(error)
         throw new InternalServerErrorException('Failed to create application response');

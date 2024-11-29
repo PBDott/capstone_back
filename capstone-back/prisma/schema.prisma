@@ -26,24 +26,24 @@ enum ApplicationStatus {
 }
 
 model User {
-  userId        Int            @id @default(autoincrement()) @map("user_id")
-  kakaoId       String         @unique @map("kakao_id")
-  nickName      String         @map("nick_name")
-  name          String
-  email         String         @unique
-  phone         String         @unique
-  school        String
-  major         String
-  role          Roles          @default(USER)
-  studentId     Int            @map("student_id")
-  trades        Trade[]        @relation("UserTrades")
-  purchases     Trade[]        @relation("UserPurchases")
-  comments      TradeComment[] @relation("UserComments")
-  likes         TradeLike[]    @relation("UserLikes")
-  board         Board[]        @relation("UserBoards")
-  boardComments BoardComment[] @relation("UserBoardComments")
-  boardLikes    BoardLike[]    @relation("UserBoardLikes")
-  response      AppResponse[]
+  userId           Int               @id @default(autoincrement()) @map("user_id")
+  kakaoId          String            @unique @map("kakao_id")
+  nickName         String            @map("nick_name")
+  name             String
+  email            String            @unique
+  phone            String            @unique
+  school           String
+  major            String
+  role             Roles             @default(USER)
+  studentId        Int               @map("student_id")
+  trades           Trade[]           @relation("UserTrades")
+  purchases        Trade[]           @relation("UserPurchases")
+  comments         TradeComment[]    @relation("UserComments")
+  likes            TradeLike[]       @relation("UserLikes")
+  board            Board[]           @relation("UserBoards")
+  boardComments    BoardComment[]    @relation("UserBoardComments")
+  boardLikes       BoardLike[]       @relation("UserBoardLikes")
+  response         AppResponse[]
   roomParticipants RoomParticipant[] @relation("UserRoomParticipants")
   chats            Chat[]
 }
@@ -63,7 +63,7 @@ model Trade {
   views     Int            @default(0)
   comments  TradeComment[] @relation("TradeComments")
   likes     TradeLike[]    @relation("TradeLikes")
-  likeCount Int            @default(0) @map("like_count")  
+  likeCount Int            @default(0) @map("like_count")
   room      Room?
 }
 
@@ -77,8 +77,9 @@ model Club {
   adminList    Json          @default("[]") @map("admin_list")
   userList     Json          @default("[]") @map("user_list")
   applications Application[]
-  receipt Receipt []
+  receipt      Receipt[]
   room         Room?
+  calendar     Calendar[]
 }
 
 model TradeComment {
@@ -106,18 +107,18 @@ model TradeLike {
 }
 
 model Board {
-  boardId   Int            @id @default(autoincrement()) @map("board_id")
-  title     String
-  content   String
-  createAt  DateTime       @default(now())
-  updateAt  DateTime       @updatedAt
-  author    User           @relation("UserBoards", fields: [authorId], references: [userId])
-  authorId  Int            @map("author_id")
-  authorNickname  String   @map("author_nickname")
-  views     Int            @default(0)
-  comments  BoardComment[] @relation("BoardComments")
-  likes     BoardLike[]    @relation("BoardLikes")
-  likeCount Int            @default(0)
+  boardId        Int            @id @default(autoincrement()) @map("board_id")
+  title          String
+  content        String
+  createAt       DateTime       @default(now())
+  updateAt       DateTime       @updatedAt
+  author         User           @relation("UserBoards", fields: [authorId], references: [userId])
+  authorId       Int            @map("author_id")
+  authorNickname String         @map("author_nickname")
+  views          Int            @default(0)
+  comments       BoardComment[] @relation("BoardComments")
+  likes          BoardLike[]    @relation("BoardLikes")
+  likeCount      Int            @default(0)
 }
 
 model BoardComment {
@@ -204,14 +205,23 @@ model AppResponse {
 }
 
 model Receipt {
-  receiptId  Int @id @default(autoincrement()) @map("receipt_id")
-  type String 
-  title String
+  receiptId   Int      @id @default(autoincrement()) @map("receipt_id")
+  type        String
+  title       String
   description String
   receiptDate DateTime @map("receipt_date")
-  amount Int
-  club Club @relation(fields: [clubId], references: [clubId])
-  clubId Int @map("club_id")
+  amount      Int
+  club        Club     @relation(fields: [clubId], references: [clubId])
+  clubId      Int      @map("club_id")
+}
+
+model Calendar {
+  calendarId  Int      @id @default(autoincrement()) @map("calendar_id")
+  date        DateTime
+  title       String
+  description String
+  club        Club     @relation(fields: [clubId], references: [clubId])
+  clubId      Int      @map("club_id")
 }
 
 generator markdown {
