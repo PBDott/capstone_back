@@ -6,7 +6,7 @@ import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { RolesGuard } from "src/auth/roles.guard";
 import { ClubRoles } from "../clubRoles.decorator";
 
-@Controller('receipt')
+@Controller('club-admin/receipt')
 export class ReceiptController {
     constructor(private readonly receiptService: ReceiptService) { }
 
@@ -57,7 +57,7 @@ export class ReceiptController {
             if (!receipt) {
                 throw new NotFoundException(`Receipt with ID ${receiptId} not found`);
             }
-            return { message: `Receipt with ID ${receiptId} successfully deleted` };
+            return receipt;
         } catch (error) {
             throw new InternalServerErrorException('Failed to delete receipt');
         }
