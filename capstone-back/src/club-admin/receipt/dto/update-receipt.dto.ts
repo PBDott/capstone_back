@@ -1,13 +1,13 @@
-import { IsOptional, IsString, IsNumber, IsDateString, IsNotEmpty } from 'class-validator';
+import { IsOptional, IsString, IsNumber, IsDateString, IsNotEmpty, IsInt } from 'class-validator';
 
 export class UpdateReceiptDto {
     @IsNotEmpty()
     @IsString()
-    type?: string;
+    type: string;
 
     @IsNotEmpty()
     @IsString()
-    title?: string;
+    title: string;
 
     @IsNotEmpty()
     @IsString()
@@ -18,10 +18,10 @@ export class UpdateReceiptDto {
     receiptDate?: Date;
 
     @IsNotEmpty()
-    @IsNumber()
+    @IsInt()
     amount: number;
 
     @IsNotEmpty()
-    @IsNumber()
+    @IsInt()
     receiptId: number;
 }
