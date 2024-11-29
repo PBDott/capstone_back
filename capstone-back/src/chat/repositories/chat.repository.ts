@@ -1,28 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { room } from '../entities/room.entity';
-import { Message } from '../entities/message.entity';
+import { PrismaService } from 'src/prisma.service';
+// import { Message } from '../entities/message.entity';
 
 @Injectable()
 export class ChatRepository {
-  private rooms: room[] = [];
-  private messages: Message[] = [];
+  constructor(private readonly prisma: PrismaService) { }
 
-  createRoom(roomName: string): room {
-    const room = { id: Date.now().toString(), name: roomName, users: [] };
-    this.rooms.push(room);
-    return room;
+  async getChatsByRoomId({ roomId, offset, limit }: { roomId: string, offset: number, limit: number }) {
+    return (await this.prisma.chat.findMany({
+      where: { roomId },
+      skip: offset,
+      take: limit,
+      include: {
+        user: {
+          select: {
+            nickName: true,
+          },
+        },
+      },
+    })).map(({ content, createdAt, id, roomId, user, userId }) => ({
+      content, createdAt, id, roomId, nickName: user.nickName, userId
+    }));
   }
 
-  findRoomById(roomId: string): room | undefined {
-    return this.rooms.find((room) => room.id === roomId);
-  }
-
-  saveMessage(message: Message): Message {
-    this.messages.push(message);
-    return message;
-  }
-
-  findMessagesByRoomId(roomId: string): Message[] {
-    return this.messages.filter((msg) => msg.roomId === roomId);
+  async saveChat({ userId, message, roomId }: { userId: number, message: string, roomId: string }) {
+    return this.prisma.chat.create({
+      data: {
+        roomId,
+        userId,
+        content: message
+      }
+    })
   }
 }

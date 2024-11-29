@@ -1,35 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { ChatRepository } from './repositories/chat.repository';
-import { CreateMessageDto } from './dto/create-message.dto';
-import { Message } from './entities/Message.entity';
+import { io } from 'src/main';
 
 @Injectable()
-export class ChatService { 
-  constructor(private readonly chatRepository: ChatRepository) {}
+export class ChatService {
+  constructor(
+    private readonly chatRepository: ChatRepository,
+  ) { }
 
-  createRoom(roomName: string) {
-    return this.chatRepository.createRoom(roomName);
+  async getChats({ roomId, offset, limit }: { roomId: string, offset: number, limit: number }) {
+    return this.chatRepository.getChatsByRoomId({ roomId, offset, limit });
   }
 
-  joinRoom(roomId: string, userId: string) {
-    const room = this.chatRepository.findRoomById(roomId);
-    if (room) room.users.push(userId);
-    return room;
+  async createChat({ message, userId, roomId, }: { userId: number, roomId: string, message: string }) {
+    return this.chatRepository.saveChat({ message, userId, roomId, })
   }
 
-  leaveRoom(roomId: string, userId: string) {
-    const room = this.chatRepository.findRoomById(roomId);
-    if (room) room.users = room.users.filter((user) => user !== userId);
-    return room;
-  }
-
-  sendMessage(createMessageDto: CreateMessageDto): Message {
-    const { room, sender, message } = createMessageDto;
-    const newMessage = { messageId: Date.now().toString(), roomId: room, sender, content: message, timestamp: new Date() };
-    return this.chatRepository.saveMessage(newMessage);
-  }
-
-  getMessagesByRoom(roomId: string): Message[] {
-    return this.chatRepository.findMessagesByRoomId(roomId);
+  triggerBroadcast({ message, userId, nickName, roomId }) {
+    console.log(`broadcast to ${roomId}`);
+    io.to(roomId).emit('message', { message, userId, nickName });
+    // io.emit('message', { message, roomId, userId, nickName });
   }
 }

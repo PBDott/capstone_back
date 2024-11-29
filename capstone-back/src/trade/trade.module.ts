@@ -8,5 +8,6 @@ import { TradeRepository } from './repositories/trade.repository';
   imports: [PrismaModule],
   controllers: [TradeController],
   providers: [TradeService, TradeRepository],
+  exports: [TradeService],
 })
-export class TradeModule {}
+export class TradeModule { }
