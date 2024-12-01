@@ -58,6 +58,7 @@ export class ImageHandlerService {
       });
       const path = join(this.path, `_${file.filename}`);
       switch (ext) {
+        case '.jpg':
         case '.jpeg':
           await resized
             .jpeg({ quality: options.quality ?? 80 })
