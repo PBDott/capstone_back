@@ -185,7 +185,6 @@ model Image {
   name           String
   path           String
   size           Int
-  mimeType       String
   width          Int
   height         Int
   createdAt      DateTime  @default(now())
