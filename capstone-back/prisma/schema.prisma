@@ -107,18 +107,17 @@ model TradeLike {
 }
 
 model Board {
-  boardId        Int            @id @default(autoincrement()) @map("board_id")
-  title          String
-  content        String
-  createAt       DateTime       @default(now())
-  updateAt       DateTime       @updatedAt
-  author         User           @relation("UserBoards", fields: [authorId], references: [userId])
-  authorId       Int            @map("author_id")
-  authorNickname String         @map("author_nickname")
-  views          Int            @default(0)
-  comments       BoardComment[] @relation("BoardComments")
-  likes          BoardLike[]    @relation("BoardLikes")
-  likeCount      Int            @default(0)
+  boardId   Int            @id @default(autoincrement()) @map("board_id")
+  title     String
+  content   String
+  createAt  DateTime       @default(now())
+  updateAt  DateTime       @updatedAt
+  author    User           @relation("UserBoards", fields: [authorId], references: [userId])
+  authorId  Int            @map("author_id")
+  views     Int            @default(0)
+  comments  BoardComment[] @relation("BoardComments")
+  likes     BoardLike[]    @relation("BoardLikes")
+  likeCount Int            @default(0)
 }
 
 model BoardComment {
