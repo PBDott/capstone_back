@@ -194,8 +194,8 @@ model Image {
   userId         Int
   deletedAt      DateTime?
   additionalInfo Json
-  tradeId        Int
-  ChatId         Int
+  tradeId        Int?
+  ChatId         Int?
 }
 
 model Application {
