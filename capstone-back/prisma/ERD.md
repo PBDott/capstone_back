@@ -17,6 +17,7 @@ erDiagram
   String major
   Roles role
   Int student_id
+  Int image_id FK "nullable"
 }
 "Trade" {
   Int trade_id PK
@@ -30,7 +31,7 @@ erDiagram
   DateTime updateAt
   Int views
   Int like_count
-  String imageId "nullable"
+  Int imageId "nullable"
 }
 "Club" {
   Int club_id PK
@@ -42,6 +43,11 @@ erDiagram
   String image_url
   Json admin_list
   Json user_list
+}
+"ClubParticipants" {
+  Int club_id FK
+  Int user_id FK
+  DateTime joined_at
 }
 "TradeComment" {
   Int comment_id PK
@@ -100,7 +106,7 @@ erDiagram
   Int user_id FK
   String content
   DateTime created_at
-  String imageId "nullable"
+  Int imageId "nullable"
 }
 "Image" {
   Int id PK
@@ -111,11 +117,12 @@ erDiagram
   Int height
   DateTime createdAt
   DateTime updatedAt
-  Int userId FK
+  Int uploadedUserId
   DateTime deletedAt "nullable"
   Json additionalInfo
-  Int tradeId "nullable"
+  Int tradeId FK "nullable"
   Int ChatId "nullable"
+  Int userId UK "nullable"
 }
 "Application" {
   Int application_id PK
@@ -153,8 +160,11 @@ erDiagram
   String description
   Int club_id FK
 }
+"User" |o--o| "Image" : image
 "Trade" }o--|| "User" : seller
 "Trade" }o--o| "User" : buyer
+"ClubParticipants" }o--|| "Club" : club
+"ClubParticipants" }o--|| "User" : user
 "TradeComment" }o--|| "User" : user
 "TradeComment" }o--|| "Trade" : trade
 "TradeComment" }o--o| "TradeComment" : parentComment
@@ -172,7 +182,7 @@ erDiagram
 "RoomParticipant" }o--|| "User" : user
 "Chat" }o--|| "Room" : room
 "Chat" }o--|| "User" : user
-"Image" }o--|| "User" : user
+"Image" }o--o| "Trade" : Trade
 "Application" }o--|| "Club" : club
 "AppResponse" }o--|| "Application" : application
 "AppResponse" }o--|| "User" : user
@@ -193,6 +203,7 @@ erDiagram
   - `major`: 
   - `role`: 
   - `student_id`: 
+  - `image_id`: 
 
 ### `Trade`
 
@@ -222,6 +233,13 @@ erDiagram
   - `image_url`: 
   - `admin_list`: 
   - `user_list`: 
+
+### `ClubParticipants`
+
+**Properties**
+  - `club_id`: 
+  - `user_id`: 
+  - `joined_at`: 
 
 ### `TradeComment`
 
@@ -309,11 +327,12 @@ erDiagram
   - `height`: 
   - `createdAt`: 
   - `updatedAt`: 
-  - `userId`: 
+  - `uploadedUserId`: 
   - `deletedAt`: 
   - `additionalInfo`: 
   - `tradeId`: 
   - `ChatId`: 
+  - `userId`: 
 
 ### `Application`
 
