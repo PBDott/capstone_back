@@ -22,7 +22,7 @@ export class ImageHandlerRepository {
         name,
         path,
         size,
-        userId,
+        uploadedUserId: userId,
         width,
         // [TODO] use if needed
         additionalInfo: {},
