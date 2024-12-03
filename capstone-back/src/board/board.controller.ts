@@ -15,9 +15,8 @@ export class BoardController {
   @UseGuards(JwtAuthGuard)
   async createBoard(@Body() createBoardDto: CreateBoardDto, @Req() req): Promise<Board> {
     try {
-      const authorId = req.user.userId; 
-      const nickName = req.user.nickName; 
-      const boardData = { ...createBoardDto, authorId, nickName };
+      const { userId: authorId, nickname } = req.payload;
+      const boardData = { ...createBoardDto, authorId, nickname };
 
       return await this.boardService.createBoard(boardData);
     } catch (error) {

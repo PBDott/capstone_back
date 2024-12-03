@@ -34,7 +34,7 @@ export class ClubController {
   ) {
     try {
       const imageUrl = file ? `/uploads/${file.filename}` : null;
-      const userId = req.user.userId;
+      const { userId } = req.payload;
 
       if (!userId) {
         throw new InternalServerErrorException('User ID is missing from the request.');

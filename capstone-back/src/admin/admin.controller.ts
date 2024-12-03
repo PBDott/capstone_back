@@ -12,15 +12,15 @@ import { DeleteUserDto } from './dto/delete-user.dto';
 
 @Controller('admin')
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(private readonly adminService: AdminService) { }
 
   @Get('test')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AdminRoles('ADMIN')
   getAdminDashboard(@Req() req, @Res() res) {
     res.json({
-        message: '관리자 접근 제어 테스트',
-        userData: req.user 
+      message: '관리자 접근 제어 테스트',
+      userData: req.payload
     })
   }
 
@@ -38,7 +38,7 @@ export class AdminController {
     }
   }
 
-  
+
   @Post("getPendingClubs")
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AdminRoles('ADMIN')
@@ -60,15 +60,15 @@ export class AdminController {
   async updateClubStatus(@Body() updateClubStatusDto: UpdateClubStatusDto): Promise<Club> {
     try {
       const club = await this.adminService.updateClubStatus(updateClubStatusDto);
-      if(!club) {
+      if (!club) {
         throw new NotFoundException(`Club with ID ${updateClubStatusDto.clubId} not found`);
       }
       return club;
     } catch (error) {
-      console.error('Error in updateClubStatus:', error); 
+      console.error('Error in updateClubStatus:', error);
       throw new InternalServerErrorException('Failed to updaste club status');
     }
-  } 
+  }
 
   @Post("getAllUsers")
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -95,7 +95,7 @@ export class AdminController {
     const userId = updateUserDato.userId;
     try {
       const user = await this.adminService.updateUser(userId, updateUserDato);
-      if(!user) {
+      if (!user) {
         throw new NotFoundException(`User with ID ${userId} not found`);
       }
       return user;
@@ -111,7 +111,7 @@ export class AdminController {
     const userId = deleteUserDto.userId;
     try {
       const user = await this.adminService.deleteUser(userId);
-      if(!user) {
+      if (!user) {
         throw new NotFoundException(`User with ID ${userId} not found`);
       }
       return user;

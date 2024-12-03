@@ -28,7 +28,7 @@ enum ApplicationStatus {
 model User {
   userId           Int                @id @default(autoincrement()) @map("user_id")
   kakaoId          String             @unique @map("kakao_id")
-  nickName         String             @map("nick_name")
+  nickname         String             @map("nick_name")
   name             String
   email            String             @unique
   phone            String             @unique

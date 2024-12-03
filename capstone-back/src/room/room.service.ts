@@ -16,7 +16,7 @@ export class RoomService {
     private readonly roomParticipantRepository: RoomParticipantRepository,
   ) { }
 
-  async connect({ id, type, nickName, userId, socketId }: { type: string, id: number, socketId: string, nickName: string, userId: number }) {
+  async connect({ id, type, nickname, userId, socketId }: { type: string, id: number, socketId: string, nickname: string, userId: number }) {
     if (type === 'club') {
       // [TODO] get club's participants and check the requester is in the club
     }
@@ -34,24 +34,24 @@ export class RoomService {
     const roomParticipants = await this.getParticipantsByRoomId(roomId);
     if (roomParticipants.filter((e) => e.userId === userId).length === 0) {
       const addParticipantResult = await this.addUserToParticipant({ roomId, userId });
-      roomParticipants.push({ ...addParticipantResult, nickname: nickName });
+      roomParticipants.push({ ...addParticipantResult, nickname: nickname });
     }
 
     console.log(`try to connect: ${socketId} to ${roomId}`);
     const socket = io.sockets.sockets.get(socketId);
     socket.join(roomId);
-    socket.to(roomId).emit('join', { nickName, userId });
+    socket.to(roomId).emit('join', { nickname, userId });
 
     const recentChats = await this.chatService.getChats({ roomId, offset: 0, limit: 50 });
     return { participants: roomParticipants, chats: recentChats };
   }
 
-  leaveRoom({ roomId, userId, socketId, nickName }: { roomId: string, userId: number, socketId: string, nickName: string }) {
+  leaveRoom({ roomId, userId, socketId, nickname }: { roomId: string, userId: number, socketId: string, nickname: string }) {
     // [TODO] if socket.to.emit not works, replace to socketsLeave
     // io.in(socketId).socketsLeave(roomId)
     // io.to(roomId).emit('leave', userId);
     const socket = io.sockets.sockets.get(socketId);
-    socket.to(roomId).emit('leave', { userId, nickName });
+    socket.to(roomId).emit('leave', { userId, nickname });
   }
 
   async createRoom({ type, id }: { type: string, id: number }) {
@@ -60,7 +60,7 @@ export class RoomService {
 
   async getParticipantsByRoomId(roomId: string) {
     return (await this.roomParticipantRepository.getParticipants(roomId)).map((participant) => {
-      const nickname = participant.user.nickName;
+      const nickname = participant.user.nickname;
       const { userId,
         roomId,
         role,

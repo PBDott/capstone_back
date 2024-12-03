@@ -7,7 +7,7 @@ export class RegisterUserDto {
 
     @IsNotEmpty()
     @IsString()
-    nickName: string;
+    nickname: string;
 
     @IsNotEmpty()
     @IsString()
@@ -31,5 +31,5 @@ export class RegisterUserDto {
 
     @IsNotEmpty()
     @IsInt()
-    studentId: number;  
+    studentId: number;
 }

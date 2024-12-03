@@ -14,12 +14,12 @@ export class ChatRepository {
       include: {
         user: {
           select: {
-            nickName: true,
+            nickname: true,
           },
         },
       },
     })).map(({ content, createdAt, id, roomId, user, userId }) => ({
-      content, createdAt, id, roomId, nickName: user.nickName, userId
+      content, createdAt, id, roomId, nickname: user.nickname, userId
     }));
   }
 

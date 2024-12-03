@@ -11,7 +11,7 @@ export class AppResponseController {
   @UseGuards(JwtAuthGuard)
   async createResponse(@Body() createDto: CreateAppResponseDto, @Req() req) {
     try {
-      const userId = req.user.userId;
+      const { userId } = req.payload;
 
       const appData = { ...createDto, userId };
       return await this.applicationResponseService.createResponse(appData);

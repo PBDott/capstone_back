@@ -5,7 +5,7 @@ export type Request = Request_ & {
     userId: number;
     kakaoId: string;
     role: string;
-    nickName: string;
+    nickname: string;
   }
 };
 

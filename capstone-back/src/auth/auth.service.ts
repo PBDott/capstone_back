@@ -8,8 +8,8 @@ export class AuthService {
   constructor(
     private readonly authRepository: AuthRepository,
     private readonly jwtService: JwtService,
-  ){}
-  
+  ) { }
+
   async registerUser(registerData: RegisterUserDto) {
     return this.authRepository.registerUser(registerData);
   }
@@ -22,8 +22,8 @@ export class AuthService {
     return this.authRepository.findUserByKakaoIdAndEmail(kakaoId, email);
   }
 
-  async generateJwtToken(userId: number, kakaoId: string, role: string, nickName: string): Promise<string> {
-    const payload = { userId, kakaoId, role, nickName };
+  async generateJwtToken(userId: number, kakaoId: string, role: string, nickname: string): Promise<string> {
+    const payload = { userId, kakaoId, role, nickname };
     return this.jwtService.sign(payload);
   }
 }

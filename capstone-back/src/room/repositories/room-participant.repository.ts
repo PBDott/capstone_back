@@ -16,7 +16,7 @@ export class RoomParticipantRepository {
       include: {
         user: {
           select: {
-            nickName: true,
+            nickname: true,
           }
         }
       }

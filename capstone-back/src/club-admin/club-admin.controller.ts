@@ -36,7 +36,7 @@ export class ClubAdminController {
     const clubId = deleteClubDto.clubId;
     try {
       const club = await this.clubAdminService.deleteClub(clubId);
-      if(!club) {
+      if (!club) {
         throw new NotFoundException(`Club with ID ${clubId} not found`);
       }
       return club;
@@ -73,14 +73,14 @@ export class ClubAdminController {
   }
   */
 
-  @Post('getClubData') 
+  @Post('getClubData')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ClubRoles('CLUBADMIN')
   async getClubData(@Req() req) {
     try {
-      const userId = req.user.userId;
+      const { userId } = req.payload;
       return await this.clubAdminService.getClubData(userId);
-    } catch(error) {
+    } catch (error) {
       console.log(error)
       throw new InternalServerErrorException('Failed to get club data');
     }

@@ -15,7 +15,7 @@ export class UserController {
   async getUserInfo(
     @Req() req: Request,
   ) {
-    const { userId } = req.user;
+    const { userId } = req.payload;
     const integratedUserInfo = await this.userService.getUserInfo(userId);
     return integratedUserInfo;
   }
