@@ -54,4 +54,8 @@ export class TradeService {
   async getLikeCount(tradeId: number): Promise<number> {
     return this.tradeRepository.getLikeCount(tradeId);
   }
+
+  async getTradesByUserId(userId: number) {
+    return this.tradeRepository.getTradesByUserId(userId);
+  }
 }
