@@ -1,26 +1,48 @@
-import { Injectable } from '@nestjs/common';
-import { CreateClubAdminDto } from './dto/create-club-admin.dto';
-import { UpdateClubAdminDto } from './dto/update-club-admin.dto';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { ClubAdminRepository } from './repositories/club-admin.repository';
+import { ClubRepository } from 'src/club/repositories/club.repository';
+import { Club } from '@prisma/client';
+import { UpdateClubDto } from './dto/update-club.dto';
 
 @Injectable()
 export class ClubAdminService {
-  create(createClubAdminDto: CreateClubAdminDto) {
-    return 'This action adds a new clubAdmin';
+  constructor(
+    private readonly clubAdminRepository: ClubAdminRepository,
+    private readonly clubRepository: ClubRepository
+  ) { }
+
+  async updateClub(clubId: number, updateClubDto: UpdateClubDto) {
+    return this.clubAdminRepository.updateClub(clubId, updateClubDto);
   }
 
-  findAll() {
-    return `This action returns all clubAdmin`;
+  async deleteClub(clubId: number): Promise<Club> {
+    return this.clubAdminRepository.deleteClub(clubId);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} clubAdmin`;
-  }
+  async updateClubAdmin(clubId: number, userId: number) {
+    const club = await this.clubRepository.getClubById(clubId);
+    if (!club) {
+      throw new NotFoundException(`Club with ID ${clubId} not found.`);
+    }
 
-  update(id: number, updateClubAdminDto: UpdateClubAdminDto) {
-    return `This action updates a #${id} clubAdmin`;
-  }
+    const userList: number[] = club.userList as number[];
+    if (!userList.includes(userId)) {
+      throw new NotFoundException(`User with ID ${userId} is not a member of this club.`);
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} clubAdmin`;
+    try {
+      return await this.clubAdminRepository.updateClubAdmin(clubId, userId);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to update club admin');
+    }
+  }
+  /*
+  async getAllMember(clubId: number) {
+      return await this.clubAdminRepository.getAllMember(clubId);
+  }
+  */
+
+  async getClubData(userId: number) {
+    return await this.clubAdminRepository.getClubData(userId);
   }
 }

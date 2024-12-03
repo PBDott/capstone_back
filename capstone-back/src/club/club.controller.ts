@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException, UseInterceptors, UploadedFile, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, NotFoundException, UseInterceptors, UploadedFile, Req, UseGuards, Query, ParseIntPipe } from '@nestjs/common';
 import { ClubService } from './club.service';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
@@ -40,10 +40,10 @@ export class ClubController {
         throw new InternalServerErrorException('User ID is missing from the request.');
       }
 
-      const clubData = { ...createClubDto, imageUrl};
+      const clubData = { ...createClubDto, imageUrl };
       return await this.clubService.createClub(clubData, userId);
     } catch (error) {
-      console.error('Error in createClub:', error); 
+      console.error('Error in createClub:', error);
       throw new InternalServerErrorException('Failed to create club');
     }
   }
@@ -70,34 +70,21 @@ export class ClubController {
     }
   }
 
-  @Post('update')
-  async updateClub(@Body() updateClubDto: UpdateClubDto,): Promise<Club> {
-    const clubId = updateClubDto.clubId;
+  @Get('calendar')
+  async getAllCalendars(@Query('clubId', ParseIntPipe) clubId: number) {
     try {
-      const club = await this.clubService.updateClub(clubId, updateClubDto);
-      if (!club) {
-        throw new NotFoundException(`Club with Id ${clubId} not found`);
-      }
-      return club;
+      return await this.clubService.getAllCalendars(clubId);
     } catch (error) {
-      throw new InternalServerErrorException('Failed to update club');
-    }
-
-  }
-
-  @Post('delete')
-  async deleteClub(@Body() deleteClubDto: DeleteClubDto) {
-    const clubId = deleteClubDto.clubId;
-    try {
-      const club = await this.clubService.deleteClub(clubId);
-      if(!club) {
-        throw new NotFoundException(`Club with ID ${clubId} not found`);
-      }
-      return club;
-    } catch (error) {
-      throw new InternalServerErrorException('Failed to delete club');
+      throw new InternalServerErrorException('Failed to fetch calendars');
     }
   }
 
-
+  @Get('receipt')
+  async getAllReceipts(@Query('clubId', ParseIntPipe) clubId: number) {
+    try {
+      return await this.clubService.getAllReceipts(clubId);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to fetch receipts');
+    }
+  }
 }

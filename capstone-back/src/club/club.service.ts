@@ -7,7 +7,7 @@ import { Club } from '@prisma/client';
 @Injectable()
 export class ClubService {
   constructor(private readonly clubRepository: ClubRepository) { }
-  
+
   async createClub(createClubDto: CreateClubDto, userId: number): Promise<Club> {
     return this.clubRepository.createClub(createClubDto, userId);
   }
@@ -20,11 +20,11 @@ export class ClubService {
     return this.clubRepository.getClubById(clubId);
   }
 
-  async updateClub(clubId: number, updateClubDto: UpdateClubDto) {
-    return this.clubRepository.updateClub(clubId, updateClubDto);
+  async getAllCalendars(clubId: number) {
+    return this.clubRepository.getAllCalendars(clubId);
   }
 
-  async deleteClub(clubId: number): Promise<Club> {
-    return this.clubRepository.deleteClub(clubId);
+  async getAllReceipts(clubId: number) {
+    return this.clubRepository.getAllReceipts(clubId);
   }
 }

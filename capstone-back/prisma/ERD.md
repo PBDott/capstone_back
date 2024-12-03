@@ -30,6 +30,7 @@ erDiagram
   DateTime updateAt
   Int views
   Int like_count
+  String imageId "nullable"
 }
 "Club" {
   Int club_id PK
@@ -62,7 +63,6 @@ erDiagram
   DateTime createAt
   DateTime updateAt
   Int author_id FK
-  String author_nickname
   Int views
   Int likeCount
 }
@@ -99,6 +99,22 @@ erDiagram
   Int user_id FK
   String content
   DateTime created_at
+  String imageId "nullable"
+}
+"Image" {
+  Int id PK
+  String name
+  String path
+  Int size
+  Int width
+  Int height
+  DateTime createdAt
+  DateTime updatedAt
+  Int userId FK
+  DateTime deletedAt "nullable"
+  Json additionalInfo
+  Int tradeId "nullable"
+  Int ChatId "nullable"
 }
 "Application" {
   Int application_id PK
@@ -155,6 +171,7 @@ erDiagram
 "RoomParticipant" }o--|| "User" : user
 "Chat" }o--|| "Room" : room
 "Chat" }o--|| "User" : user
+"Image" }o--|| "User" : user
 "Application" }o--|| "Club" : club
 "AppResponse" }o--|| "Application" : application
 "AppResponse" }o--|| "User" : user
@@ -190,6 +207,7 @@ erDiagram
   - `updateAt`: 
   - `views`: 
   - `like_count`: 
+  - `imageId`: 
 
 ### `Club`
 
@@ -230,7 +248,6 @@ erDiagram
   - `createAt`: 
   - `updateAt`: 
   - `author_id`: 
-  - `author_nickname`: 
   - `views`: 
   - `likeCount`: 
 
@@ -277,6 +294,24 @@ erDiagram
   - `user_id`: 
   - `content`: 
   - `created_at`: 
+  - `imageId`: 
+
+### `Image`
+
+**Properties**
+  - `id`: 
+  - `name`: 
+  - `path`: 
+  - `size`: 
+  - `width`: 
+  - `height`: 
+  - `createdAt`: 
+  - `updatedAt`: 
+  - `userId`: 
+  - `deletedAt`: 
+  - `additionalInfo`: 
+  - `tradeId`: 
+  - `ChatId`: 
 
 ### `Application`
 

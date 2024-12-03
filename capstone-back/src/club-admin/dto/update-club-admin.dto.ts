@@ -1,4 +1,11 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateClubAdminDto } from './create-club-admin.dto';
+import { IsInt, IsNotEmpty } from 'class-validator';
 
-export class UpdateClubAdminDto extends PartialType(CreateClubAdminDto) {}
+export class UpdateClubAdminDto {
+  @IsNotEmpty()
+  @IsInt()
+  clubId: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  userId: number;
+}
