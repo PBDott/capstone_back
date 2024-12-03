@@ -27,4 +27,8 @@ export class ClubService {
   async getAllReceipts(clubId: number) {
     return this.clubRepository.getAllReceipts(clubId);
   }
+
+  async getClubsByJoinedUserId(userId: number) {
+    return this.clubRepository.getClubsByUserId(userId);
+  }
 }
