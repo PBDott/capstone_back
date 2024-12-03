@@ -12,6 +12,7 @@ export class ClubRepository {
         return this.prisma.club.create({
             data: {
                 name: data.name,
+                school: data.school,
                 location: data.location,
                 description: data.description,
                 imageUrl: data.imageUrl,

@@ -5,6 +5,10 @@ export class CreateClubDto {
     @IsString()
     @IsNotEmpty()
     name: string;
+
+    @IsString()
+    @IsNotEmpty()
+    school: string;
     
     @IsString()
     @IsNotEmpty()

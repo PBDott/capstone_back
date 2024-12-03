@@ -35,6 +35,7 @@ erDiagram
 "Club" {
   Int club_id PK
   String name
+  String school
   String location
   String description
   ClubStatus status
@@ -214,6 +215,7 @@ erDiagram
 **Properties**
   - `club_id`: 
   - `name`: 
+  - `school`: 
   - `location`: 
   - `description`: 
   - `status`: 

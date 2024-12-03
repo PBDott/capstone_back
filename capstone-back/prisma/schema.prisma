@@ -72,12 +72,13 @@ model Trade {
 model Club {
   clubId       Int           @id @default(autoincrement()) @map("club_id")
   name         String
+  school       String
   location     String
   description  String
   status       ClubStatus    @default(PENDING)
   imageUrl     String        @map("image_url")
-  adminList    Json          @default("{\"data\":[]}") @map("admin_list") @db.Json
-  userList     Json          @default("{\"data\":[]}") @map("user_list") @db.Json
+  adminList    Json          @default("[]") @map("admin_list") @db.Json
+  userList     Json          @default("[]") @map("user_list") @db.Json
   applications Application[]
   receipt      Receipt[]
   room         Room?
