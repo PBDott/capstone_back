@@ -13,8 +13,8 @@ export class CreateReceiptDto {
     description: string;
 
     @IsNotEmpty()
-    @IsDateString()
-    receiptDate: Date;
+    @IsString()
+    receiptDate: string;
 
     @IsNotEmpty()
     @IsNumber()

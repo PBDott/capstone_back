@@ -2,8 +2,8 @@ import { IsNotEmpty, IsString, IsDateString, IsInt } from 'class-validator';
 
 export class CreateCalendarDto {
     @IsNotEmpty()
-    @IsDateString()
-    date: Date;
+    @IsString()
+    date: string;
 
     @IsNotEmpty()
     @IsString()

@@ -119,10 +119,10 @@ erDiagram
 }
 "Application" {
   Int application_id PK
-  DateTime from
-  DateTime to
-  DateTime interview_from
-  DateTime interview_to
+  String from
+  String to
+  String interview_from
+  String interview_to
   String title
   Json questions
   Int club_id FK
@@ -142,13 +142,13 @@ erDiagram
   String type
   String title
   String description
-  DateTime receipt_date
+  String receipt_date
   Int amount
   Int club_id FK
 }
 "Calendar" {
   Int calendar_id PK
-  DateTime date
+  String date
   String title
   String description
   Int club_id FK

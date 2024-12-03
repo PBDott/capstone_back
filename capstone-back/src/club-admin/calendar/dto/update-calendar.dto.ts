@@ -7,7 +7,7 @@ export class UpdateCalendarDto {
 
     @IsNotEmpty()
     @IsDateString()
-    dats: Date;
+    dats: string;
 
     @IsNotEmpty()
     @IsString()

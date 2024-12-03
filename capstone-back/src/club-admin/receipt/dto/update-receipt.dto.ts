@@ -14,8 +14,8 @@ export class UpdateReceiptDto {
     description?: string;
 
     @IsNotEmpty()
-    @IsDateString()
-    receiptDate?: Date;
+    @IsString()
+    receiptDate?: string;
 
     @IsNotEmpty()
     @IsInt()

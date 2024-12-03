@@ -13,20 +13,20 @@ export class UpdateApplicationDto {
     @IsNotEmpty()
     questions: string[];
 
-    @IsDateString()
+    @IsString()
     @IsNotEmpty()
-    from: Date; 
+    from: string; 
   
-    @IsDateString()
+    @IsString()
     @IsNotEmpty()
-    to: Date; 
+    to: string; 
   
-    @IsDateString()
+    @IsString()
     @IsNotEmpty()
-    interviewFrom: Date; 
+    interviewFrom: string; 
   
-    @IsDateString()
+    @IsString()
     @IsNotEmpty()
-    interviewTo: Date; 
+    interviewTo: string; 
   
 }
