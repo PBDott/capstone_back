@@ -86,7 +86,7 @@ export class ApplicationRepository {
         //const userList: number[] = club.userList as number[]
         const userList: number[] = club.userList as number[]; 
 
-        if (club.plan === PlanStatus.FREE && userList.length >= 20) {
+        if (club.plan === PlanStatus.FREE && userList.length >= 5) {
             throw new Error('max user limit hit');
         }
 
