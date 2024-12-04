@@ -43,6 +43,7 @@ erDiagram
   String image_url
   Json admin_list
   Json user_list
+  PlanStatus plan
 }
 "ClubParticipants" {
   Int club_id FK
@@ -154,7 +155,7 @@ erDiagram
   Int calendar_id PK
   String date
   String title
-  String description
+  String description "nullable"
   Int club_id FK
 }
 "User" |o--o| "Image" : image
@@ -231,6 +232,7 @@ erDiagram
   - `image_url`: 
   - `admin_list`: 
   - `user_list`: 
+  - `plan`: 
 
 ### `ClubParticipants`
 

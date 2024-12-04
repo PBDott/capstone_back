@@ -5,7 +5,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { ClubRoles } from './clubRoles.decorator';
 import { UpdateClubAdminDto } from './dto/update-club-admin.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
-import { Club } from '@prisma/client';
+import { Club, PlanStatus } from '@prisma/client';
 import { DeleteClubDto } from './dto/delete-club.dto';
 
 @Controller('club-admin')
@@ -97,4 +97,17 @@ export class ClubAdminController {
       throw new InternalServerErrorException('Failed to club delete')
     }
   } 
+
+  @Post('changePlan')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ClubRoles('CLUBADMIN')
+  async changePlan(@Body() body: {clubId: number, planStatus: PlanStatus}) {
+    try {
+      const { clubId, planStatus } = body;
+      return await this.clubAdminService.changePlan(clubId, planStatus);
+    } catch (error) {
+      console.log(error)
+      throw new InternalServerErrorException('Failed to change plan')
+    }
+  }
 }

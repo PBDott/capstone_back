@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { ClubAdminRepository } from './repositories/club-admin.repository';
 import { ClubRepository } from 'src/club/repositories/club.repository';
-import { Club } from '@prisma/client';
+import { Club, PlanStatus } from '@prisma/client';
 import { UpdateClubDto } from './dto/update-club.dto';
 
 @Injectable()
@@ -47,5 +47,9 @@ export class ClubAdminService {
 
   async deleteUser(clubId: number, userId: number) {
     return this.clubAdminRepository.deleteUser(clubId, userId);
+  }
+
+  async changePlan(clubId: number, planStatus: PlanStatus) {
+    return this.clubAdminRepository.changePlan(clubId, planStatus);
   }
 }

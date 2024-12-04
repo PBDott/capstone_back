@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 import { CreasteApplicationDto } from "../dto/create-application.dto";
 import { UpdateApplicationDto } from "../dto/update-application";
-import { Application, ApplicationStatus } from "@prisma/client";
+import { Application, ApplicationStatus, PlanStatus } from "@prisma/client";
 
 @Injectable()
 export class ApplicationRepository {
@@ -75,7 +75,7 @@ export class ApplicationRepository {
 
         const club = await this.prisma.club.findUnique({
             where: { clubId },
-            select: { userList: true }
+            select: { userList: true, plan: true }
         });
 
 
@@ -86,8 +86,15 @@ export class ApplicationRepository {
         //const userList: number[] = club.userList as number[]
         const userList: number[] = club.userList as number[]; 
 
+        if (club.plan === PlanStatus.FREE && userList.length >= 20) {
+            throw new Error('max user limit hit');
+        }
+
         if (userList.includes(userId)) {
-            throw new Error(`User with ID ${userId} is already a member of the club`);
+            throw new HttpException(
+                'max user limit hit',
+                HttpStatus.BAD_REQUEST,
+            );
         }
 
         userList.push(userId);

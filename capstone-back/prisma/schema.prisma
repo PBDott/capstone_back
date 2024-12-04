@@ -25,6 +25,11 @@ enum ApplicationStatus {
   ACCEPTED
 }
 
+enum PlanStatus {
+  FREE
+  PAID
+}
+
 model User {
   userId           Int                @id @default(autoincrement()) @map("user_id")
   kakaoId          String             @unique @map("kakao_id")
@@ -82,6 +87,7 @@ model Club {
   imageUrl         String             @map("image_url")
   adminList        Json               @default("[]") @map("admin_list") @db.Json
   userList         Json               @default("[]") @map("user_list") @db.Json
+  plan             PlanStatus         @default(FREE)
   applications     Application[]
   receipt          Receipt[]
   room             Room?

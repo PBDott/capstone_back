@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Club } from "@prisma/client";
+import { Club, PlanStatus } from "@prisma/client";
 import { PrismaService } from "src/prisma.service";
 import { UpdateClubDto } from "../dto/update-club.dto";
 
@@ -101,4 +101,10 @@ export class ClubAdminRepository {
         return this.getAllMember(clubId);
     }
 
+    async changePlan(clubId: number, planStatus: PlanStatus) {
+        return await this.prisma.club.update({
+            where: {clubId},
+            data: {plan: planStatus}
+        });
+    }
 }      
