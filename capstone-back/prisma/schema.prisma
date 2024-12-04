@@ -194,7 +194,7 @@ model Chat {
   id        Int      @id @default(autoincrement())
   roomId    String   @map("room_id")
   userId    Int      @map("user_id")
-  content   String?
+  message   String?
   room      Room     @relation(fields: [roomId], references: [id])
   user      User     @relation(fields: [userId], references: [userId])
   createdAt DateTime @default(now()) @map("created_at")
