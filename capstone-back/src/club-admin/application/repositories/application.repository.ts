@@ -96,4 +96,12 @@ export class ApplicationRepository {
         
         return updateClub.userList;
     }
+
+    async checkApplication(clubId: number) {
+        const applications = await this.prisma.application.findMany({
+            where: { clubId },
+        });
+        
+        return applications.length > 0;
+    }
 }

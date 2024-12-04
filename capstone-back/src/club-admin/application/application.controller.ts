@@ -118,4 +118,20 @@ export class ApplicationController {
             throw new InternalServerErrorException('Failed to update Appresponse status');
         }
     }
+
+    @Post('checkApplication')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @ClubRoles('CLUBADMIN')
+    async checkApplication(@Body() body: {clubId: number}) {
+        try {
+            const checkApplication = await this.applicationService.checkApplication(body.clubId);
+            
+            if(!checkApplication) {
+                throw new NotFoundException(`Application with Id ${body.clubId} not found`);
+            }
+        } catch (error) {
+            throw new InternalServerErrorException('Failed to check Application');
+        }
+    }
+
 }
