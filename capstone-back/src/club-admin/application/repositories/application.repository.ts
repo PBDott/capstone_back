@@ -103,7 +103,7 @@ export class ApplicationRepository {
             where: { clubId },
         });
 
-        if(applications.length > 0) {
+        if(applications) {
             return true;
         } else {
             return false;

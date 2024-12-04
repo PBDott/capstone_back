@@ -81,6 +81,7 @@ export class ApplicationController {
         }
     }
 
+    // 필요 없음
     @Post('delete')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ClubRoles('CLUBADMIN')
