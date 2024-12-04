@@ -101,7 +101,11 @@ export class ApplicationRepository {
         const applications = await this.prisma.application.findMany({
             where: { clubId },
         });
-        
-        return applications.length > 0;
+
+        if(applications.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
