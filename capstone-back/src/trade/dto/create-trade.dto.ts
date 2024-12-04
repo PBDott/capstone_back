@@ -8,7 +8,7 @@ export class CreateTradeDto {
 
     @IsString()
     @IsNotEmpty()
-    nickName: string;
+    nickname: string;
 
     @IsInt()
     @IsNotEmpty()

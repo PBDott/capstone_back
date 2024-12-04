@@ -23,12 +23,12 @@ export class RoomController {
       throw new BadRequestException();
     }
     // [TODO] use userId? kakaoId?
-    const { userId, nickName } = req.payload;
+    const { userId, nickname } = req.payload;
     const roomInfo = await this.roomService.connect({
       type,
       id: parseInt(id),
       userId,
-      nickName,
+      nickname,
       socketId,
     });
     return roomInfo;
@@ -47,8 +47,8 @@ export class RoomController {
     if (!socketId) {
       throw new BadRequestException('socket id missing');
     }
-    const { userId, nickName } = req.payload;
+    const { userId, nickname } = req.payload;
     const roomId = `${type}:${id}`;
-    this.roomService.leaveRoom({ roomId, userId, socketId, nickName })
+    this.roomService.leaveRoom({ roomId, userId, socketId, nickname })
   }
 }

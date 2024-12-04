@@ -6,7 +6,7 @@ import { KakaoLoginDto } from './dto/kakao-login.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('kakao-login')
   async kakaoLogin(@Body() body: KakaoLoginDto, @Res() res: Response) {
@@ -14,7 +14,7 @@ export class AuthController {
     const user = await this.authService.getUserByKakaoIdAndEmail(kakaoId, email);
 
     if (user) {
-      const token = await this.authService.generateJwtToken(user.userId, user.kakaoId, user.role, user.nickName);
+      const token = await this.authService.generateJwtToken(user.userId, user.kakaoId, user.role, user.nickname);
 
       res.json({
         message: '로그인 성공',
@@ -37,7 +37,7 @@ export class AuthController {
   ) {
     try {
       const newUser = await this.authService.registerUser(registerUserData);
-      const token = await this.authService.generateJwtToken(newUser.userId, newUser.kakaoId, newUser.role, newUser.nickName);
+      const token = await this.authService.generateJwtToken(newUser.userId, newUser.kakaoId, newUser.role, newUser.nickname);
 
       res.status(201).json({
         message: '회원가입 및 로그인 성공',

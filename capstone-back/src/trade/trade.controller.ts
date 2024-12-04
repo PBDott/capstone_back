@@ -16,9 +16,8 @@ export class TradeController {
   @UseGuards(JwtAuthGuard)
   async createTrade(@Body() createTradeDto: CreateTradeDto, @Req() req) {
     try {
-      const sellerId = req.user.userId; 
-      const nickName = req.user.nickName; 
-      const tradeData = { ...createTradeDto, sellerId, nickName };
+      const { userId: sellerId, nickname } = req.payload;
+      const tradeData = { ...createTradeDto, sellerId, nickname };
 
       return await this.tradeService.createTrade(tradeData);
     } catch (error) {
@@ -143,6 +142,4 @@ export class TradeController {
       throw new InternalServerErrorException('Failed to get like-count');
     }
   }
-
-
 }

@@ -7,7 +7,7 @@ export class CreateUserDto {
 
     @IsNotEmpty()
     @IsString()
-    nickName: string;
+    nickname: string;
 
     @IsNotEmpty()
     @IsString()
@@ -31,5 +31,5 @@ export class CreateUserDto {
 
     @IsNotEmpty()
     @IsInt()
-    studentId: number;  
+    studentId: number;
 }

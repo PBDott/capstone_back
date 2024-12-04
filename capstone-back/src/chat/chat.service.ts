@@ -16,9 +16,9 @@ export class ChatService {
     return this.chatRepository.saveChat({ message, userId, roomId, })
   }
 
-  triggerBroadcast({ message, userId, nickName, roomId }) {
+  triggerBroadcast({ message, userId, nickname, roomId }) {
     console.log(`broadcast to ${roomId}`);
-    io.to(roomId).emit('message', { message, userId, nickName });
-    // io.emit('message', { message, roomId, userId, nickName });
+    io.to(roomId).emit('message', { message, userId, nickname });
+    // io.emit('message', { message, roomId, userId, nickname });
   }
 }

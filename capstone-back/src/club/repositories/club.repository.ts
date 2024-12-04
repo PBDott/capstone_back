@@ -6,43 +6,53 @@ import { Club } from '@prisma/client';
 
 @Injectable()
 export class ClubRepository {
-    constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) { }
 
-    async createClub(data: CreateClubDto, userId: number): Promise<Club> {
-        return this.prisma.club.create({
-            data: {
-                name: data.name,
-                school: data.school,
-                location: data.location,
-                description: data.description,
-                imageUrl: data.imageUrl,
-                adminList: [userId]
-            },
-        });
-    }
+  async createClub(data: CreateClubDto, userId: number): Promise<Club> {
+    return this.prisma.club.create({
+      data: {
+        name: data.name,
+        school: data.school,
+        location: data.location,
+        description: data.description,
+        imageUrl: data.imageUrl,
+        adminList: [userId]
+      },
+    });
+  }
 
-    async getAllClub(): Promise<Club[]> {
-        return this.prisma.club.findMany({
-            where: { status: 'ACCEPTED' }
-        });
-    }
+  async getAllClub(): Promise<Club[]> {
+    return this.prisma.club.findMany({
+      where: { status: 'ACCEPTED' }
+    });
+  }
 
-    async getClubById(clubId: number): Promise<Club> {
-        return this.prisma.club.findFirst({
-            where: {
-                clubId: clubId, 
-                status: "ACCEPTED", 
-            },
-        });
-    }
+  async getClubById(clubId: number): Promise<Club> {
+    return this.prisma.club.findFirst({
+      where: {
+        clubId: clubId,
+        status: "ACCEPTED",
+      },
+    });
+  }
 
 
-    async getAllCalendars(clubId: number) {
-        return this.prisma.calendar.findMany({ where: { clubId } });
-    }
+  async getAllCalendars(clubId: number) {
+    return this.prisma.calendar.findMany({ where: { clubId } });
+  }
 
-    async getAllReceipts(clubId: number) {
-        return this.prisma.receipt.findMany({ where: { clubId } });
-    }
+  async getAllReceipts(clubId: number) {
+    return this.prisma.receipt.findMany({ where: { clubId } });
+  }
 
+  async getClubsByUserId(userId: number) {
+    return this.prisma.clubParticipants.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        club: true
+      },
+    });
+  }
 }

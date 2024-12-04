@@ -16,7 +16,7 @@ export class ChatController {
     @Req() req: Request,
   ) {
     const { message } = createChatDto;
-    const { userId, nickName } = req.payload;
+    const { userId, nickname } = req.payload;
     const { type, id } = req.params;
     console.log(createChatDto);
     if (type !== 'club' && type !== 'trade') {
@@ -24,7 +24,7 @@ export class ChatController {
     }
     const roomId = `${type}:${id}`;
     await this.chatService.createChat({ message, roomId, userId });
-    this.chatService.triggerBroadcast({ message, userId, nickName, roomId });
+    this.chatService.triggerBroadcast({ message, userId, nickname, roomId });
     return message;
   }
 }

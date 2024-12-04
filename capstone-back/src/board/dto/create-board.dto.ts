@@ -14,5 +14,5 @@ export class CreateBoardDto {
 
   @IsString()
   @IsNotEmpty()
-  nickName: string; 
+  nickname: string;
 }

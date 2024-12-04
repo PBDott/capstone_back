@@ -17,7 +17,7 @@ export class BoardRepository {
                 content: data.content,
                 authorId: data.authorId,
                 // [TODO] check here: nickname field does not exists in model Board
-                // authorNickname: data.nickName
+                // authorNickname: data.nickname
             },
         });
     }

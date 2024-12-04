@@ -11,7 +11,7 @@ export class UpdateUserDto {
 
     @IsNotEmpty()
     @IsString()
-    nickName: string;
+    nickname: string;
 
     @IsNotEmpty()
     @IsString()
@@ -35,5 +35,5 @@ export class UpdateUserDto {
 
     @IsNotEmpty()
     @IsInt()
-    studentId: number;  
+    studentId: number;
 }
