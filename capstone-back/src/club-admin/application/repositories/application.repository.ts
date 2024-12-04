@@ -99,14 +99,10 @@ export class ApplicationRepository {
     }
 
     async checkApplication(clubId: number) {
-        const applications = await this.prisma.application.findMany({
+        const application = await this.prisma.application.findFirst({
             where: { clubId },
         });
 
-        if(applications.length > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return application ? true : false; 
     }
 }
