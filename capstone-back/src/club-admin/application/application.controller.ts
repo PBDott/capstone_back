@@ -68,8 +68,6 @@ export class ApplicationController {
         }
     }
 
-
-
     @Post('update')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ClubRoles('CLUBADMIN')

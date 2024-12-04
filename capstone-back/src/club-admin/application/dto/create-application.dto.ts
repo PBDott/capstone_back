@@ -8,22 +8,6 @@ export class CreasteApplicationDto {
     @IsString()
     @IsNotEmpty()
     questions: string[];
-
-    @IsString()
-    @IsNotEmpty()
-    from: string; 
-  
-    @IsString()
-    @IsNotEmpty()
-    to: string; 
-  
-    @IsString()
-    @IsNotEmpty()
-    interviewFrom: string; 
-  
-    @IsString()
-    @IsNotEmpty()
-    interviewTo: string; 
   
     @IsInt()
     @IsNotEmpty()

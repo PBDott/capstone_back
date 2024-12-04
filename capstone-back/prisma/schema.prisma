@@ -216,10 +216,6 @@ model Image {
 
 model Application {
   applicationId Int           @id @default(autoincrement()) @map("application_id")
-  from          String
-  to            String
-  interviewFrom String        @map("interview_from")
-  interviewTo   String        @map("interview_to")
   title         String
   questions     Json          @default("[]")
   club          Club          @relation(fields: [clubId], references: [clubId])

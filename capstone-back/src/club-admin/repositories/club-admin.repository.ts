@@ -86,27 +86,18 @@ export class ClubAdminRepository {
     }
 
     async deleteUser(clubId: number, userId: number) {
-        // clubId에 해당하는 클럽을 찾음
         const club = await this.prisma.club.findUnique({
             where: { clubId },
         });
     
-        // 클럽이 없으면 에러 처리
-        if (!club) {
-            throw new NotFoundException(`Club with ID ${clubId} not found`);
-        }
-    
-        // userList에서 userId를 제외한 새로운 리스트 생성
         let userList: number[] = club.userList as number[];
         userList = userList.filter(id => id !== userId);
     
-        // 클럽의 userList 업데이트
         await this.prisma.club.update({
             where: { clubId },
             data: { userList },
         });
     
-        // 클럽의 전체 부원 조회
         return this.getAllMember(clubId);
     }
 

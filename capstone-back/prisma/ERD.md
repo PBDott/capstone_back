@@ -126,10 +126,6 @@ erDiagram
 }
 "Application" {
   Int application_id PK
-  String from
-  String to
-  String interview_from
-  String interview_to
   String title
   Json questions
   Int club_id FK
@@ -338,10 +334,6 @@ erDiagram
 
 **Properties**
   - `application_id`: 
-  - `from`: 
-  - `to`: 
-  - `interview_from`: 
-  - `interview_to`: 
   - `title`: 
   - `questions`: 
   - `club_id`: 
