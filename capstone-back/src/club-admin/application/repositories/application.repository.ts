@@ -87,7 +87,11 @@ export class ApplicationRepository {
         const userList: number[] = club.userList as number[];
 
         if (club.plan === PlanStatus.FREE && userList.length >= 5) {
-            return "user max limit hit"
+            // 최대 사용자 수 제한을 초과한 경우 예외 처리
+            throw new HttpException(
+                { message: 'User max limit hit for free plan' },
+                HttpStatus.BAD_REQUEST
+            );
         }
 
         if (userList.includes(userId)) {
