@@ -87,10 +87,7 @@ export class ApplicationRepository {
         const userList: number[] = club.userList as number[];
 
         if (club.plan === PlanStatus.FREE && userList.length >= 5) {
-            throw new HttpException(
-                { message: 'max user limit hit' },  // Custom error message
-                HttpStatus.BAD_REQUEST,             // HTTP status code
-            );
+            return "user max limit hit"
         }
 
         if (userList.includes(userId)) {
