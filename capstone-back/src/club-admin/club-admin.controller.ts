@@ -84,4 +84,15 @@ export class ClubAdminController {
       throw new InternalServerErrorException('Failed to get club data');
     }
   }
+
+  @Post('deleteUser')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ClubRoles('CLUBADMIN')
+  async deleteUser(@Body() clubId: number, userId: number ) {
+    try {
+      return await this.clubAdminService.deleteUser(clubId, userId);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to club delete')
+    }
+  } 
 }

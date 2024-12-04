@@ -85,4 +85,20 @@ export class ClubAdminRepository {
         });
     }
 
+    async deleteUser(clubId: number, userId: number) {
+        const club = await this.prisma.club.findUnique({
+            where: { clubId },
+        });
+
+        let userList: number[] = club.userList as number[];
+        userList = userList.filter(id => id !== userId);
+        
+        await this.prisma.club.update({
+            where: { clubId },
+            data: { userList },
+        });
+
+        return this.getAllMember(userId);
+    }
+
 }      

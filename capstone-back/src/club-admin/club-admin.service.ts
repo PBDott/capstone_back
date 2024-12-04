@@ -44,4 +44,8 @@ export class ClubAdminService {
   async getClubData(userId: number) {
     return await this.clubAdminRepository.getClubData(userId);
   }
+
+  async deleteUser(clubId: number, userId: number) {
+    return this.clubAdminRepository.deleteUser(clubId, userId);
+  }
 }
