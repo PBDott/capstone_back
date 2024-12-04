@@ -87,15 +87,19 @@ export class ApplicationRepository {
         const userList: number[] = club.userList as number[];
 
         if (club.plan === PlanStatus.FREE && userList.length >= 5) {
-            throw new Error('max user limit hit');
+            throw new HttpException(
+                { message: 'max user limit hit' },  // Custom error message
+                HttpStatus.BAD_REQUEST,             // HTTP status code
+            );
         }
 
         if (userList.includes(userId)) {
             throw new HttpException(
-                { message: 'Max user limit hit' },  // Custom error message
+                { message: 'user already exits' },  // Custom error message
                 HttpStatus.BAD_REQUEST,             // HTTP status code
             );
         }
+
         userList.push(userId);
 
         const updateClub = await this.prisma.club.update({
