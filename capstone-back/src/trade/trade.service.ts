@@ -17,7 +17,7 @@ export class TradeService {
 
   async createTrade(createTradeDto: CreateTradeDto) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { imageId, ...trade } = await this.tradeRepository.createTrade(createTradeDto);
+    const trade = await this.tradeRepository.createTrade(createTradeDto);
     await this.imageHandlerService.attachImagesToTrade({ imageIds: createTradeDto.imageIds, tradeId: trade.tradeId })
     return trade;
   }
