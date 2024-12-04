@@ -15,7 +15,7 @@ export class ClubRepository {
         school: data.school,
         location: data.location,
         description: data.description,
-        imageUrl: data.imageUrl,
+        imageId: data.imageId,
         adminList: [userId]
       },
     });

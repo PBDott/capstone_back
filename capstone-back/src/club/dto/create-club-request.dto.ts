@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class CreateClubDto {
+export class CreateClubRequestDto {
   @IsString()
   @IsNotEmpty()
   name: string;

@@ -61,4 +61,16 @@ export class ImageHandlerRepository {
       },
     });
   }
+
+
+  async attachImageToClub({ imageId, clubId }: { imageId: number, clubId: number }) {
+    return this.prisma.image.update({
+      where: {
+        id: imageId,
+      },
+      data: {
+        clubId,
+      },
+    });
+  }
 }

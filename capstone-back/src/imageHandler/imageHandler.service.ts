@@ -113,4 +113,8 @@ export class ImageHandlerService {
   async attachImagesToChat({ imageId, chatId }: { imageId: number, chatId: number }) {
     return this.imageHandlerRepository.attachImagesToChat({ imageId, chatId });
   }
+
+  async attachImageToClub({ imageId, clubId }: { imageId: number, clubId: number }) {
+    return this.imageHandlerRepository.attachImageToClub({ imageId, clubId });
+  }
 }

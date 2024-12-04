@@ -3,13 +3,19 @@ import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 import { ClubRepository } from './repositories/club.repository';
 import { Club } from '@prisma/client';
+import { ImageHandlerService } from 'src/imageHandler/imageHandler.service';
 
 @Injectable()
 export class ClubService {
-  constructor(private readonly clubRepository: ClubRepository) { }
+  constructor(
+    private readonly clubRepository: ClubRepository,
+    private readonly imageHandlerService: ImageHandlerService,
+  ) { }
 
   async createClub(createClubDto: CreateClubDto, userId: number): Promise<Club> {
-    return this.clubRepository.createClub(createClubDto, userId);
+    const club = await this.clubRepository.createClub(createClubDto, userId);
+    await this.imageHandlerService.attachImageToClub({ imageId: createClubDto.imageId, clubId: club.clubId });
+    return club;
   }
 
   async getAllClub(): Promise<Club[]> {
