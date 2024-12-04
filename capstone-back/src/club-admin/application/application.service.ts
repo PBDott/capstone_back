@@ -32,15 +32,28 @@ export class ApplicationService {
     return this.applicationRepository.getAppResponseByApplicationId(applicationId);
   }
 
+  
   async updateAppResponseStatus(applicationId: number, userId: number, status: ApplicationStatus) {
+    if (status === 'ACCEPTED') {
+        const isLimitHit = await this.applicationRepository.checkFreePlanLimit(applicationId);
+
+        if (isLimitHit) {
+            throw new HttpException(
+                { errorCode: 'FREE_PLAN_LIMIT', message: 'Free plan user limit hit' },
+                HttpStatus.FORBIDDEN,
+            );
+        }
+    }
+
     const updatedResponse = await this.applicationRepository.updateAppResponseStatus(applicationId, userId, status);
 
     if (status === 'ACCEPTED') {
-      await this.applicationRepository.addMemberToClub(applicationId, userId);
+        const response = await this.applicationRepository.addMemberToClub(applicationId, userId);
     }
 
     return updatedResponse;
-  }
+}
+
 
   async checkApplication(clubId: number) {
     return this.applicationRepository.checkApplication(clubId);

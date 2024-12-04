@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res, Req, Query, NotFoundException, InternalServerErrorException, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res, Req, Query, NotFoundException, InternalServerErrorException, ParseIntPipe, HttpException } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { ClubRoles } from '../clubRoles.decorator';
@@ -102,7 +102,7 @@ export class ApplicationController {
             throw new InternalServerErrorException('Failed to delete application');
         }
     }
-
+    
     @Post('updateStatus')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ClubRoles('CLUBADMIN')
@@ -110,15 +110,19 @@ export class ApplicationController {
         const { applicationId, userId, status } = updateStatusDto;
         try {
             const updatedResponse = await this.applicationService.updateAppResponseStatus(applicationId, userId, status);
-
+    
             if (!updatedResponse) {
                 throw new NotFoundException(`Response not found for application ID ${applicationId} and user ID ${userId}`);
             }
             return updatedResponse;
         } catch (error) {
-            console.log(error)
+            if (error instanceof HttpException) {
+                throw error; // Properly propagate HttpException
+            }
+            throw new InternalServerErrorException('An unexpected error occurred');
         }
     }
+    
 
     @Post('checkApplication')
     @UseGuards(JwtAuthGuard, RolesGuard)

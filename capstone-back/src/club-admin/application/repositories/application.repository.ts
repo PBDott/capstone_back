@@ -60,54 +60,71 @@ export class ApplicationRepository {
             data: { status }
         });
     }
-
     async addMemberToClub(applicationId: number, userId: number) {
         const application = await this.prisma.application.findUnique({
             where: { applicationId },
             select: { clubId: true },
         });
-
+    
         if (!application) {
             throw new Error(`Club not found for application ID ${applicationId}`);
         }
-
+    
         const clubId = application.clubId;
-
+    
         const club = await this.prisma.club.findUnique({
             where: { clubId },
-            select: { userList: true, plan: true }
+            select: { userList: true },
         });
-
-
+    
         if (!club) {
             throw new Error(`Club with ID ${clubId} not found`);
         }
-
-        //const userList: number[] = club.userList as number[]
+    
         const userList: number[] = club.userList as number[];
-
-        if (club.plan === PlanStatus.FREE && userList.length >= 5) {
-            throw new NotAcceptableException('User max limit hit');
-        }
-
+    
         if (userList.includes(userId)) {
             throw new HttpException(
-                { message: 'user already exits' },  // Custom error message
-                HttpStatus.BAD_REQUEST,             // HTTP status code
+                { message: 'User already exists' },
+                HttpStatus.BAD_REQUEST,
             );
         }
-
+    
         userList.push(userId);
-
+    
         const updateClub = await this.prisma.club.update({
             where: { clubId },
             data: { userList },
             select: { userList: true },
         });
-
+    
         return updateClub.userList;
     }
 
+    async checkFreePlanLimit(applicationId: number): Promise<boolean> {
+        const application = await this.prisma.application.findUnique({
+            where: { applicationId },
+            select: { clubId: true },
+        });
+    
+        if (!application) {
+            throw new Error(`Club not found for application ID ${applicationId}`);
+        }
+    
+        const club = await this.prisma.club.findUnique({
+            where: { clubId: application.clubId },
+            select: { userList: true, plan: true },
+        });
+    
+        if (!club) {
+            throw new Error(`Club with ID ${application.clubId} not found`);
+        }
+    
+        // Check if the plan is free and limit is exceeded
+        return club.plan === PlanStatus.FREE && club.userList.length >= 5;
+    }
+    
+    
     async checkApplication(clubId: number): Promise<boolean> {
         const application = await this.prisma.application.findFirst({
             where: { clubId },
