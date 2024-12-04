@@ -98,12 +98,12 @@ export class ApplicationRepository {
         return updateClub.userList;
     }
 
-    async checkApplication(clubId: number): Promise<Application | null> {
+    async checkApplication(clubId: number): Promise<boolean> {
         const application = await this.prisma.application.findFirst({
             where: { clubId },
         });
     
-        // application이 없으면 null 반환
-        return application;
+        // clubId가 존재하면 true, 아니면 false 반환
+        return application ? true : false;
     }
 }

@@ -122,14 +122,7 @@ export class ApplicationController {
     async checkApplication(@Body() body: { clubId: number }) {
         try {
             const checkApplication = await this.applicationService.checkApplication(body.clubId);
-            
-            // 클럽 ID로 애플리케이션을 찾을 수 없을 경우 예외 처리
-            if (!checkApplication) {
-                throw new NotFoundException(`Application with Club Id ${body.clubId} not found`);
-            }
-    
-            // 애플리케이션이 존재하면 성공 응답
-            return checkApplication;  // 애플리케이션의 세부 정보 반환
+            return checkApplication;  
         } catch (error) {
             console.log(error);
             throw new InternalServerErrorException('Failed to check Application');
