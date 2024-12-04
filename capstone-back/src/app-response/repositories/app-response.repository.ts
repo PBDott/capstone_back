@@ -15,6 +15,12 @@ export class AppResponseRepository {
       },
     });
 
+
+    const application = await this.prisma.application.findUnique({
+      where: { applicationId: data.applicationId },
+      select: { questions: true },
+    });
+
     if (existingResponse) {
       throw new Error('Response already exists for this application and user.');
     }
@@ -24,6 +30,7 @@ export class AppResponseRepository {
         applicationId: data.applicationId,
         userId: data.userId,
         answers: data.answers,
+        questions: application.questions,
         status: 'PENDING',
       },
     });

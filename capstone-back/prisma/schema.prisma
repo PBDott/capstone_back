@@ -234,6 +234,7 @@ model AppResponse {
   user          User              @relation(fields: [userId], references: [userId])
   userId        Int               @map("user_id")
   answers       Json              @default("[]")
+  questions     Json              @default("[]")
   createdAt     DateTime          @default(now()) @map("created_at")
   status        ApplicationStatus @default(PENDING)
 }

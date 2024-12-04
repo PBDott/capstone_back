@@ -104,9 +104,9 @@ erDiagram
   Int id PK
   String room_id FK
   Int user_id FK
-  String content
+  String content "nullable"
   DateTime created_at
-  Int imageId "nullable"
+  Int imageId FK "nullable"
 }
 "Image" {
   Int id PK
@@ -121,7 +121,7 @@ erDiagram
   DateTime deletedAt "nullable"
   Json additionalInfo
   Int tradeId FK "nullable"
-  Int ChatId "nullable"
+  Int chatId UK "nullable"
   Int userId UK "nullable"
 }
 "Application" {
@@ -137,6 +137,7 @@ erDiagram
   Int application_id FK
   Int user_id FK
   Json answers
+  Json questions
   DateTime created_at
   ApplicationStatus status
 }
@@ -178,6 +179,7 @@ erDiagram
 "RoomParticipant" }o--|| "User" : user
 "Chat" }o--|| "Room" : room
 "Chat" }o--|| "User" : user
+"Chat" |o--o| "Image" : image
 "Image" }o--o| "Trade" : Trade
 "Application" }o--|| "Club" : club
 "AppResponse" }o--|| "Application" : application
@@ -327,7 +329,7 @@ erDiagram
   - `deletedAt`: 
   - `additionalInfo`: 
   - `tradeId`: 
-  - `ChatId`: 
+  - `chatId`: 
   - `userId`: 
 
 ### `Application`
@@ -347,6 +349,7 @@ erDiagram
   - `application_id`: 
   - `user_id`: 
   - `answers`: 
+  - `questions`: 
   - `created_at`: 
   - `status`: 
 

@@ -13,4 +13,8 @@ export class CreateAppResponseDto {
   @IsObject()
   @IsNotEmpty()
   answers: string[]; 
+
+  @IsObject()
+  @IsNotEmpty()
+  questions: string[];
 }
