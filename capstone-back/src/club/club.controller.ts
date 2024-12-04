@@ -58,7 +58,7 @@ export class ClubController {
   }
 
   @Get(':clubId')
-  async getClubById(@Param('clubId') clubId: number): Promise<Club> {
+  async getClubById(@Param('clubId', ParseIntPipe) clubId: number): Promise<Club> {
     try {
       const club = await this.clubService.getClubById(clubId);
       if (!club) {
@@ -66,6 +66,7 @@ export class ClubController {
       }
       return club;
     } catch (error) {
+      console.error('Error:', error);
       throw new InternalServerErrorException('Failed to get club by id');
     }
   }
