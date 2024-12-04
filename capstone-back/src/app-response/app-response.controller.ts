@@ -45,4 +45,17 @@ export class AppResponseController {
       return application;
   }
 
+  @Get('availableClub')
+  @UseGuards(JwtAuthGuard)
+  async availableClub(@Req() req) {
+    try {
+      const { userId } = req.payload;
+      const clubs = await this.applicationResponseService.availableClub(userId);
+      return clubs;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Failed to fetch clubs excluding user applications');
+    }
+  }
+
 }

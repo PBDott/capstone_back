@@ -43,4 +43,29 @@ export class AppResponseRepository {
     return applications.length > 0 ? applications[0] : null;
   }
 
+  async availableClub(userId: number) {
+    const userApplications = await this.prisma.appResponse.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        application: {
+          select: {
+            clubId: true,  
+          },
+        },
+      },
+    });
+
+    const appliedClubIds = userApplications.map(response => response.application.clubId);
+
+    return this.prisma.club.findMany({
+      where: {
+        NOT: {
+          clubId: { in: appliedClubIds },  
+        },
+      },
+    });
+  }
+
 }
