@@ -117,7 +117,6 @@ export class ApplicationController {
             return updatedResponse;
         } catch (error) {
             console.log(error)
-            throw new InternalServerErrorException('Failed to update Appresponse status');
         }
     }
 
@@ -133,6 +132,5 @@ export class ApplicationController {
             throw new InternalServerErrorException('Failed to check Application');
         }
     }
-
 
 }

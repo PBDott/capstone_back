@@ -107,6 +107,7 @@ export class ClubAdminController {
       return await this.clubAdminService.changePlan(clubId, planStatus);
     } catch (error) {
       console.log(error)
+      throw new InternalServerErrorException('Failed to change plan')
     }
   }
 }
