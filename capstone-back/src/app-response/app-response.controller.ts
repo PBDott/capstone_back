@@ -2,6 +2,7 @@ import { Body, Controller, Get, InternalServerErrorException, NotFoundException,
 import { CreateAppResponseDto } from "./dto/create-app-response.dto";
 import { AppResponseService } from "./app-response.service";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { Application } from "@prisma/client";
 
 @Controller('app-response')
 export class AppResponseController {
@@ -21,20 +22,6 @@ export class AppResponseController {
     }
   }
 
-  @Get('byApplication')
-  async getResponsesByApplicationId(@Query('applicationId', ParseIntPipe) applicationId: number) {
-    try {
-      const responses = await this.applicationResponseService.getResponsesByApplicationId(applicationId);
-      if (!responses) {
-        throw new NotFoundException(`No responses found for application ID ${applicationId}`);
-      }
-      return responses;
-    } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Failed to fetch responses by application ID');
-    }
-  }
-
   @Get('byUser')
   async getResponsesByUserId(@Query('userId', ParseIntPipe) userId: number) {
     try {
@@ -48,4 +35,14 @@ export class AppResponseController {
       throw new InternalServerErrorException('Failed to fetch responses by user ID');
     }
   }
+
+  @Get('')
+  async getApplicationByClubId(@Query('clubId', ParseIntPipe) clubId: number): Promise<Application> {
+      const application = await this.applicationResponseService.getApplicationByClubId(clubId);
+      if (!application) {
+          throw new NotFoundException(`No application found for club ID ${clubId}`);
+      }
+      return application;
+  }
+
 }

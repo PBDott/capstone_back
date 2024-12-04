@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { AppResponseRepository } from "./repositories/app-response.repository";
 import { CreateAppResponseDto } from "./dto/create-app-response.dto";
+import { Application } from "@prisma/client";
 
 @Injectable()
 export class AppResponseService {
@@ -10,11 +11,11 @@ export class AppResponseService {
       return this.applicationResponseRepository.createResponse(createDto);
     }
   
-    async getResponsesByApplicationId(applicationId: number) {
-      return this.applicationResponseRepository.getResponsesByApplicationId(applicationId);
-    }
-  
     async getResponsesByUserId(userId: number) {
       return this.applicationResponseRepository.getResponsesByUserId(userId);
+    }
+
+    async getApplicationByClubId(clubId: number): Promise<Application> {
+      return this.applicationResponseRepository.getApplicationByClubId(clubId);
     }
 }

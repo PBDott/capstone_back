@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateAppResponseDto } from "../dto/create-app-response.dto";
 import { PrismaService } from "src/prisma.service";
+import { Application } from "@prisma/client";
 
 @Injectable()
 export class AppResponseRepository {
@@ -22,15 +23,9 @@ export class AppResponseRepository {
       data: {
         applicationId: data.applicationId,
         userId: data.userId,
-        answers: data.answers, 
+        answers: data.answers,
         status: 'PENDING',
       },
-    });
-  }
-
-  async getResponsesByApplicationId(applicationId: number) {
-    return this.prisma.appResponse.findMany({
-      where: { applicationId },
     });
   }
 
@@ -39,4 +34,13 @@ export class AppResponseRepository {
       where: { userId },
     });
   }
+
+  async getApplicationByClubId(clubId: number): Promise<Application | null> {
+    const applications = await this.prisma.application.findMany({
+      where: { clubId },
+    });
+
+    return applications.length > 0 ? applications[0] : null;
+  }
+
 }
