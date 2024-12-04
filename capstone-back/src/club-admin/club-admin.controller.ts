@@ -88,7 +88,8 @@ export class ClubAdminController {
   @Post('deleteUser')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ClubRoles('CLUBADMIN')
-  async deleteUser(@Body() clubId: number, userId: number ) {
+  async deleteUser(@Body() body: { clubId: number, userId: number }) {
+    const {clubId, userId} = body;
     try {
       return await this.clubAdminService.deleteUser(clubId, userId);
     } catch (error) {
