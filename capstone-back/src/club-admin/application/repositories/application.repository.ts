@@ -87,7 +87,7 @@ export class ApplicationRepository {
         const userList: number[] = club.userList as number[];
 
         if (club.plan === PlanStatus.FREE && userList.length >= 5) {
-            throw new NotAcceptableException('User max limit hit for free plan');
+            throw new NotAcceptableException('User max limit hit');
         }
 
         if (userList.includes(userId)) {
