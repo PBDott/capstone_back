@@ -92,6 +92,7 @@ export class ClubAdminController {
     try {
       return await this.clubAdminService.deleteUser(clubId, userId);
     } catch (error) {
+      console.log(error)
       throw new InternalServerErrorException('Failed to club delete')
     }
   } 
