@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, NotAcceptableException } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 import { CreasteApplicationDto } from "../dto/create-application.dto";
 import { UpdateApplicationDto } from "../dto/update-application";
@@ -87,11 +87,7 @@ export class ApplicationRepository {
         const userList: number[] = club.userList as number[];
 
         if (club.plan === PlanStatus.FREE && userList.length >= 5) {
-            // 최대 사용자 수 제한을 초과한 경우 예외 처리
-            throw new HttpException(
-                { message: 'User max limit hit for free plan' },
-                HttpStatus.BAD_REQUEST
-            );
+            throw new NotAcceptableException('User max limit hit for free plan');
         }
 
         if (userList.includes(userId)) {
