@@ -17,8 +17,8 @@ export class ChatRepository {
           },
         },
       },
-    })).map(({ content, createdAt, id, roomId, user, userId, imageId }) => ({
-      message: content, createdAt, id, roomId, nickname: user.nickname, userId, imageId
+    })).map(({ message, createdAt, id, roomId, user, userId, imageId }) => ({
+      message: message, createdAt, id, roomId, nickname: user.nickname, userId, imageId
     }));
   }
 
@@ -27,7 +27,7 @@ export class ChatRepository {
       data: {
         roomId,
         userId,
-        content: message,
+        message: message,
         imageId,
       }
     })

@@ -5,14 +5,16 @@ export class Trade {
     publication: string;  // 출판사
     seller: string;   // 판매자
     price: number;    // 가격
+    imageId: number;  // 이미지 ID
   
-    constructor(tradeId: number, title: string, author: string, publication: string, seller: string, price: number) {
+    constructor(tradeId: number, title: string, author: string, publication: string, seller: string, price: number, imageId: number) {
       this.tradeId = tradeId;
       this.title = title;
       this.author = author;
       this.publication = publication;
       this.seller = seller;
       this.price = price;
+      this.imageId = imageId;
     }
   }
   

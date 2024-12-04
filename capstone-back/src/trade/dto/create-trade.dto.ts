@@ -16,4 +16,7 @@ export class CreateTradeDto {
   @IsInt()
   @IsNotEmpty()
   sellerId: number;
+
+  @IsInt()
+  imageId: number;
 }

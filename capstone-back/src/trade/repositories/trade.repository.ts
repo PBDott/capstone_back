@@ -17,6 +17,7 @@ export class TradeRepository {
         title: tradeData.title,
         author: tradeData.nickname,
         price: tradeData.price,
+        imageId: tradeData.imageId,
         seller: {
           connect: { userId: tradeData.sellerId }
         }
