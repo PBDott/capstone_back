@@ -20,8 +20,13 @@ export class ApplicationController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ClubRoles('CLUBADMIN')
     async createApplication(@Body() createDto: CreasteApplicationDto): Promise<Application> {
-        return this.applicationService.createApplication(createDto);
+        try {
+            return this.applicationService.createApplication(createDto);
+        } catch (error) {
+            console.log(error)
+        }
     }
+
 
     @Get('')
     @UseGuards(JwtAuthGuard, RolesGuard)
@@ -122,12 +127,12 @@ export class ApplicationController {
     async checkApplication(@Body() body: { clubId: number }) {
         try {
             const checkApplication = await this.applicationService.checkApplication(body.clubId);
-            return checkApplication;  
+            return checkApplication;
         } catch (error) {
             console.log(error);
             throw new InternalServerErrorException('Failed to check Application');
         }
     }
-    
+
 
 }
