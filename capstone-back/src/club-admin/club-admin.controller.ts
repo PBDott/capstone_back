@@ -57,21 +57,34 @@ export class ClubAdminController {
       throw new InternalServerErrorException('Failed to update club admin');
     }
   }
-  /*
+  
   @Post('getAllMember')
-  async getAllMember(@Body() clubId: number) {
+  async getAllMember(@Body() body: { clubId: number }) {
     try {
-      const clubUsers = await this.clubAdminService.getAllMember(clubId);
-      if (!clubUsers) {
-        throw new NotFoundException(`No users found for club with ID ${clubId}`);
+      const clubUser = await this.clubAdminService.getAllMember(body.clubId);
+      if (!clubUser) {
+        throw new NotFoundException(`No users found for club with ID ${body.clubId}`);
       }
-      return clubUsers;
+      return clubUser;
     } catch (error) {
       console.error("Error in getAllClubUser:", error);
       throw new InternalServerErrorException('Failed to retrieve club users');
     }
   }
-  */
+  
+  @Post('getAllClubAdmin')
+  async getAllClubAdmin(@Body() body: { clubId: number }) {
+    try {
+      const clubUser = await this.clubAdminService.getAllClubAdmin(body.clubId);
+      if (!clubUser) {
+        throw new NotFoundException(`No users found for club with ID ${body.clubId}`);
+      }
+      return clubUser;
+    } catch (error) {
+      console.error("Error in getAllClubAdmin:", error);
+      throw new InternalServerErrorException('Failed to retrieve club admin');
+    }
+  }
 
   @Post('getClubData') 
   @UseGuards(JwtAuthGuard, RolesGuard)

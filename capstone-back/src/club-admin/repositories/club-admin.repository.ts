@@ -47,10 +47,52 @@ export class ClubAdminRepository {
             where: {
                 adminList: {
                     //path: 'data',  
-                    array_contains: [userId],  
+                    array_contains: [userId],
                 },
             },
         });
     }
 
+    async getAllMember(clubId: number) {
+        const club = await this.prisma.club.findUnique({
+            where: { clubId },
+            select: {
+                userList: true, 
+                adminList: true, 
+            },
+        });
+
+        const userList: number[] = club.userList as number[];
+        const adminList: number[] = club.adminList as number[];
+
+        const userId = [...userList, ...adminList];
+        const uniqueUserId = [...new Set(userId)];
+
+        return await this.prisma.user.findMany({
+            where: {
+                userId: {
+                    in: uniqueUserId,
+                },
+            },
+        });
+    }
+
+    async getAllClubAdmin(clubId: number) {
+        const club = await this.prisma.club.findUnique({
+            where: { clubId },
+            select: {
+                adminList: true
+            }
+        });
+
+        const adminList: number[] = club.adminList as number[];
+
+        return await this.prisma.user.findMany({
+            where: {
+                userId: {
+                    in: adminList,
+                },
+            },
+        });
+    }
 }      

@@ -17,6 +17,7 @@ export class ReceiptController {
         try {
             return await this.receiptService.createReceipt(createReceiptDto);
         } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Failed to create receipt');
         }
     }

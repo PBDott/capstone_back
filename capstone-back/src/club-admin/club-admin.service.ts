@@ -36,11 +36,14 @@ export class ClubAdminService {
       throw new InternalServerErrorException('Failed to update club admin');
     }
   }
-  /*
+  
   async getAllMember(clubId: number) {
       return await this.clubAdminRepository.getAllMember(clubId);
   }
-  */
+  
+  async getAllClubAdmin(clubId: number) {
+    return await this.clubAdminRepository.getAllClubAdmin(clubId);
+  }
 
   async getClubData(userId: number) {
     return await this.clubAdminRepository.getClubData(userId);
