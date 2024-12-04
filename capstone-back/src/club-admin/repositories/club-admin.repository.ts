@@ -29,17 +29,24 @@ export class ClubAdminRepository {
         if (!adminList.includes(userId)) {
             adminList.push(userId);
         }
+        const userList: number[] = club.userList as number[];
+        const updatedUserList = userList.filter(id => id !== userId);
 
-        return this.prisma.$transaction([
+        await this.prisma.$transaction([
             this.prisma.club.update({
                 where: { clubId },
-                data: { adminList },
+                data: { 
+                    userList: updatedUserList,
+                    adminList 
+                },
             }),
             this.prisma.user.update({
                 where: { userId },
                 data: { role: 'CLUBADMIN' },
             }),
         ]);
+
+        return await this.getAllMember(clubId);
     }
 
     async getClubData(userId: number) {
@@ -67,6 +74,7 @@ export class ClubAdminRepository {
 
         const userId = [...userList, ...adminList];
         const uniqueUserId = [...new Set(userId)];
+        
 
         return await this.prisma.user.findMany({
             where: {
@@ -77,22 +85,4 @@ export class ClubAdminRepository {
         });
     }
 
-    async getAllClubAdmin(clubId: number) {
-        const club = await this.prisma.club.findUnique({
-            where: { clubId },
-            select: {
-                adminList: true
-            }
-        });
-
-        const adminList: number[] = club.adminList as number[];
-
-        return await this.prisma.user.findMany({
-            where: {
-                userId: {
-                    in: adminList,
-                },
-            },
-        });
-    }
 }      

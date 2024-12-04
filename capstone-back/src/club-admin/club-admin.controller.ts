@@ -71,20 +71,6 @@ export class ClubAdminController {
       throw new InternalServerErrorException('Failed to retrieve club users');
     }
   }
-  
-  @Post('getAllClubAdmin')
-  async getAllClubAdmin(@Body() body: { clubId: number }) {
-    try {
-      const clubUser = await this.clubAdminService.getAllClubAdmin(body.clubId);
-      if (!clubUser) {
-        throw new NotFoundException(`No users found for club with ID ${body.clubId}`);
-      }
-      return clubUser;
-    } catch (error) {
-      console.error("Error in getAllClubAdmin:", error);
-      throw new InternalServerErrorException('Failed to retrieve club admin');
-    }
-  }
 
   @Post('getClubData')
   @UseGuards(JwtAuthGuard, RolesGuard)
