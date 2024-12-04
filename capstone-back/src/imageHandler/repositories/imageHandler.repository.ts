@@ -24,7 +24,7 @@ export class ImageHandlerRepository {
 
   async saveMetadata(metadata: MetadataDto) {
     const { height, name, path, size, userId, width } = metadata;
-    await this.prisma.image.create({
+    const { id } = await this.prisma.image.create({
       data: {
         height,
         name,
@@ -35,6 +35,7 @@ export class ImageHandlerRepository {
         // [TODO] use if needed
         additionalInfo: {},
       }
-    })
+    });
+    return id;
   }
 }
