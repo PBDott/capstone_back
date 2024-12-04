@@ -8,10 +8,18 @@ export class ImageHandlerRepository {
     private readonly prisma: PrismaService
   ) { }
 
+  async getFilePath(id: number) {
+    const { path } = await this.prisma.image.findUnique({
+      where: { id },
+      select: { path: true }
+    });
+    return path;
+  }
+
   async getMetadatas(id: number) {
     return this.prisma.image.findUnique({
       where: { id },
-    })
+    });
   }
 
   async saveMetadata(metadata: MetadataDto) {

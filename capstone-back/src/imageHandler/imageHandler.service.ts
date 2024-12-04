@@ -19,11 +19,10 @@ export class ImageHandlerService {
     private readonly imageHandlerRepository: ImageHandlerRepository,
   ) { }
 
-  async getImageInfo({ id, filename }: { id: number, filename: string }) {
+  async getImage({ id, filename }: { id: number, filename: string }) {
     const filePath = filename ?
       join(this.path, filename) :
-      (await this.imageHandlerRepository.getMetadatas(id)).path
-
+      await this.imageHandlerRepository.getFilePath(id);
     try {
       await fs.access(filePath);
 

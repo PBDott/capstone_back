@@ -31,7 +31,7 @@ export class ImageHandlerController {
     @Res() res: Response
   ) {
     try {
-      const { path, contentType } = await this.imageHandlerService.getImageInfo({ id, filename });
+      const { path, contentType } = await this.imageHandlerService.getImage({ id, filename });
       res.setHeader('Content-Type', contentType);
       res.sendFile(path);
     } catch (error) {
