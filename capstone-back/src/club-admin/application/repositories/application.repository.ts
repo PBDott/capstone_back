@@ -18,8 +18,8 @@ export class ApplicationRepository {
         const applications = await this.prisma.application.findMany({
             where: { clubId },
         });
-    
-        return applications.length > 0 ? applications[0] : null; 
+
+        return applications.length > 0 ? applications[0] : null;
     }
 
     async getApplicationById(applicationId: number): Promise<Application> {
@@ -35,7 +35,7 @@ export class ApplicationRepository {
             data: updateData
         });
     }
-    
+
     async deleteApplication(applicationId: number): Promise<Application> {
         return this.prisma.application.delete({
             where: { applicationId }
@@ -46,7 +46,7 @@ export class ApplicationRepository {
         return this.prisma.appResponse.findMany({
             where: { applicationId },
             include: {
-                user: true,  
+                user: true,
             },
         });
     }
@@ -84,7 +84,7 @@ export class ApplicationRepository {
         }
 
         //const userList: number[] = club.userList as number[]
-        const userList: number[] = club.userList as number[]; 
+        const userList: number[] = club.userList as number[];
 
         if (club.plan === PlanStatus.FREE && userList.length >= 5) {
             throw new Error('max user limit hit');
@@ -92,11 +92,10 @@ export class ApplicationRepository {
 
         if (userList.includes(userId)) {
             throw new HttpException(
-                'max user limit hit',
-                HttpStatus.BAD_REQUEST,
+                { message: 'Max user limit hit' },  // Custom error message
+                HttpStatus.BAD_REQUEST,             // HTTP status code
             );
         }
-
         userList.push(userId);
 
         const updateClub = await this.prisma.club.update({
@@ -104,7 +103,7 @@ export class ApplicationRepository {
             data: { userList },
             select: { userList: true },
         });
-        
+
         return updateClub.userList;
     }
 
@@ -112,7 +111,7 @@ export class ApplicationRepository {
         const application = await this.prisma.application.findFirst({
             where: { clubId },
         });
-    
+
         // clubId가 존재하면 true, 아니면 false 반환
         return application ? true : false;
     }
