@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ApplicationRepository } from "./repositories/application.repository";
 import { CreasteApplicationDto } from "./dto/create-application.dto";
 import { UpdateApplicationDto } from "./dto/update-application";
