@@ -9,7 +9,7 @@ export class ImageHandlerRepository {
   ) { }
 
   async getMetadatas(id: number) {
-    await this.prisma.image.findUnique({
+    return this.prisma.image.findUnique({
       where: { id },
     })
   }
