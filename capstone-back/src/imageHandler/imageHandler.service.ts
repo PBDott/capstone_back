@@ -105,4 +105,8 @@ export class ImageHandlerService {
       );
     }
   }
+
+  async attachImagesToTrade({ imageIds, tradeId }: { imageIds: number[], tradeId: number }) {
+    return this.imageHandlerRepository.attachImagesToTrade({ imageIds, tradeId });
+  }
 }
