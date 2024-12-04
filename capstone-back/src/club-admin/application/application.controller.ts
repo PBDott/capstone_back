@@ -128,6 +128,7 @@ export class ApplicationController {
             }
             return checkApplication;
         } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Failed to check Application');
         }
     }
