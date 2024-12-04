@@ -129,6 +129,7 @@ export class ApplicationController {
             if(!checkApplication) {
                 throw new NotFoundException(`Application with Id ${body.clubId} not found`);
             }
+            return checkApplication;
         } catch (error) {
             throw new InternalServerErrorException('Failed to check Application');
         }

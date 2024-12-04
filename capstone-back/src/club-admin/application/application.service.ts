@@ -42,7 +42,7 @@ export class ApplicationService {
     return updatedResponse;
   }
 
-  async checkApplication(applicationId: number) {
-    return this.applicationRepository.checkApplication(applicationId);
+  async checkApplication(clubId: number) {
+    return this.applicationRepository.checkApplication(clubId);
   }
 }
