@@ -83,7 +83,7 @@ export class ImageHandlerService {
           throw new BadRequestException('not filtered');
       }
 
-      await this.imageHandlerRepository.saveMetadata({
+      const imageId = await this.imageHandlerRepository.saveMetadata({
         width: metadata.width,
         height: metadata.height,
         name: file.originalname,
@@ -97,7 +97,7 @@ export class ImageHandlerService {
         await this.saveMetadatas(...);
         return imageUrl;
       */
-      return file.filename;
+      return imageId;
     } catch (e) {
       console.error(e);
       throw new InternalServerErrorException(
