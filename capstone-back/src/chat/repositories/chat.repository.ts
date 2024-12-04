@@ -19,7 +19,7 @@ export class ChatRepository {
         },
       },
     })).map(({ content, createdAt, id, roomId, user, userId }) => ({
-      content, createdAt, id, roomId, nickname: user.nickname, userId
+      message: content, createdAt, id, roomId, nickname: user.nickname, userId
     }));
   }
 
