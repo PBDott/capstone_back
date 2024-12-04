@@ -22,9 +22,18 @@ export class ClubRepository {
   }
 
   async getAllClub(): Promise<Club[]> {
-    return this.prisma.club.findMany({
-      where: { status: 'ACCEPTED' }
+    const clubs = await this.prisma.club.findMany({
+      where: { status: 'ACCEPTED' },
+      include: {
+        applications: true,  // 동아리에 속한 Application 정보를 포함
+      },
     });
+  
+    // 각 동아리에 대해 application이 있는지 확인
+    return clubs.map(club => ({
+      ...club,
+      application: club.applications.length > 0,  // application이 존재하면 true, 아니면 false
+    }));
   }
 
   async getClubById(clubId: number): Promise<Club> {
