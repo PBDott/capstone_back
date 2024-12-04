@@ -11,7 +11,7 @@ export class ImageHandlerRepository {
   async getMetadatas(id: number) {
     return this.prisma.image.findUnique({
       where: { id },
-    })
+    });
   }
 
   async saveMetadata(metadata: MetadataDto) {
