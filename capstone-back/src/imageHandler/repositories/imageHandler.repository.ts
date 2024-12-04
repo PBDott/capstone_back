@@ -50,4 +50,15 @@ export class ImageHandlerRepository {
       },
     });
   }
+
+  async attachImagesToChat({ imageId, chatId }: { imageId: number, chatId: number }) {
+    return this.prisma.image.update({
+      where: {
+        id: imageId,
+      },
+      data: {
+        chatId,
+      },
+    });
+  }
 }
