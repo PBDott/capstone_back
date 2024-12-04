@@ -6,9 +6,10 @@ import { CreateChatDto } from './dto/create-chat.dto';
 
 @Controller(':type/:id/room/chat')
 export class ChatController {
-  constructor(private readonly chatService: ChatService,
-
+  constructor(
+    private readonly chatService: ChatService,
   ) { }
+
   @Post()
   @UseGuards(JwtAuthGuard)
   async createChat(
