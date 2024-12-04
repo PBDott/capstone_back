@@ -119,18 +119,22 @@ export class ApplicationController {
     @Post('checkApplication')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ClubRoles('CLUBADMIN')
-    async checkApplication(@Body() body: {clubId: number}) {
+    async checkApplication(@Body() body: { clubId: number }) {
         try {
             const checkApplication = await this.applicationService.checkApplication(body.clubId);
             
-            if(!checkApplication) {
-                throw new NotFoundException(`Application with Id ${body.clubId} not found`);
+            // 클럽 ID로 애플리케이션을 찾을 수 없을 경우 예외 처리
+            if (!checkApplication) {
+                throw new NotFoundException(`Application with Club Id ${body.clubId} not found`);
             }
-            return checkApplication;
+    
+            // 애플리케이션이 존재하면 성공 응답
+            return checkApplication;  // 애플리케이션의 세부 정보 반환
         } catch (error) {
-            console.log(error)
+            console.log(error);
             throw new InternalServerErrorException('Failed to check Application');
         }
     }
+    
 
 }
