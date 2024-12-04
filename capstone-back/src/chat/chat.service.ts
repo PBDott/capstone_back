@@ -12,13 +12,12 @@ export class ChatService {
     return this.chatRepository.getChatsByRoomId({ roomId, offset, limit });
   }
 
-  async createChat({ message, userId, roomId, }: { userId: number, roomId: string, message: string }) {
-    return this.chatRepository.saveChat({ message, userId, roomId, })
+  async createChat({ message, userId, roomId, imageId }: { userId: number, roomId: string, message: string | null, imageId: number | null }) {
+    return this.chatRepository.saveChat({ message, userId, roomId, imageId })
   }
 
-  triggerBroadcast({ message, userId, nickname, roomId }) {
-    console.log(`broadcast to ${roomId}`);
-    io.to(roomId).emit('message', { message, userId, nickname });
+  triggerBroadcast({ message, userId, nickname, roomId, imageId }) {
+    io.to(roomId).emit('message', { message, userId, nickname, imageId });
     // io.emit('message', { message, roomId, userId, nickname });
   }
 }

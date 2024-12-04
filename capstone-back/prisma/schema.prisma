@@ -188,11 +188,12 @@ model Chat {
   id        Int      @id @default(autoincrement())
   roomId    String   @map("room_id")
   userId    Int      @map("user_id")
-  content   String
+  content   String?
   room      Room     @relation(fields: [roomId], references: [id])
   user      User     @relation(fields: [userId], references: [userId])
   createdAt DateTime @default(now()) @map("created_at")
-  imageId   Int?
+  imageId   Int?     @unique
+  image     Image?   @relation("ChatImage", fields: [imageId], references: [id])
 }
 
 model Image {
@@ -209,9 +210,10 @@ model Image {
   deletedAt      DateTime?
   additionalInfo Json
   tradeId        Int?
-  ChatId         Int?
+  chatId         Int?      @unique
   userId         Int?      @unique
   Trade          Trade?    @relation("TradeImages", fields: [tradeId], references: [tradeId])
+  Chat           Chat?     @relation("ChatImage")
 }
 
 model Application {

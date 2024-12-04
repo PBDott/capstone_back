@@ -16,16 +16,21 @@ export class ChatController {
     @Body() createChatDto: CreateChatDto,
     @Req() req: Request,
   ) {
-    const { message } = createChatDto;
+    const { message, isImage, imageId } = createChatDto;
+    if (
+      message === null && isImage === false
+      || imageId === null && isImage === true
+    ) {
+      throw new BadRequestException();
+    }
     const { userId, nickname } = req.payload;
     const { type, id } = req.params;
-    console.log(createChatDto);
     if (type !== 'club' && type !== 'trade') {
       throw new BadRequestException();
     }
     const roomId = `${type}:${id}`;
-    await this.chatService.createChat({ message, roomId, userId });
-    this.chatService.triggerBroadcast({ message, userId, nickname, roomId });
-    return message;
+    await this.chatService.createChat({ message, roomId, userId, imageId });
+    this.chatService.triggerBroadcast({ message, userId, nickname, roomId, imageId });
+    return;
   }
 }

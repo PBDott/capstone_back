@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-// import { Message } from '../entities/message.entity';
 
 @Injectable()
 export class ChatRepository {
@@ -18,17 +17,18 @@ export class ChatRepository {
           },
         },
       },
-    })).map(({ content, createdAt, id, roomId, user, userId }) => ({
-      message: content, createdAt, id, roomId, nickname: user.nickname, userId
+    })).map(({ content, createdAt, id, roomId, user, userId, imageId }) => ({
+      message: content, createdAt, id, roomId, nickname: user.nickname, userId, imageId
     }));
   }
 
-  async saveChat({ userId, message, roomId }: { userId: number, message: string, roomId: string }) {
+  async saveChat({ userId, message, roomId, imageId }: { userId: number, message: string | null, roomId: string, imageId: number | null }) {
     return this.prisma.chat.create({
       data: {
         roomId,
         userId,
-        content: message
+        content: message,
+        imageId,
       }
     })
   }
