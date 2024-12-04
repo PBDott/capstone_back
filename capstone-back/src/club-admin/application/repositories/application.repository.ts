@@ -44,7 +44,10 @@ export class ApplicationRepository {
 
     async getAppResponseByApplicationId(applicationId: number) {
         return this.prisma.appResponse.findMany({
-            where: { applicationId }
+            where: { applicationId },
+            include: {
+                user: true,  
+            },
         });
     }
 
