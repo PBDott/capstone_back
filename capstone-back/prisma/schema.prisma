@@ -86,6 +86,7 @@ model Club {
   room             Room?
   calendar         Calendar[]
   ClubParticipants ClubParticipants[]
+  Image            Image[]            @relation("ClubImage")
 }
 
 model ClubParticipants {
@@ -213,6 +214,8 @@ model Image {
   userId         Int?      @unique
   Trade          Trade?    @relation("TradeImages", fields: [tradeId], references: [tradeId])
   Chat           Chat?     @relation("ChatImage")
+  Club           Club?     @relation("ClubImage", fields: [clubId], references: [clubId])
+  clubId         Int?
 }
 
 model Application {
