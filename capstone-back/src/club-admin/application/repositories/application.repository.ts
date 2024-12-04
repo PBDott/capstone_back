@@ -35,7 +35,7 @@ export class ApplicationRepository {
             data: updateData
         });
     }
-
+    
     async deleteApplication(applicationId: number): Promise<Application> {
         return this.prisma.application.delete({
             where: { applicationId }
@@ -103,7 +103,7 @@ export class ApplicationRepository {
             where: { clubId },
         });
 
-        if(applications) {
+        if(applications.length > 0) {
             return true;
         } else {
             return false;
