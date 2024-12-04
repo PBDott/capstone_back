@@ -9,10 +9,10 @@ export class ApplicationService {
   constructor(private readonly applicationRepository: ApplicationRepository) { }
 
   async createApplication(createDto: CreasteApplicationDto): Promise<Application> {
-    return this.applicationRepository.creasteApplication(createDto);
+    return this.applicationRepository.createApplication(createDto);
   }
 
-  async getApplicationByClubId(clubId: number): Promise<Application[]> {
+  async getApplicationByClubId(clubId: number): Promise<Application> {
     return this.applicationRepository.getApplicationByClubId(clubId);
   }
 

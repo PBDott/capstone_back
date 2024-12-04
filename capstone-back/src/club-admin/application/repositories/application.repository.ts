@@ -8,17 +8,18 @@ import { Application, ApplicationStatus } from "@prisma/client";
 export class ApplicationRepository {
     constructor(private readonly prisma: PrismaService) { }
 
-    async creasteApplication(data: CreasteApplicationDto): Promise<Application> {
-
+    async createApplication(data: CreasteApplicationDto): Promise<Application> {
         return this.prisma.application.create({
             data,
         });
     }
 
-    async getApplicationByClubId(clubId: number): Promise<Application[]> {
-        return this.prisma.application.findMany({
-            where: { clubId }
+    async getApplicationByClubId(clubId: number): Promise<Application | null> {
+        const applications = await this.prisma.application.findMany({
+            where: { clubId },
         });
+    
+        return applications.length > 0 ? applications[0] : null; 
     }
 
     async getApplicationById(applicationId: number): Promise<Application> {

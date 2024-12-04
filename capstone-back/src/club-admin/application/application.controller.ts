@@ -26,16 +26,12 @@ export class ApplicationController {
     @Get('')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ClubRoles('CLUBADMIN')
-    async getApplicationByClubId(@Query('clubId', ParseIntPipe) clubId: number): Promise<Application[]> {
-        try {
-            const application = await this.applicationService.getApplicationByClubId(clubId);
-            if (!application) {
-                throw new NotFoundException(`No application found for club ID ${clubId}`);
-            }
-            return application;
-        } catch (error) {
-            throw new InternalServerErrorException('Failed to get application forms');
+    async getApplicationByClubId(@Query('clubId', ParseIntPipe) clubId: number): Promise<Application> {
+        const application = await this.applicationService.getApplicationByClubId(clubId);
+        if (!application) {
+            throw new NotFoundException(`No application found for club ID ${clubId}`);
         }
+        return application;
     }
 
     @Get('byApplication')
