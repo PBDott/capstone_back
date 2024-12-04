@@ -26,7 +26,7 @@ export class ImageHandlerController {
 
   @Get()
   async getImage(
-    @Query('id', ParseIntPipe) id: number,
+    @Query('id', new ParseIntPipe({ optional: true })) id: number,
     @Query('filename') filename: string,
     @Res() res: Response
   ) {
