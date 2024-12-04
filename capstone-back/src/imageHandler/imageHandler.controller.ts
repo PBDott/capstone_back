@@ -3,7 +3,6 @@ import {
   DefaultValuePipe,
   Get,
   NotFoundException,
-  Param,
   ParseIntPipe,
   Post,
   Query,
@@ -25,11 +24,14 @@ import { Request } from 'src/common/user.interface';
 export class ImageHandlerController {
   constructor(private readonly imageHandlerService: ImageHandlerService) { }
 
-  @Get(':filename')
-  async getImage(@Param('filename') filename: string, @Res() res: Response) {
+  @Get()
+  async getImage(
+    @Query('id', ParseIntPipe) id: number,
+    @Query('filename') filename: string,
+    @Res() res: Response
+  ) {
     try {
-      const { path, contentType } =
-        await this.imageHandlerService.getImageInfo(filename);
+      const { path, contentType } = await this.imageHandlerService.getImageInfo({ id, filename });
       res.setHeader('Content-Type', contentType);
       res.sendFile(path);
     } catch (error) {
