@@ -105,4 +105,16 @@ export class ImageHandlerService {
       );
     }
   }
+
+  async attachImagesToTrade({ imageIds, tradeId }: { imageIds: number[], tradeId: number }) {
+    return this.imageHandlerRepository.attachImagesToTrade({ imageIds, tradeId });
+  }
+
+  async attachImagesToChat({ imageId, chatId }: { imageId: number, chatId: number }) {
+    return this.imageHandlerRepository.attachImagesToChat({ imageId, chatId });
+  }
+
+  async attachImageToClub({ imageId, clubId }: { imageId: number, clubId: number }) {
+    return this.imageHandlerRepository.attachImageToClub({ imageId, clubId });
+  }
 }

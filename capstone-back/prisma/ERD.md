@@ -31,7 +31,6 @@ erDiagram
   DateTime updateAt
   Int views
   Int like_count
-  Int imageId "nullable"
 }
 "Club" {
   Int club_id PK
@@ -40,10 +39,13 @@ erDiagram
   String location
   String description
   ClubStatus status
-  String image_url
   Json admin_list
   Json user_list
+<<<<<<< HEAD
   PlanStatus plan
+=======
+  Int image_id FK "nullable"
+>>>>>>> stage
 }
 "ClubParticipants" {
   Int club_id FK
@@ -105,7 +107,11 @@ erDiagram
   Int id PK
   String room_id FK
   Int user_id FK
+<<<<<<< HEAD
   String message "nullable"
+=======
+  String content "nullable"
+>>>>>>> stage
   DateTime created_at
   Int imageId FK "nullable"
 }
@@ -124,6 +130,7 @@ erDiagram
   Int tradeId FK "nullable"
   Int chatId UK "nullable"
   Int userId UK "nullable"
+  Int clubId "nullable"
 }
 "Application" {
   Int application_id PK
@@ -161,6 +168,7 @@ erDiagram
 "User" |o--o| "Image" : image
 "Trade" }o--|| "User" : seller
 "Trade" }o--o| "User" : buyer
+"Club" |o--o| "Image" : Image
 "ClubParticipants" }o--|| "Club" : club
 "ClubParticipants" }o--|| "User" : user
 "TradeComment" }o--|| "User" : user
@@ -218,7 +226,6 @@ erDiagram
   - `updateAt`: 
   - `views`: 
   - `like_count`: 
-  - `imageId`: 
 
 ### `Club`
 
@@ -229,10 +236,13 @@ erDiagram
   - `location`: 
   - `description`: 
   - `status`: 
-  - `image_url`: 
   - `admin_list`: 
   - `user_list`: 
+<<<<<<< HEAD
   - `plan`: 
+=======
+  - `image_id`: 
+>>>>>>> stage
 
 ### `ClubParticipants`
 
@@ -333,6 +343,7 @@ erDiagram
   - `tradeId`: 
   - `chatId`: 
   - `userId`: 
+  - `clubId`: 
 
 ### `Application`
 

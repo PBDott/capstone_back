@@ -1,26 +1,14 @@
 import { IsInt, IsNotEmpty, IsString } from "class-validator";
 
-export class CreateTradeDto {
+export class CreateTradeRequestDto {
   @IsString()
   @IsNotEmpty()
   title: string;
-
-  @IsString()
-  @IsNotEmpty()
-  nickname: string;
 
   @IsInt()
   @IsNotEmpty()
   price: number;
 
   @IsInt()
-  @IsNotEmpty()
-  sellerId: number;
-
-  @IsInt()
-<<<<<<< HEAD
-  imageId: number;
-=======
   imageIds: number[];
->>>>>>> stage
 }

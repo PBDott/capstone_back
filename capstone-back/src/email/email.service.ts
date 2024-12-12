@@ -25,7 +25,7 @@ export class EmailService {
         const mailOptions: nodemailer.SendMailOptions = {
             from: this.configService.get<string>('EMAIL_FROM'), // 발신자 주소
             to, // 수신자 주소
-            subject: '[여기모여] 동아리 등록 신청 완료', // 이메일 제목
+            subject: '[여기모여] 동아리 등록 신청 수락', // 이메일 제목
             text: '동아리 등록 신청이 완료되었습니다.',
         };
 

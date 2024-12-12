@@ -11,16 +11,22 @@ import { LikeTradeDto } from "../dto/like-trade.dto";
 export class TradeRepository {
   constructor(private readonly prisma: PrismaService) { }
 
-  async createTrade(tradeData: CreateTradeDto): Promise<Trade> {
+  async createTrade({ nickname, price, sellerId, title }: CreateTradeDto): Promise<Trade> {
     return this.prisma.trade.create({
       data: {
+<<<<<<< HEAD
         title: tradeData.title,
         author: tradeData.nickname,
         price: tradeData.price,
         imageId: tradeData.imageId,
+=======
+        title,
+        price,
+        author: nickname,
+>>>>>>> stage
         seller: {
-          connect: { userId: tradeData.sellerId }
-        }
+          connect: { userId: sellerId }
+        },
       },
     });
   }

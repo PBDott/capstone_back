@@ -6,13 +6,20 @@ import { Trade, TradeLike } from '@prisma/client';
 import { BuyTradeDto } from './dto/buy-trade';
 import { CreateTradeCommentDto } from './dto/create-trade-comment.dto';
 import { LikeTradeDto } from './dto/like-trade.dto';
+import { ImageHandlerService } from 'src/imageHandler/imageHandler.service';
 
 @Injectable()
 export class TradeService {
-  constructor(private readonly tradeRepository: TradeRepository) { }
+  constructor(
+    private readonly tradeRepository: TradeRepository,
+    private readonly imageHandlerService: ImageHandlerService,
+  ) { }
 
-  async createTrade(createTradeDto: CreateTradeDto): Promise<Trade> {
-    return this.tradeRepository.createTrade(createTradeDto);
+  async createTrade(createTradeDto: CreateTradeDto) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const trade = await this.tradeRepository.createTrade(createTradeDto);
+    await this.imageHandlerService.attachImagesToTrade({ imageIds: createTradeDto.imageIds, tradeId: trade.tradeId })
+    return trade;
   }
 
   async getAll(): Promise<Trade[]> {
