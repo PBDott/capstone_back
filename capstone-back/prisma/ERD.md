@@ -105,7 +105,7 @@ erDiagram
   Int id PK
   String room_id FK
   Int user_id FK
-  String content "nullable"
+  String message "nullable"
   DateTime created_at
   Int imageId FK "nullable"
 }
@@ -312,7 +312,7 @@ erDiagram
   - `id`: 
   - `room_id`: 
   - `user_id`: 
-  - `content`: 
+  - `message`: 
   - `created_at`: 
   - `imageId`: 
 
