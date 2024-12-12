@@ -14,16 +14,9 @@ export class TradeRepository {
   async createTrade({ nickname, price, sellerId, title }: CreateTradeDto): Promise<Trade> {
     return this.prisma.trade.create({
       data: {
-<<<<<<< HEAD
-        title: tradeData.title,
-        author: tradeData.nickname,
-        price: tradeData.price,
-        imageId: tradeData.imageId,
-=======
         title,
         price,
         author: nickname,
->>>>>>> stage
         seller: {
           connect: { userId: sellerId }
         },

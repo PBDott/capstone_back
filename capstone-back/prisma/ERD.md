@@ -41,11 +41,8 @@ erDiagram
   ClubStatus status
   Json admin_list
   Json user_list
-<<<<<<< HEAD
   PlanStatus plan
-=======
   Int image_id FK "nullable"
->>>>>>> stage
 }
 "ClubParticipants" {
   Int club_id FK
@@ -107,11 +104,7 @@ erDiagram
   Int id PK
   String room_id FK
   Int user_id FK
-<<<<<<< HEAD
   String message "nullable"
-=======
-  String content "nullable"
->>>>>>> stage
   DateTime created_at
   Int imageId FK "nullable"
 }
@@ -238,11 +231,8 @@ erDiagram
   - `status`: 
   - `admin_list`: 
   - `user_list`: 
-<<<<<<< HEAD
   - `plan`: 
-=======
   - `image_id`: 
->>>>>>> stage
 
 ### `ClubParticipants`
 
