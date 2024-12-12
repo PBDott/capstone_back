@@ -37,19 +37,6 @@ export class ClubController {
     }
   }
 
-  @Get(':clubId')
-  async getClubById(@Param('clubId', ParseIntPipe) clubId: number): Promise<Club> {
-    try {
-      const club = await this.clubService.getClubById(clubId);
-      if (!club) {
-        throw new NotFoundException(`Club with Id ${clubId} not found`);
-      }
-      return club;
-    } catch (error) {
-      console.error('Error:', error);
-      throw new InternalServerErrorException('Failed to get club by id');
-    }
-  }
 
   @Get('calendar')
   async getAllCalendars(@Query('clubId', ParseIntPipe) clubId: number) {
@@ -68,4 +55,19 @@ export class ClubController {
       throw new InternalServerErrorException('Failed to fetch receipts');
     }
   }
+
+  @Get(':clubId')
+  async getClubById(@Param('clubId', ParseIntPipe) clubId: number): Promise<Club> {
+    try {
+      const club = await this.clubService.getClubById(clubId);
+      if (!club) {
+        throw new NotFoundException(`Club with Id ${clubId} not found`);
+      }
+      return club;
+    } catch (error) {
+      console.error('Error:', error);
+      throw new InternalServerErrorException('Failed to get club by id');
+    }
+  }
+
 }
