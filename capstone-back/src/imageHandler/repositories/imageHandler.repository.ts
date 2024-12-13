@@ -38,4 +38,40 @@ export class ImageHandlerRepository {
     });
     return id;
   }
+
+  async attachImagesToTrade({ imageIds, tradeId }: { imageIds: number[], tradeId: number }) {
+    return this.prisma.image.updateMany({
+      where: {
+        id: {
+          in: imageIds,
+        },
+      },
+      data: {
+        tradeId,
+      },
+    });
+  }
+
+  async attachImagesToChat({ imageId, chatId }: { imageId: number, chatId: number }) {
+    return this.prisma.image.update({
+      where: {
+        id: imageId,
+      },
+      data: {
+        chatId,
+      },
+    });
+  }
+
+
+  async attachImageToClub({ imageId, clubId }: { imageId: number, clubId: number }) {
+    return this.prisma.image.update({
+      where: {
+        id: imageId,
+      },
+      data: {
+        clubId,
+      },
+    });
+  }
 }

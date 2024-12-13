@@ -4,10 +4,14 @@ import { Club, User } from "@prisma/client";
 import { UpdateClubStatusDto } from "./dto/update-club-status.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { EmailService } from "src/email/email.service";
 
 @Injectable()
 export class AdminService {
-    constructor(private readonly adminRepository: AdminRepository) {}
+    constructor(
+        private readonly adminRepository: AdminRepository,
+        private readonly emailService: EmailService
+    ) {}
 
     async changeAdmin(userId: number): Promise<User> {
         return this.adminRepository.changeAdmin(userId);
@@ -18,7 +22,17 @@ export class AdminService {
     }
 
     async updateClubStatus(updateClubStatusDto: UpdateClubStatusDto): Promise<Club> {
-        return this.adminRepository.updateClubStatus(updateClubStatusDto);
+        const club = await this.adminRepository.updateClubStatus(updateClubStatusDto);
+
+        if (updateClubStatusDto.status === 'ACCEPTED') {
+            const adminList: number[] = club.adminList as number[];
+            const users = await this.adminRepository.getUsersByIds(adminList);
+
+            const emailPromises = users.map(user => this.emailService.sendClubAcceptanceEmail(user.email));
+            await Promise.all(emailPromises);
+        }
+
+        return club;
     }
 
     async getAllUsers(): Promise<User[]> {

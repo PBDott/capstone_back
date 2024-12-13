@@ -4,10 +4,11 @@ import { Club, ClubStatus, Roles, User } from "@prisma/client";
 import { UpdateClubStatusDto } from "../dto/update-club-status.dto";
 import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
+import * as nodemailer from 'nodemailer';
 
 @Injectable()
 export class AdminRepository {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) { }
 
     async changeAdmin(userId: number): Promise<User> {
         return this.prisma.user.update({
@@ -32,14 +33,14 @@ export class AdminRepository {
             data: { status }
         });
 
-        if(status === ClubStatus.ACCEPTED) {
+        if (status === ClubStatus.ACCEPTED) {
             const adminList: number[] = club.adminList as number[];
             await this.prisma.user.updateMany({
                 where: { userId: { in: adminList } },
                 data: { role: Roles.CLUBADMIN }
             });
         }
-        
+
         return club;
     }
 
@@ -52,7 +53,7 @@ export class AdminRepository {
             data: { ...createUserDto }
         });
     }
-    
+
     async updateUser(userId: number, updateUserDto: UpdateUserDto): Promise<User> {
         return this.prisma.user.update({
             where: { userId },
@@ -63,6 +64,17 @@ export class AdminRepository {
     async deleteUser(userId: number): Promise<User> {
         return this.prisma.user.delete({
             where: { userId }
+        });
+    }
+
+    async getUsersByIds(userIds: number[]) {
+        return this.prisma.user.findMany({
+            where: {
+                userId: { in: userIds },
+            },
+            select: {
+                email: true,
+            },
         });
     }
 }

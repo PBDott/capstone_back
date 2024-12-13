@@ -17,6 +17,8 @@ import { ChatModule } from './chat/chat.module';
 import { CalendarModule } from './club-admin/calendar/calendar.module';
 import { ImageHandlerModule } from './imageHandler/imageHandler.module';
 import { UserModule as UserModule_ } from './user/user.module';
+import { ConfigModule } from '@nestjs/config';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -24,6 +26,10 @@ import { UserModule as UserModule_ } from './user/user.module';
       rootPath: path.join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
+    EmailModule,
     TradeModule,
     AuthModule,
     ClubModule,
