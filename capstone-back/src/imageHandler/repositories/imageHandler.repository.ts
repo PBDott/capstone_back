@@ -39,10 +39,12 @@ export class ImageHandlerRepository {
     return id;
   }
 
-  async attachImagesToTrade({ imageId, tradeId }: { imageId: number, tradeId: number }) {
-    return this.prisma.image.update({
+  async attachImagesToTrade({ imageIds, tradeId }: { imageIds: number[], tradeId: number }) {
+    return this.prisma.image.updateMany({
       where: {
-        id: imageId,
+        id: {
+          in: imageIds,
+        },
       },
       data: {
         tradeId,
