@@ -122,7 +122,7 @@ export class ApplicationRepository {
         
         const userList = club.userList as number[];
         // Check if the plan is free and limit is exceeded
-        return club.plan === PlanStatus.FREE && userList.length >= 5;
+        return club.plan === PlanStatus.FREE && userList.length >= 9;
     }
     
     
