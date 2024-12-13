@@ -1,5 +1,4 @@
 import { IsInt, IsNotEmpty, IsString } from "class-validator";
-import { title } from "process";
 
 export class CreateTradeRequestDto {
   @IsString()
@@ -11,5 +10,5 @@ export class CreateTradeRequestDto {
   price: number;
 
   @IsInt()
-  imageId: number;
+  imageIds: number[];
 }
