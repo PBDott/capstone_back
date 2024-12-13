@@ -106,8 +106,8 @@ export class ImageHandlerService {
     }
   }
 
-  async attachImagesToTrade({ imageIds, tradeId }: { imageIds: number[], tradeId: number }) {
-    return this.imageHandlerRepository.attachImagesToTrade({ imageIds, tradeId });
+  async attachImagesToTrade({ imageId, tradeId }: { imageId: number, tradeId: number }) {
+    return this.imageHandlerRepository.attachImagesToTrade({ imageId, tradeId });
   }
 
   async attachImagesToChat({ imageId, chatId }: { imageId: number, chatId: number }) {

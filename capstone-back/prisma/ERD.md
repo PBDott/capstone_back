@@ -31,6 +31,7 @@ erDiagram
   DateTime updateAt
   Int views
   Int like_count
+  Int image_id FK "nullable"
 }
 "Club" {
   Int club_id PK
@@ -120,7 +121,7 @@ erDiagram
   Int uploadedUserId
   DateTime deletedAt "nullable"
   Json additionalInfo
-  Int tradeId FK "nullable"
+  Int tradeId "nullable"
   Int chatId UK "nullable"
   Int userId UK "nullable"
   Int clubId "nullable"
@@ -161,6 +162,7 @@ erDiagram
 "User" |o--o| "Image" : image
 "Trade" }o--|| "User" : seller
 "Trade" }o--o| "User" : buyer
+"Trade" |o--o| "Image" : image
 "Club" |o--o| "Image" : Image
 "ClubParticipants" }o--|| "Club" : club
 "ClubParticipants" }o--|| "User" : user
@@ -182,7 +184,6 @@ erDiagram
 "Chat" }o--|| "Room" : room
 "Chat" }o--|| "User" : user
 "Chat" |o--o| "Image" : image
-"Image" }o--o| "Trade" : Trade
 "Application" }o--|| "Club" : club
 "AppResponse" }o--|| "Application" : application
 "AppResponse" }o--|| "User" : user
@@ -219,6 +220,7 @@ erDiagram
   - `updateAt`: 
   - `views`: 
   - `like_count`: 
+  - `image_id`: 
 
 ### `Club`
 
