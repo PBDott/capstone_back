@@ -139,7 +139,7 @@ export class TradeRepository {
         }],
       },
       include: {
-        Image: true,
+        image: true,
       },
     });
     return trades;
