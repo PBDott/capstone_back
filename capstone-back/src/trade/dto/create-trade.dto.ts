@@ -18,5 +18,5 @@ export class CreateTradeDto {
   sellerId: number;
 
   @IsInt()
-  imageIds: number[];
+  imageId: number;
 }
